@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="war" name="Usersettings:war">
-    <output-path>$PROJECT_DIR$/Usersettings/target</output-path>
-    <root id="archive" name="Usersettings.war">
-      <element id="artifact" artifact-name="Usersettings:war exploded" />
-    </root>
-  </artifact>
-</component>
