@@ -6,11 +6,9 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <groupId>JavaBegin</groupId>
-    <artifactId>Chat</artifactId>
+    <artifactId>ChatClient</artifactId>
     <packaging>war</packaging>
-    <version>1.0-SNAPSHOT</version>
-    <name>Chat Maven Webapp</name>
+    <name>ChatClient Maven Webapp</name>
     <url>http://maven.apache.org</url>
     <dependencies>
         <dependency>
@@ -21,6 +19,6 @@
         </dependency>
     </dependencies>
     <build>
-        <finalName>Chat</finalName>
+        <finalName>ChatClient</finalName>
     </build>
 </project>

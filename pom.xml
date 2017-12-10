@@ -9,6 +9,12 @@
     <module>Main</module>
     <module>Usersettings</module>
     <module>Chat</module>
+      <module>Chat</module>
+      <module>ChatClient</module>
+      <module>ChatServer</module>
+      <module>ChatNetwork</module>
+      <module>Chat</module>
+      <module>ChatClient</module>
   </modules>
   <name>JavaBegin Maven Webapp</name>
   <url>http://maven.apache.org</url>
