@@ -7,6 +7,6 @@ public class ClientWindow {
     }
 
     private ClientWindow() {
-        
+
     }
 }
