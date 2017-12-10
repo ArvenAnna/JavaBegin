@@ -1,8 +1,12 @@
+/JavaBegin.iml
 /.idea/
 /Main/target/
-/Chat/target/
-/Usersettings/target/
 /Main/Main.iml
-/Chat/Chat.iml
+/Usersettings/target/
 /Usersettings/Usersettings.iml
-/JavaBegin.iml
+/ChatClient/target/
+/ChatClient/ChatClient.iml
+/ChatNetwork/target/
+/ChatNetwork/ChatNetwork.iml
+/ChatServer/target/
+/ChatServer/ChatServer.iml
