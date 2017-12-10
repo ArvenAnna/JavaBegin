@@ -15,6 +15,7 @@
       <module>ChatNetwork</module>
       <module>Chat</module>
       <module>ChatClient</module>
+      <module>UserSettings</module>
   </modules>
   <name>JavaBegin Maven Webapp</name>
   <url>http://maven.apache.org</url>
