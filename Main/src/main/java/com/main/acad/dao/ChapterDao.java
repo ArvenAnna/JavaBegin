@@ -1,6 +1,7 @@
-package main.java.com.main.acad.dao;
+package com.main.acad.dao;
+import lombok.*;
+import com.main.acad.entity.Chapter;
 
-import main.java.com.main.acad.entity.Chapter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
