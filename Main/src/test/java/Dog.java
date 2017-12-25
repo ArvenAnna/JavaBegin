@@ -3,25 +3,10 @@ import java.util.Objects;
 
 public class Dog {
     private String nameD;
-   private List<String> enemies;
+    private List<Cat> enemies;
 
     public Dog() {
     }
-
-    public Dog(String nameD, List<String> enemies) {
-
-        this.nameD = nameD;
-        this.enemies = enemies;
-    }
-
-    @Override
-    public String toString() {
-        return "Dog{" +
-                "nameD='" + nameD + '\'' +
-                ", enemies=" + enemies +
-                '}';
-    }
-
 
     @Override
     public boolean equals(Object o) {
@@ -38,6 +23,29 @@ public class Dog {
         return Objects.hash(getNameD(), getEnemies());
     }
 
+    public Dog(String nameD, List<Cat> enemies) {
+        this.nameD = nameD;
+        this.enemies = enemies;
+    }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
+
+    @Override
+    protected void finalize() throws Throwable {
+        super.finalize();
+    }
+
+    @Override
+    public String toString() {
+        return "Dog{" +
+                "nameD='" + nameD + '\'' +
+                ", enemies=" + enemies +
+                '}';
+    }
+
     public String getNameD() {
         return nameD;
     }
@@ -46,11 +54,11 @@ public class Dog {
         this.nameD = name;
     }
 
-    public List<String> getEnemies() {
+    public List<Cat> getEnemies() {
         return enemies;
     }
 
-    public void setEnemies(List<String> enemies) {
+    public void setEnemies(List<Cat> enemies) {
         this.enemies = enemies;
     }
 }

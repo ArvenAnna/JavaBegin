@@ -1,9 +1,8 @@
 package com.main.acad.serializator;
 
-import javax.lang.model.type.PrimitiveType;
 import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class MyJsonSerializer implements JsonSerializer {
@@ -17,7 +16,7 @@ public class MyJsonSerializer implements JsonSerializer {
         }
     }
 
-    String writeList(Object obj) throws IllegalAccessException {
+    private String writeList(Object obj) throws IllegalAccessException {
         List list = (List) obj;
         String result = "[";
         for (Object listItem : list) {
@@ -29,7 +28,7 @@ public class MyJsonSerializer implements JsonSerializer {
         return result + "]";
     }
 
-    String writeObj(Object obj) throws IllegalAccessException {
+    private String writeObj(Object obj) throws IllegalAccessException {
         if (obj == null) {
             return null;
         }
@@ -60,19 +59,27 @@ public class MyJsonSerializer implements JsonSerializer {
     }
 
     @Override
-    public Object read(String string, Class clazz) throws IllegalAccessException, InstantiationException, ClassNotFoundException {
-        if (clazz.getName().equals("java.util.ArrayList")) {
-            return readList(string, clazz);
+    public Object read(String string, Class clazz, Class objClass) throws Exception {
+        if (clazz.getTypeName().contains("List")) {
+            return readList(string, clazz, objClass);
         } else {
             return readObject(string, clazz);
         }
     }
 
-    private Object readObject(String string, Class clazz) throws IllegalAccessException, InstantiationException, ClassNotFoundException {
+    private Object readObject(String string, Class clazz) throws Exception {
+
         string = string.replaceAll("\"", "");
-        string = string.replaceAll("]", ",");
-        string = string.substring(1);
-        string = string.substring(0, string.length() - 1);
+//        int countNull = 0;
+//        char ch[] = string.toCharArray();
+//        for (int i = 0; i < ch.length; i++) {
+//            if (ch[i] == ':') {
+//                countNull++;
+//            }
+//        }
+//        if (countNull == 1) {
+//            return null;
+//        }
         Object objec = clazz.newInstance();
         Field field[] = clazz.getDeclaredFields();
         string += ",";
@@ -81,71 +88,128 @@ public class MyJsonSerializer implements JsonSerializer {
                 f.setAccessible(false);
             } else {
                 f.setAccessible(true);
-                if (!checkString(string.substring(string.indexOf(":") + 1, string.indexOf(",")))) {
+                if (f.getType() == Integer.TYPE) {
                     f.set(objec, Integer.parseInt(string.substring(string.indexOf(":") + 1, string.indexOf(","))));
                     string = string.substring(string.indexOf(",") + 1);
-                } else if (isBoolean(string.substring(string.indexOf(":") + 1, string.indexOf(",")))) {
+                } else if (f.getType() == Boolean.TYPE) {
                     f.set(objec, Boolean.parseBoolean(string.substring(string.indexOf(":") + 1, string.indexOf(","))));
                     string = string.substring(string.indexOf(",") + 1);
-                } else if (f.getType() != Integer.TYPE && f.getType() != Boolean.TYPE && f.getType() != String.class && f.getType() != List.class) {
-                    String s = string.substring(string.indexOf("{"), string.indexOf("}") + 1);
-                    f.set(objec, read(s, Class.forName("Dog")));
+                } else if (f.getType() != String.class && f.getType() != List.class) {
+                    String s = string.substring(string.indexOf("{"));
+
+                    f.set(objec, readObject(s, Class.forName(String.valueOf(f.getType().getName()))));
                 } else if (f.getType() == List.class) {
-                    String s = string.substring(string.indexOf("[") + 1);
-                    s=s.substring(0,s.length()-1);
-                    s += "";
-                    f.set(objec, read(s, Class.forName("java.util.ArrayList")));
+                    if (string.contains("null")) {
+                        f.set(objec, readList(string, List.class, null));
+                    } else {
+                        String s = string.substring(string.indexOf("["), string.indexOf("]") + 1);
+                        char[] chars = s.toCharArray();
+                        int counter = 0;
+                        for (int i = 0; i < chars.length; i++) {
+                            if (chars[i] == '[') {
+                                counter++;
+                            } else if (chars[i] == '{') {
+                                counter++;
+                            } else if (chars[i] == ']') {
+                                counter--;
+                            } else if (chars[i] == '}') {
+                                counter--;
+                            }
+                            if (counter == 0) {
+                                s = string.substring(string.indexOf('['), string.indexOf(chars[i]) + 1);
+                                f.set(objec, readList(s, (Class<?>) (((ParameterizedType) f.getGenericType()).getActualTypeArguments()[0]), null));
+                            }
+                        }
+                    }
                 } else {
                     f.set(objec, (string.substring(string.indexOf(":") + 1, string.indexOf(","))));
                     string = string.substring(string.indexOf(",") + 1);
                 }
             }
         }
-
         return objec;
     }
 
-    private List<String> readList(String string, Class clazz) throws IllegalAccessException, InstantiationException {
-        string = string.replaceAll("\"", "");
-        string = string.replace("[", "");
-        string = string.replace("]", "");
-        string = string.replace("}", "");
-        List list = (List<Object>) clazz.newInstance();
-        int o = 1;
-        char[] chars = string.toCharArray();
-        for (int i = 0; i < chars.length; i++) {
-            if (chars[i] == ',')
-                o++;
-        }
-        for (int r = 0; r < o; r++) {
-            string = string.replace("{", "");
-            if (string.contains(",")) {
-                list.add(string.substring(string.indexOf("\"") + 1, string.indexOf(",")));
-                string = string.substring(string.indexOf(",") + 1);
-            } else {
-                list.add(string.substring(string.indexOf(",")+1));
-                return list;
+    private List<String> readList(String string, Class clazz, Class objClass) throws Exception {
+        System.out.println(string);
+        if (objClass != null) {
+            string = string.replaceAll("\\[", "");
+            string = string.replaceAll("]", "");
+            List list = new ArrayList();
+            char[] chars = string.toCharArray();
+            int counter = 0;
+            for (int i = 0; i < chars.length; i++) {
+                if (chars[i] == '{') {
+                    counter++;
+                } else if (chars[i] == '}') {
+                    counter--;
+                }
+                if (counter == 0) {
+                    if (!string.equals("")) {
+                        String w = string.substring(string.indexOf("{"), string.indexOf("}"));
+                        list.add(readObject(w, objClass));
+                        string = string.substring(string.indexOf("}") + 1, string.length());
+                    }
+                }
+
             }
+            return list;
         }
-        return list;
-    }
 
-    private static boolean checkString(Object obj) {
-        try {
-            Integer.parseInt(String.valueOf(obj));
-        } catch (Exception e) {
-            return true;
-        }
-        return false;
-    }
+        if (string.contains("{")) {
+            List list = new ArrayList();
+            int o = 0;
+            int counter = 0;
+            char[] chars = string.toCharArray();
+            for (int i = 0; i < chars.length; i++) {
+                if (chars[i] == '{') {
+                    counter++;
+                } else if (chars[i] == '}') {
+                    counter--;
+                    if (counter == 0) {
+                        if (chars[i + 1] == ',') {
+                            o++;
+                            break;
+                        }
+                    }
+                }
+            }
+            for (int r = 0; r <= o; r++) {
+                if (string.contains("},")) {
+                    list.add(string.substring(string.indexOf("\"") + 1, string.indexOf(",")));
+                    string = string.substring(string.indexOf(",") + 1);
+                } else {
+                    list.add(read(string, clazz, null));
 
-    private static boolean isBoolean(String str) {
-        try {
-            boolean d = Boolean.parseBoolean(str);
-            return d;
-        } catch (NumberFormatException nfe) {
+                    return list;
+                }
+            }
+            return list;
+        } else {
+            List<String> list = new ArrayList<>();
+            int o = 0;
+            char[] chars = string.toCharArray();
+            for (char aChar : chars) {
+                if (aChar == ',')
+                    o++;
+            }
+            for (int r = 0; r <= o; r++) {
+                System.out.println(string);
+                string = string.replace("{", "");
+                if (string.contains(",")) {
+                    if (string.substring(string.indexOf(":")).contains("null"))
+                    {
+                        list.add(null);
+                        return list;
+                    }
+                    list.add(string.substring(string.indexOf("\"") + 1, string.indexOf(",") - 1));
+                    string = string.substring(string.indexOf(",") + 1);
+                } else {
+                    list.add(string.substring(string.indexOf(",") + 2, string.length() - 2));
+                    return list;
+                }
+            }
+            return list;
         }
-        return false;
     }
 }
-

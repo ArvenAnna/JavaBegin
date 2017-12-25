@@ -32,6 +32,22 @@ public class Cat {
                 '}';
     }
 
+    public Dog getEnemy() {
+        return enemy;
+    }
+
+    public void setEnemy(Dog enemy) {
+        this.enemy = enemy;
+    }
+
+    public double getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -47,21 +63,5 @@ public class Cat {
     public int hashCode() {
 
         return Objects.hash(getName(), getAge(), isHungry(), getEnemy());
-    }
-
-    public Dog getEnemy() {
-        return enemy;
-    }
-
-    public void setEnemy(Dog enemy) {
-        this.enemy = enemy;
-    }
-
-    public double getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
     }
 }
