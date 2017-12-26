@@ -1,7 +1,6 @@
 package com.main.acad.entity;
 
 import lombok.*;
-
 import java.util.List;
 
 @Getter

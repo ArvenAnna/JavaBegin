@@ -14,6 +14,6 @@ public interface Dao {
 
     Chapter getChapter(int id);
 
-    List<Chapter> listChapters();
+    List<Chapter> listChapters() throws ClassNotFoundException;
 
 }

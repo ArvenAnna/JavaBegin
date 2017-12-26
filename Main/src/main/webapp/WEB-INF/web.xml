@@ -5,9 +5,29 @@
          xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
          version="2.4">
 
-  <display-name>HelloServlet</display-name>
-  <description>
-    This is a simple web application in Main module
-  </description>
+    <display-name>/HelloServlet</display-name>
+    <description>
+        This is a simple web application in Main module
+    </description>
+
+    <servlet>
+        <servlet-name>GetUserServlet</servlet-name>
+        <servlet-class>com.main.acad.servlet.GetUserServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>GetUserServlet</servlet-name>
+        <url-pattern>/GetUserServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>Someservlet</servlet-name>
+        <servlet-class>com.main.acad.servlet.BDServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>Someservlet</servlet-name>
+        <url-pattern>/api/*</url-pattern>
+    </servlet-mapping>
 
 </web-app>

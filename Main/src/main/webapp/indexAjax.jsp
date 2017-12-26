@@ -5,7 +5,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>jQuery, Ajax and Servlet/JSP integration example</title>
+    <title>Java Begin</title>
 
     <script src="http://code.jquery.com/jquery-1.10.2.js"
             type="text/javascript"></script>
