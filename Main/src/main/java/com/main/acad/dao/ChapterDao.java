@@ -25,10 +25,9 @@ public class ChapterDao implements Dao {
     private String sqlUpdate = "UPDATE chapters SET name =? WHERE id_chapter=?";
     private String sqlRemove = "DELETE  FROM chapters WHERE id_chapter=?";
     private String sqlGetByid = "SELECT r.id_chapter, r.id_refrence, c.name FROM \"references\" r INNER JOIN chapters c ON r.id_refrence = c.id_chapter where c.id_chapter = ?";
-    // private String sqlGetAll = "SELECT r.id_chapter, r.id_refrence, c.name FROM \"references\" r INNER JOIN chapters c ON r.id_refrence = c.id_chapter";
-   //private String sqlGetAll = "SELECT * FROM \"chapters\" INNER JOIN id_reference ";
-   // private String sqlGetAll = "SELECT * FROM \"references\" ";
-   private String sqlGetAll = "SELECT * FROM \"chapters\" c INNER JOIN \"references\" r ON r.id_chapter = c.id_chapter where r.id_refrence is null";
+    private String sqlGetAll = "SELECT * FROM \"chapters\" c INNER JOIN \"references\" r ON r.id_chapter = c.id_chapter where r.id = r.id_chapter";
+    private String sqlGetChild = "select name from chapters where id_chapter IN (select r.id from chapters c inner join \"references\" r ON r.id_chapter = c.id_chapter where r.id_chapter = ?  and r.id != ?)";
+
     @Override
     public void addChapter(Chapter chapter) {
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
@@ -107,4 +106,36 @@ public class ChapterDao implements Dao {
         return chaptersList;
     }
 
+    @Override
+    public List listChildren(int id) throws ClassNotFoundException {
+        List chaptersList = new ArrayList();
+        Class.forName("org.postgresql.Driver");
+        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD)) {
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlGetChild);{
+                preparedStatement.setInt(1, id);
+                preparedStatement.setInt(2, id);
+                ResultSet resultSet = preparedStatement.executeQuery();
+                while (resultSet.next()) {
+                    Chapter chapter = new Chapter();
+                    chapter.setName(resultSet.getString("name"));
+                    chaptersList.add(chapter.getName());
+                }
+                return chaptersList;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } return chaptersList;
+    }
+
+//    public static void main(String[] args) throws ClassNotFoundException {
+//        Dao d = new ChapterDao();
+//
+//        ArrayList l = (ArrayList) d.listChildren(3);
+//        Iterator iter = l.iterator();
+//        while(iter.hasNext()){
+//            System.out.println(iter.next());
+//        }
+//
+//    }
 }

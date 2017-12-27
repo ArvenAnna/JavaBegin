@@ -99,10 +99,7 @@
   }
 
   .animenu__nav,
-  .animenu__nav__child {
-    display: none;
-  }
-
+  .animenu__nav__child
   .animenu__nav {
     margin: 10px 0;
   }

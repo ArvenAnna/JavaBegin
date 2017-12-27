@@ -6,14 +6,16 @@ import java.util.List;
 
 public interface Dao {
 
-    void addChapter(Chapter chapter);
+    void addChapter(Chapter chapter) throws ClassNotFoundException;
 
-    void updateChapter(Chapter chapter);
+    void updateChapter(Chapter chapter) throws ClassNotFoundException;
 
-    void removeChapter(int id);
+    void removeChapter(int id) throws ClassNotFoundException;
 
-    Chapter getChapter(int id);
+    Chapter getChapter(int id) throws ClassNotFoundException;
 
     List<Chapter> listChapters() throws ClassNotFoundException;
+
+    List listChildren(int id) throws ClassNotFoundException;
 
 }

@@ -11,22 +11,22 @@
     </description>
 
     <servlet>
-        <servlet-name>GetUserServlet</servlet-name>
-        <servlet-class>com.main.acad.servlet.GetUserServlet</servlet-class>
+        <servlet-name>ChildServlet</servlet-name>
+        <servlet-class>com.main.acad.servlet.ChildServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>GetUserServlet</servlet-name>
-        <url-pattern>/GetUserServlet</url-pattern>
+        <servlet-name>ChildServlet</servlet-name>
+        <url-pattern>/api/child</url-pattern>
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>Someservlet</servlet-name>
-        <servlet-class>com.main.acad.servlet.BDServlet</servlet-class>
+        <servlet-name>ChapterServlet</servlet-name>
+        <servlet-class>com.main.acad.servlet.ChapterServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>Someservlet</servlet-name>
+        <servlet-name>ChapterServlet</servlet-name>
         <url-pattern>/api/*</url-pattern>
     </servlet-mapping>
 
