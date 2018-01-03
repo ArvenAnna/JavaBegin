@@ -12,12 +12,13 @@ import java.util.List;
 
 @AnnotationForControllers(url = "api/chapter")
 public class ControllerChapter {
-    public ControllerChapter(HttpServletRequest request, HttpServletResponse response) throws ClassNotFoundException, IllegalAccessException, IOException {
+
+    public String method (HttpServletRequest request, HttpServletResponse response) throws ClassNotFoundException, IllegalAccessException, IOException {
         Dao dao = new ChapterDao();
         List chaptersList = dao.listChapters();
         MyJsonSerializer m = new MyJsonSerializer();
         String result = m.write(chaptersList);
-        response.getWriter().write(result);
-
+        String response2 = result;
+        return response2;
     }
 }

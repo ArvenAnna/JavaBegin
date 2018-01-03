@@ -17,7 +17,7 @@
 
     <servlet-mapping>
         <servlet-name>Servlet</servlet-name>
-        <url-pattern>/api/*</url-pattern>
+        <url-pattern>/api/chapter</url-pattern>
     </servlet-mapping>
 
 </web-app>

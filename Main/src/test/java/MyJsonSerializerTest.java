@@ -1,23 +1,31 @@
-//import com.main.acad.serializator.JsonSerializer;
-//import com.main.acad.serializator.MyJsonSerializer;
-//import org.junit.Before;
-//import org.junit.Test;
-//
-//import java.util.ArrayList;
-//import java.util.Arrays;
-//import java.util.List;
-//
-//import static org.junit.Assert.assertEquals;
-//
-//public class MyJsonSerializerTest {
-//
-//    JsonSerializer serializer;
-//
-//    @Before
-//    public void setUp() {
-//        serializer = new MyJsonSerializer();
+import com.main.acad.serializator.JsonSerializer;
+import com.main.acad.serializator.MyJsonSerializer;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+
+public class MyJsonSerializerTest {
+
+    JsonSerializer serializer;
+
+    @Before
+    public void setUp() {
+        serializer = new MyJsonSerializer();
+    }
+//    @Test
+//    public void testWriteMouse() throws IllegalAccessException {
+//        Mouse mouse = new Mouse();
+//        mouse.setAge(10);
+//        mouse.setName("mouse");
+//        String expectedResult = "{\"age\":10,\"name\":\"mouse\"}";
+//        String actualResult = serializer.write(mouse);
+//        assertEquals(expectedResult, actualResult);
 //    }
-//
 //    @Test
 //    public void testWriteCat() throws IllegalAccessException {
 //        Cat cat = new Cat();
@@ -63,106 +71,95 @@
 //        String actualResult = serializer.write(Arrays.asList(cat1, cat2));
 //        assertEquals(expectedResult, actualResult);
 //    }
-//
-//    @Test
-//    public void testReadCat() throws Exception {
-//        String json = "{\"nameD\":\"pety\",\"enemies\":[{\"name\":\"Cat1\",\"age\":5,\"isHungry\":false,\"enemy\":null}]";
-//
-//        List<Cat> list = new ArrayList<>();
-//        Cat cat1 = new Cat();
-//        cat1.setName("Cat1");
-//        cat1.setAge(5);
-//        cat1.setEnemy(null);
-//        list.add(cat1);
-//        Dog expectedDog = new Dog();
-//        expectedDog.setNameD("pety");
-//        expectedDog.setEnemies(list);
-//        Object actualResult = serializer.read(json, Dog.class,null);
-//        assertEquals(expectedDog, actualResult);
-//    }
-//
-//    @Test
-//    public void testReadList() throws Exception {
-//        List<String> list = new ArrayList<>();
-//        list.add("window");
-//        list.add("desc");
-//        list.add("pen");
-//        String expectedResult = "[\"window\",\"desc\",\"pen\"]";
-//        Object actualResult = serializer.read(expectedResult, list.getClass(),null);
-//        assertEquals(list, actualResult);
-//    }
-//
-//    @Test
-//    public void testReadMouse() throws IllegalAccessException {
-//        Mouse mouse = new Mouse();
-//        mouse.setAge(10);
-//        mouse.setName("mouse");
-//        String expectedResult = "{\"age\":10,\"name\":\"mouse\"}";
-//        String actualResult = serializer.write(mouse);
-//        assertEquals(expectedResult, actualResult);
-//    }
-//
-//    @Test
-//    public void testReadMouseList() throws Exception {
-//        List<Mouse> list = new ArrayList<>();
-//        Mouse mouse = new Mouse();
-//        mouse.setAge(10);
-//        mouse.setName("mouse");
-//        Mouse mouse2 = new Mouse();
-//        mouse2.setAge(9);
-//        mouse2.setName("micky");
-//        String json = "[{\"age\":10,\"name\":\"mouse\"},{\"age\":9,\"name\":\"micky\"}]";
-//        list.add(mouse);
-//        list.add(mouse2);
-//        Object actualResult = serializer.read(json, list.getClass(),Mouse.class);
-//        assertEquals(list, actualResult);
-//    }
-//
-//    @Test
-//    public void testReadCatsList() throws Exception {
-//        List<Cat> list = new ArrayList<>();
-//        Cat cat1 = new Cat();
-//        cat1.setName("Cat1");
-//        cat1.setAge(5);
-//        cat1.setEnemy(new Dog("pety", null));
-//        list.add(cat1);
-//
-//        String json = "[{\"name\":\"Cat1\",\"age\":5,\"isHungry\":false,\"enemy\":{\"nameD\":\"pety\",\"enemies\":null}}]";
-//
-//        Object actualResult =  serializer.read(json, list.getClass(), Cat.class);
-//        assertEquals(list, actualResult);
-//    }
-//
-////    @Test
-////    public void testReadCatsListWithEmptyEnemies() throws Exception {
-////        List<Cat> list = new ArrayList<>();
-////        Cat cat1 = new Cat();
-////        cat1.setName("Cat1");
-////        cat1.setAge(5);
-////        cat1.setEnemy(new Dog("pety", new ArrayList<>()));
-////        list.add(cat1);
-////
-////        String json = "[{\"name\":\"Cat1\",\"age\":5,\"isHungry\":false,\"enemy\":{\"nameD\":\"pety\",\"enemies\":[]}}]";
-////
-////        Object actualResult =  serializer.read(json, Cat.class,Dog.class);
-////        assertEquals(list, actualResult);
-////    }
-//
-////    @Test
-////    public void testReadCatsListWithDogsEnemy() throws Exception {
-////        Cat enemy = new Cat();
-////        enemy.setAge(2);
-////
-////        List<Cat> list = new ArrayList<>();
-////        Cat cat1 = new Cat();
-////        cat1.setName("Cat1");
-////        cat1.setAge(5);
-////        cat1.setEnemy(new Dog("pety", Arrays.asList(enemy)));
-////        list.add(cat1);
-////
-////        String json = "[{\"name\":\"Cat1\",\"age\":5,\"isHungry\":false,\"enemy\":{\"nameD\":\"pety\",\"enemies\":[{\"name\":null,\"age\":2,\"isHungry\":false,\"enemy\":null}]}}]";
-////
-////        Object actualResult =  serializer.read(json, Cat.class);
-////        assertEquals(list, actualResult);
-////    }
-//}
+
+    @Test
+    public void testReadCat() throws Exception {
+        String json = "{\"nameD\":\"pety\",\"enemies\":[{\"name\":\"Cat1\",\"age\":5,\"isHungry\":false,\"enemy\":null}]";
+        List<Cat> list = new ArrayList<>();
+        Cat cat1 = new Cat();
+        cat1.setName("Cat1");
+        cat1.setAge(5);
+        cat1.setEnemy(null);
+        list.add(cat1);
+        Dog expectedDog = new Dog();
+        expectedDog.setNameD("pety");
+        expectedDog.setEnemies(list);
+        Object actualResult = serializer.read(json, Dog.class,null);
+        assertEquals(expectedDog, actualResult);
+    }
+
+    @Test
+    public void testReadList() throws Exception {
+        List<String> list = new ArrayList<>();
+        list.add("window");
+        list.add("desc");
+        list.add("pen");
+        String expectedResult = "[\"window\",\"desc\",\"pen\"]";
+        Object actualResult = serializer.read(expectedResult, list.getClass(),null);
+        assertEquals(list, actualResult);
+    }
+
+    @Test
+    public void testReadMouseList() throws Exception {
+        List<Mouse> list = new ArrayList<>();
+        Mouse mouse = new Mouse();
+        mouse.setAge(10);
+        mouse.setName("mouse");
+        Mouse mouse2 = new Mouse();
+        mouse2.setAge(9);
+        mouse2.setName("micky");
+        String json = "[{\"age\":10,\"name\":\"mouse\"},{\"age\":9,\"name\":\"micky\"}]";
+        list.add(mouse);
+        list.add(mouse2);
+        Object actualResult = serializer.read(json, list.getClass(),Mouse.class);
+        assertEquals(list, actualResult);
+    }
+
+    @Test
+    public void testReadCatsList() throws Exception {
+        List<Cat> list = new ArrayList<>();
+        Cat cat1 = new Cat();
+        cat1.setName("Cat1");
+        cat1.setAge(5);
+        cat1.setEnemy(new Dog("pety", null));
+        list.add(cat1);
+
+        String json = "[{\"name\":\"Cat1\",\"age\":5,\"isHungry\":false,\"enemy\":{\"nameD\":\"pety\",\"enemies\":null}}]";
+
+        Object actualResult =  serializer.read(json, list.getClass(), Cat.class);
+        assertEquals(list, actualResult);
+    }
+
+    @Test
+    public void testReadCatsListWithEmptyEnemies() throws Exception {
+        List<Cat> list = new ArrayList<>();
+        Cat cat1 = new Cat();
+        cat1.setName("Cat1");
+        cat1.setAge(5);
+        cat1.setEnemy(new Dog("pety", new ArrayList<>()));
+        list.add(cat1);
+
+        String json = "[{\"name\":\"Cat1\",\"age\":5,\"isHungry\":false,\"enemy\":{\"nameD\":\"pety\",\"enemies\":[]}}]";
+
+        Object actualResult =  serializer.read(json, Cat.class,Dog.class);
+        assertEquals(list, actualResult);
+    }
+
+    @Test
+    public void testReadCatsListWithDogsEnemy() throws Exception {
+        Cat enemy = new Cat();
+        enemy.setAge(2);
+
+        List<Cat> list = new ArrayList<>();
+        Cat cat1 = new Cat();
+        cat1.setName("Cat1");
+        cat1.setAge(5);
+        cat1.setEnemy(new Dog("pety", Arrays.asList(enemy)));
+        list.add(cat1);
+
+        String json = "[{\"name\":\"Cat1\",\"age\":5,\"isHungry\":false,\"enemy\":{\"nameD\":\"pety\",\"enemies\":[{\"name\":null,\"age\":2,\"isHungry\":false,\"enemy\":null}]}}]";
+
+        Object actualResult =  serializer.read(json, Cat.class,Dog.class);
+        assertEquals(list, actualResult);
+    }
+}

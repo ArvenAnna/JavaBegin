@@ -1,5 +1,5 @@
 $(function () {
-    $.get('/api/header_items', function (data) {
+    $.get('/api/chapter', function (data) {
         var headerItems = JSON.parse(data);
         for (var i = 0; i < headerItems.length; i++) {
             var li = $('<li></li>');

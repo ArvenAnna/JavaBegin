@@ -60,7 +60,7 @@ public class MyJsonSerializer implements JsonSerializer {
 
     @Override
     public Object read(String string, Class clazz, Class objClass) throws Exception {
-        if (clazz.getTypeName().equals("java.util.List")) {
+        if (clazz.getTypeName().contains("List")) {
             return readList(string, clazz, objClass);
         } else {
             return readObject(string, clazz);
@@ -151,9 +151,11 @@ public class MyJsonSerializer implements JsonSerializer {
                         string = string.substring(string.indexOf("}") + 1, string.length());
                     }
                 }
+
             }
             return list;
         }
+
         if (string.contains("{")) {
             List list = new ArrayList();
             int o = 0;
@@ -195,7 +197,8 @@ public class MyJsonSerializer implements JsonSerializer {
                 System.out.println(string);
                 string = string.replace("{", "");
                 if (string.contains(",")) {
-                    if (string.substring(string.indexOf(":")).contains("null")) {
+                    if (string.substring(string.indexOf(":")).contains("null"))
+                    {
                         list.add(null);
                         return list;
                     }
