@@ -11,22 +11,12 @@
     </description>
 
     <servlet>
-        <servlet-name>ChildServlet</servlet-name>
-        <servlet-class>com.main.acad.servlet.ChildServlet</servlet-class>
+        <servlet-name>Servlet</servlet-name>
+        <servlet-class>com.main.acad.servlet.Servlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>ChildServlet</servlet-name>
-        <url-pattern>/api/child</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-        <servlet-name>ChapterServlet</servlet-name>
-        <servlet-class>com.main.acad.servlet.ChapterServlet</servlet-class>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>ChapterServlet</servlet-name>
+        <servlet-name>Servlet</servlet-name>
         <url-pattern>/api/*</url-pattern>
     </servlet-mapping>
 
