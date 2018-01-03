@@ -1,11 +1,13 @@
 package com.main.acad.servlet;
 
-import com.main.acad.annotation.AnnotationForControllers;
+import com.main.acad.annotation.Mapping;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.BufferedReader;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.ArrayList;
@@ -34,19 +36,15 @@ public class Servlet extends HttpServlet {
 
     public static String invokeController(String url, HttpServletRequest request, HttpServletResponse response) throws Exception {
         List<Class<?>> classes = getClasses("com.main.acad.controller");
-        String urlFull = "[@com.main.acad.annotation.AnnotationForControllers(url=" + url + ")]";
+        String urlFull = "[@com.main.acad.annotation.Mapping(url=" + url + ")]";
         for (Class<?> e : classes) {
             if (Arrays.toString(e.getAnnotations()).equals(urlFull)) {
                 String s = "com.main.acad.controller." + e.getSimpleName();
                 Class clazz = Class.forName(s);
                 Object o = clazz.newInstance();
-                Method[] methods = clazz.getMethods();
-                for (Method method : methods) {
-                    System.out.println(method.getName());
-                }
                 Class c = o.getClass();
                 Class[] paramTypes = new Class[]{HttpServletRequest.class, HttpServletResponse.class};
-                Method m = c.getMethod("method", paramTypes);
+                Method m = c.getMethod("returnResponce", paramTypes);
                 Object[] args = new Object[]{request, response};
                 String d = (String) m.invoke(o, args);
                 return d;
@@ -56,7 +54,7 @@ public class Servlet extends HttpServlet {
     }
 
     public static List<Class<?>> getClasses(String pack) throws Exception {
-        ClassLoader cl = AnnotationForControllers.class.getClassLoader();
+        ClassLoader cl = Mapping.class.getClassLoader();
         String packageDir = pack.replaceAll("[.]", "/");
         List<Class<?>> classes = new ArrayList<>();
         URL upackage = cl.getResource(packageDir);

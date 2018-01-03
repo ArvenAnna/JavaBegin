@@ -12,9 +12,8 @@ $(function () {
         }
         $('.animenu__nav').on('click',
             function () {
-                    $.get('/api/child', function (data) {
-                        alert(data.toString())
-                        ;
+                    $.get('/api/chapter', function (data) {
+                        alert(data.toString());
                     });
 
 

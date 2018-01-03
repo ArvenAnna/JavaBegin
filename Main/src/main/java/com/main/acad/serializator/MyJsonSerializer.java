@@ -60,7 +60,7 @@ public class MyJsonSerializer implements JsonSerializer {
 
     @Override
     public Object read(String string, Class clazz, Class objClass) throws Exception {
-        if (clazz.getTypeName().contains("List")) {
+        if (clazz.getTypeName().equals("java.util.List")) {
             return readList(string, clazz, objClass);
         } else {
             return readObject(string, clazz);
@@ -70,16 +70,6 @@ public class MyJsonSerializer implements JsonSerializer {
     private Object readObject(String string, Class clazz) throws Exception {
 
         string = string.replaceAll("\"", "");
-//        int countNull = 0;
-//        char ch[] = string.toCharArray();
-//        for (int i = 0; i < ch.length; i++) {
-//            if (ch[i] == ':') {
-//                countNull++;
-//            }
-//        }
-//        if (countNull == 1) {
-//            return null;
-//        }
         Object objec = clazz.newInstance();
         Field field[] = clazz.getDeclaredFields();
         string += ",";
@@ -135,7 +125,7 @@ public class MyJsonSerializer implements JsonSerializer {
         if (objClass != null) {
             string = string.replaceAll("\\[", "");
             string = string.replaceAll("]", "");
-            List list = new ArrayList();
+            List<String> list = new ArrayList();
             char[] chars = string.toCharArray();
             int counter = 0;
             for (int i = 0; i < chars.length; i++) {
@@ -147,11 +137,10 @@ public class MyJsonSerializer implements JsonSerializer {
                 if (counter == 0) {
                     if (!string.equals("")) {
                         String w = string.substring(string.indexOf("{"), string.indexOf("}"));
-                        list.add(readObject(w, objClass));
+                        list.add((String) readObject(w, objClass));
                         string = string.substring(string.indexOf("}") + 1, string.length());
                     }
                 }
-
             }
             return list;
         }
@@ -197,8 +186,7 @@ public class MyJsonSerializer implements JsonSerializer {
                 System.out.println(string);
                 string = string.replace("{", "");
                 if (string.contains(",")) {
-                    if (string.substring(string.indexOf(":")).contains("null"))
-                    {
+                    if (string.substring(string.indexOf(":")).contains("null")) {
                         list.add(null);
                         return list;
                     }

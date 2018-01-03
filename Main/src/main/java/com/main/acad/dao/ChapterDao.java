@@ -1,6 +1,5 @@
 package com.main.acad.dao;
 
-import lombok.*;
 import com.main.acad.entity.Chapter;
 
 import java.sql.Connection;
@@ -10,7 +9,6 @@ import java.sql.SQLException;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -38,6 +36,7 @@ public class ChapterDao implements Dao {
         } catch (SQLException e) {
             logger.info("connection have some error");
         }
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -51,6 +50,7 @@ public class ChapterDao implements Dao {
         } catch (SQLException e) {
             logger.info("connection have some error");
         }
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -65,6 +65,7 @@ public class ChapterDao implements Dao {
         } catch (SQLException e) {
             logger.info("connection have some error");
         }
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -82,13 +83,17 @@ public class ChapterDao implements Dao {
         } catch (SQLException e) {
             logger.info("connection have some error");
         }
-        return chapter;
+        throw new UnsupportedOperationException();
     }
 
     @Override
-    public List<Chapter> listChapters() throws ClassNotFoundException {
+    public List<Chapter> listChapters() {
         List<Chapter> chaptersList = new ArrayList();
-        Class.forName("org.postgresql.Driver");
+        try {
+            Class.forName("org.postgresql.Driver");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
              Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(sqlGetAll);) {
@@ -107,11 +112,16 @@ public class ChapterDao implements Dao {
     }
 
     @Override
-    public List listChildren(int id) throws ClassNotFoundException {
-        List chaptersList = new ArrayList();
-        Class.forName("org.postgresql.Driver");
+    public List listChildren(int id) {
+        List<String> chaptersList = new ArrayList();
+        try {
+            Class.forName("org.postgresql.Driver");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD)) {
-            PreparedStatement preparedStatement = connection.prepareStatement(sqlGetChild);{
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlGetChild);
+            {
                 preparedStatement.setInt(1, id);
                 preparedStatement.setInt(2, id);
                 ResultSet resultSet = preparedStatement.executeQuery();
@@ -125,17 +135,7 @@ public class ChapterDao implements Dao {
 
         } catch (SQLException e) {
             e.printStackTrace();
-        } return chaptersList;
+        }
+        return chaptersList;
     }
-
-//    public static void main(String[] args) throws ClassNotFoundException {
-//        Dao d = new ChapterDao();
-//
-//        ArrayList l = (ArrayList) d.listChildren(3);
-//        Iterator iter = l.iterator();
-//        while(iter.hasNext()){
-//            System.out.println(iter.next());
-//        }
-//
-//    }
 }

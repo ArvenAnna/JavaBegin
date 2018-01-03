@@ -1,3 +1,5 @@
+package com.main.acad;
+
 import org.junit.Test;
 
 public class DataBaseTests {

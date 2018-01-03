@@ -1,22 +1,21 @@
-package com.main.acad.entity;
+package com.main.acad;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-
-import java.util.List;
+import lombok.NoArgsConstructor;
 
 @Getter
 @Setter
+@AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(of = {"id", "name", "subchapters", "referenceOnFile"})
 @ToString
-
-public class Chapter {
-    private int id;
+public class Cat {
     private String name;
-    private List<Chapter> subchapters;
-    private String referenceOnFile;
+    private int age;
+    private boolean isHungry;
+    private Dog enemy;
 }
