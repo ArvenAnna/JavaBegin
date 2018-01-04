@@ -1,6 +1,6 @@
 package com.main.acad.servlet;
 
-import com.main.acad.annotation.Mapping;
+import com.main.acad.annotation.MappingMethod;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -20,15 +20,16 @@ public class Servlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) {
         String url = request.getRequestURL().toString();
-        try {
+
             url = url.substring(url.indexOf("4") + 2);
-            response.getWriter().write(invokeController(url, request, response));
+        try {
+            invokeController(url, request, response);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public static String invokeController(String url, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public static void invokeController(String url, HttpServletRequest request, HttpServletResponse response) throws Exception {
         List<Class<?>> classes = getClasses("com.main.acad.controller");
 
         for (Class<?> s : classes) {
@@ -41,11 +42,10 @@ public class Servlet extends HttpServlet {
             Object[] args = new Object[]{request, response};
             response.getWriter().write((String) m.invoke(o, args));
         }
-        return null;
     }
 
     public static List<Class<?>> getClasses(String pack) throws Exception {
-        ClassLoader cl = Mapping.class.getClassLoader();
+        ClassLoader cl = MappingMethod.class.getClassLoader();
         String packageDir = pack.replaceAll("[.]", "/");
         List<Class<?>> classes = new ArrayList<>();
         URL upackage = cl.getResource(packageDir);
@@ -63,7 +63,7 @@ public class Servlet extends HttpServlet {
         Method[] method = cl.getMethods();
         String m = null;
         for (Method md : method) {
-            if (md.isAnnotationPresent(Mapping.MappingMethod.class)) {
+            if (md.isAnnotationPresent(MappingMethod.class)) {
                 if (Arrays.toString(md.getAnnotations()).contains(url)) {
                     m = md.getName();
                     return m;

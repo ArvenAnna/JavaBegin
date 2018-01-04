@@ -1,7 +1,6 @@
 package com.main.acad.controller;
 
-import com.main.acad.annotation.Mapping;
-import com.main.acad.annotation.Mapping.MappingMethod;
+import com.main.acad.annotation.MappingMethod;
 import com.main.acad.dao.ChapterDao;
 import com.main.acad.dao.Dao;
 import com.main.acad.entity.Chapter;
@@ -12,7 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-@Mapping(url = "/api")
 public class Controller {
     @MappingMethod(url = "api/chapter")
     public HttpServletResponse returnChapters(HttpServletRequest request, HttpServletResponse response)
@@ -31,9 +29,7 @@ public class Controller {
         Dao d = new ChapterDao();
         List<String> child = d.listChildren(Integer.parseInt("3"));
         MyJsonSerializer m2 = new MyJsonSerializer();
-        String res = "";
-        res = m2.write(child);
-        response.getWriter().write(res);
+        response.getWriter().write(m2.write(child));
         return response;
     }
 }
