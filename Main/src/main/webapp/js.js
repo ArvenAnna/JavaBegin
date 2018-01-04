@@ -12,7 +12,7 @@ $(function () {
         }
         $('.animenu__nav').on('click',
             function () {
-                    $.get('/api/chapter', function (data) {
+                    $.get('/api/child', function (data) {
                         alert(data.toString());
                     });
 

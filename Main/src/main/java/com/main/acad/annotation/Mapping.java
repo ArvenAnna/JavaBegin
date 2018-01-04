@@ -9,4 +9,10 @@ import java.lang.annotation.Target;
 @Retention(value = RetentionPolicy.RUNTIME)
 public @interface Mapping {
     String url();
+
+    @Target(value = ElementType.METHOD)
+    @Retention(value = RetentionPolicy.RUNTIME)
+    @interface MappingMethod {
+        String url();
+    }
 }

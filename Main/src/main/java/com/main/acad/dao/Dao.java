@@ -16,6 +16,6 @@ public interface Dao {
 
     List<Chapter> listChapters();
 
-    List<Chapter> listChildren(int id);
+    List<String> listChildren(int id);
 
 }

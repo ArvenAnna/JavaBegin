@@ -87,8 +87,8 @@ public class ChapterDao implements Dao {
     }
 
     @Override
-    public List<Chapter> listChapters() {
-        List<Chapter> chaptersList = new ArrayList();
+    public List <Chapter> listChapters() {
+        List<Chapter>  chaptersList = new ArrayList();
         try {
             Class.forName("org.postgresql.Driver");
         } catch (ClassNotFoundException e) {
@@ -112,7 +112,7 @@ public class ChapterDao implements Dao {
     }
 
     @Override
-    public List listChildren(int id) {
+    public List<String> listChildren(int id) {
         List<String> chaptersList = new ArrayList();
         try {
             Class.forName("org.postgresql.Driver");
