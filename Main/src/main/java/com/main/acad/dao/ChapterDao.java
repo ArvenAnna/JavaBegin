@@ -1,7 +1,10 @@
 package com.main.acad.dao;
 
 import com.main.acad.entity.Chapter;
+import com.main.acad.util.ConnectionPool;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -10,13 +13,11 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 import java.util.logging.Logger;
 
 public class ChapterDao implements Dao {
 
-    private static final String PASSWORD = "root";
-    private static final String URL = "jdbc:postgresql://localhost:5432/javaBegin";
-    private static final String USER = "postgres";
     private static final Logger logger = Logger.getLogger(Dao.class.getName());
 
     private String sqlInsert = "INSERT INTO chapters (name) VALUES(?)";
@@ -28,7 +29,7 @@ public class ChapterDao implements Dao {
 
     @Override
     public void addChapter(Chapter chapter) {
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+        try (Connection connection = ConnectionPool.getDataSource().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sqlInsert)) {
             preparedStatement.setString(1, chapter.getName());
             preparedStatement.executeUpdate();
@@ -41,7 +42,7 @@ public class ChapterDao implements Dao {
 
     @Override
     public void updateChapter(Chapter chapter) {
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+        try (Connection connection = ConnectionPool.getDataSource().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sqlUpdate)) {
             preparedStatement.setString(1, chapter.getName());
             preparedStatement.setInt(2, chapter.getId());
@@ -57,7 +58,7 @@ public class ChapterDao implements Dao {
     public void removeChapter(int id) {
         Chapter chapter = new Chapter();
         chapter.setId(id);
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+        try (Connection connection = ConnectionPool.getDataSource().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sqlRemove)) {
             preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();
@@ -71,7 +72,7 @@ public class ChapterDao implements Dao {
     @Override
     public Chapter getChapter(int id) {
         Chapter chapter = new Chapter();
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+        try (Connection connection = ConnectionPool.getDataSource().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sqlGetByid)) {
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -87,14 +88,9 @@ public class ChapterDao implements Dao {
     }
 
     @Override
-    public List <Chapter> listChapters() {
-        List<Chapter>  chaptersList = new ArrayList();
-        try {
-            Class.forName("org.postgresql.Driver");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+    public List<Chapter> listChapters() {
+        List<Chapter> chaptersList = new ArrayList();
+        try (Connection connection = ConnectionPool.getDataSource().getConnection();
              Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(sqlGetAll);) {
             while (resultSet.next()) {
@@ -114,12 +110,7 @@ public class ChapterDao implements Dao {
     @Override
     public List<String> listChildren(int id) {
         List<String> chaptersList = new ArrayList();
-        try {
-            Class.forName("org.postgresql.Driver");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD)) {
+        try (Connection connection = ConnectionPool.getDataSource().getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(sqlGetChild);
             {
                 preparedStatement.setInt(1, id);

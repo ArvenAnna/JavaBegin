@@ -9,6 +9,7 @@ import com.main.acad.serializator.MyJsonSerializer;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 
 public class Controller {
@@ -24,12 +25,13 @@ public class Controller {
     }
 
     @MappingMethod(url = "api/subChapter")
-    public HttpServletResponse returnSubChapters(HttpServletRequest request, HttpServletResponse response)
+    public static HttpServletResponse returnSubChapters(HttpServletRequest request, HttpServletResponse response)
             throws ClassNotFoundException, IllegalAccessException, IOException {
         Dao d = new ChapterDao();
         List<String> child = d.listChildren(Integer.parseInt("3"));
         MyJsonSerializer m2 = new MyJsonSerializer();
-        response.getWriter().write(m2.write(child));
+        String result = m2.write(child);
+        response.getWriter().write(result);
         return response;
     }
 }

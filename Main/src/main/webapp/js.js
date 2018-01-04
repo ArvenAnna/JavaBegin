@@ -12,11 +12,9 @@ $(function () {
         }
         $('.animenu__nav').on('click',
             function () {
-                    $.get('/api/child', function (data) {
-                        alert(data.toString());
+                    $.get('/api/subChapter', function (data) {
+
                     });
-
-
             }
             );
 
