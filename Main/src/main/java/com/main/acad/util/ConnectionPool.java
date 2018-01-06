@@ -3,24 +3,32 @@ package com.main.acad.util;
 import org.apache.commons.dbcp.BasicDataSource;
 
 import javax.sql.DataSource;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
 
 public class ConnectionPool {
-    private static final String PASSWORD = "root";
-    private static final String URL = "jdbc:postgresql://localhost:5432/javaBegin";
-    private static final String USER = "postgres";
-    private static final String DRIVER = "org.postgresql.Driver";
 
     private static BasicDataSource dataSource;
 
-    static {
-            dataSource = new BasicDataSource();
-            dataSource.setDriverClassName(DRIVER);
-            dataSource.setUrl(URL);
-            dataSource.setUsername(USER);
-            dataSource.setPassword(PASSWORD);
+    static ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+    static InputStream input = classLoader.getResourceAsStream("config.properties");
+    static Properties prop = new Properties();
 
-            dataSource.setMinIdle(1);
-            dataSource.setMaxIdle(5);
+    static {
+        try {
+            prop.load(input);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        dataSource = new BasicDataSource();
+        dataSource.setDriverClassName(prop.getProperty("driver"));
+        dataSource.setUrl(prop.getProperty("url"));
+        dataSource.setUsername(prop.getProperty("login"));
+        dataSource.setPassword(prop.getProperty("password"));
+
+        dataSource.setMinIdle(1);
+        dataSource.setMaxIdle(5);
     }
 
     public static DataSource getDataSource() {
