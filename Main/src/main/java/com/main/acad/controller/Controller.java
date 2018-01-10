@@ -14,24 +14,23 @@ import java.util.List;
 
 public class Controller {
     @MappingMethod(url = "api/chapter")
-    public HttpServletResponse returnChapters(HttpServletRequest request, HttpServletResponse response)
+    public void returnChapters(HttpServletRequest request, HttpServletResponse response)
             throws ClassNotFoundException, IllegalAccessException, IOException {
         Dao dao = new ChapterDao();
         List chaptersList = dao.listChapters();
         MyJsonSerializer m = new MyJsonSerializer();
         String result = m.write(chaptersList);
         response.getWriter().write(result);
-        return response;
+
     }
 
     @MappingMethod(url = "api/subChapter")
-    public static HttpServletResponse returnSubChapters(HttpServletRequest request, HttpServletResponse response)
+    public static void returnSubChapters(HttpServletRequest request, HttpServletResponse response)
             throws ClassNotFoundException, IllegalAccessException, IOException {
         Dao d = new ChapterDao();
-        List<String> child = d.listChildren(Integer.parseInt("3"));
+        List<Chapter> child = d.listChildren(Integer.parseInt(request.getParameter("id")));
         MyJsonSerializer m2 = new MyJsonSerializer();
         String result = m2.write(child);
         response.getWriter().write(result);
-        return response;
     }
 }

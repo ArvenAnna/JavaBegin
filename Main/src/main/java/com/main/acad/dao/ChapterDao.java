@@ -108,8 +108,8 @@ public class ChapterDao implements Dao {
     }
 
     @Override
-    public List<String> listChildren(int id) {
-        List<String> chaptersList = new ArrayList();
+    public List<Chapter> listChildren(int id) {
+        List<Chapter> chaptersList = new ArrayList();
         try (Connection connection = ConnectionPool.getDataSource().getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(sqlGetChild);
             {
@@ -119,7 +119,7 @@ public class ChapterDao implements Dao {
                 while (resultSet.next()) {
                     Chapter chapter = new Chapter();
                     chapter.setName(resultSet.getString("name"));
-                    chaptersList.add(chapter.getName());
+                    chaptersList.add(chapter);
                 }
                 return chaptersList;
             }

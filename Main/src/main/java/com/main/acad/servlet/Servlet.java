@@ -40,7 +40,7 @@ public class Servlet extends HttpServlet {
             Class[] paramTypes = new Class[]{HttpServletRequest.class, HttpServletResponse.class};
             Method m = c.getMethod(string, paramTypes);
             Object[] args = new Object[]{request, response};
-            response.getWriter().write((String) m.invoke(o, args));
+            m.invoke(o, args);
         }
     }
 

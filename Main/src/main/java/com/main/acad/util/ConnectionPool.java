@@ -8,9 +8,7 @@ import java.io.InputStream;
 import java.util.Properties;
 
 public class ConnectionPool {
-
     private static BasicDataSource dataSource;
-
     static ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
     static InputStream input = classLoader.getResourceAsStream("config.properties");
     static Properties prop = new Properties();
