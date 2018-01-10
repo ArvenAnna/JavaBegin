@@ -33,4 +33,12 @@ public class Controller {
         String result = m2.write(child);
         response.getWriter().write(result);
     }
+
+    @MappingMethod(url = "api/subChapterById")
+    public static void returnSubChaptersById(HttpServletRequest request, HttpServletResponse response)
+            throws ClassNotFoundException, IllegalAccessException, IOException {
+        Dao d = new ChapterDao();
+        String result = String.valueOf(d.getInformstioAboutChildren(request.getParameter("name")));
+        response.getWriter().write(result);
+    }
 }

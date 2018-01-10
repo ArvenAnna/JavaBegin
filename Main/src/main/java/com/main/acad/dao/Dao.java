@@ -12,7 +12,7 @@ public interface Dao {
 
     void removeChapter(int id);
 
-    Chapter getChapter(int id);
+    String getInformstioAboutChildren(String name);
 
     List<Chapter> listChapters();
 

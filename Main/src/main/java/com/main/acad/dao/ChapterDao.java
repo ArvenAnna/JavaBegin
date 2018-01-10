@@ -3,8 +3,7 @@ package com.main.acad.dao;
 import com.main.acad.entity.Chapter;
 import com.main.acad.util.ConnectionPool;
 
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -23,7 +22,8 @@ public class ChapterDao implements Dao {
     private String sqlInsert = "INSERT INTO chapters (name) VALUES(?)";
     private String sqlUpdate = "UPDATE chapters SET name =? WHERE id_chapter=?";
     private String sqlRemove = "DELETE  FROM chapters WHERE id_chapter=?";
-    private String sqlGetByid = "SELECT r.id_chapter, r.id_refrence, c.name FROM \"references\" r INNER JOIN chapters c ON r.id_refrence = c.id_chapter where c.id_chapter = ?";
+   // private String sqlGetByid = "select c.name from chapters  c inner join \"references\" r on c.id_chapter =  r.id_refrence where r.id =?";//when we know id
+    private String sqlGetByid = "select c.name from chapters c where c.id_chapter  in(select r.id_refrence from chapters c inner join \"references\" r on  r.id = c.id_chapter where c.name = ?)";//when we know name
     private String sqlGetAll = "SELECT * FROM \"chapters\" c INNER JOIN \"references\" r ON r.id_chapter = c.id_chapter where r.id = r.id_chapter";
     private String sqlGetChild = "select name from chapters where id_chapter IN (select r.id from chapters c inner join \"references\" r ON r.id_chapter = c.id_chapter where r.id_chapter = ?  and r.id != ?)";
 
@@ -70,21 +70,28 @@ public class ChapterDao implements Dao {
     }
 
     @Override
-    public Chapter getChapter(int id) {
-        Chapter chapter = new Chapter();
+    public String getInformstioAboutChildren(String name) {
+        ArrayList <Character> arrayList = new ArrayList<>();
+        String s = "";
         try (Connection connection = ConnectionPool.getDataSource().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sqlGetByid)) {
-            preparedStatement.setInt(1, id);
+            preparedStatement.setString(1, name);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                chapter.setId(resultSet.getInt(1));
-                chapter.setName(resultSet.getString(2));
+                FileReader reader = new FileReader(resultSet.getString("name"));
+                int c;
+                while ((c = reader.read()) != -1) {
+
+                    s+=((char) c);
+                }
+
             }
-            logger.info("User successfully get. User details: " + chapter);
         } catch (SQLException e) {
             logger.info("connection have some error");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        throw new UnsupportedOperationException();
+        return s;
     }
 
     @Override
@@ -129,4 +136,10 @@ public class ChapterDao implements Dao {
         }
         return chaptersList;
     }
+
+    public static void main(String[] args) {
+        ChapterDao chapter = new ChapterDao();
+        System.out.println(chapter.getInformstioAboutChildren("Git push & pull"));
+    }
 }
+

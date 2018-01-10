@@ -15,9 +15,21 @@ $(function () {
                     var id = e.data.id;
                     $.get('/api/subChapter?id=' + id, function (data) {
                         var subchapters = JSON.parse(data);
+
                         for (var i = 0; i < subchapters.length; i++) {
                             var li2 = $('<li>' + '<a href="#">' + subchapters[i].name + '</a>' + '</li>');
                             $(e.target).parent().find('.animenu__nav__child').append(li2);
+
+
+                            li2.on('click', {id: subchapters[0].name},
+                                function () {
+                                    $.get('api/subChapterById?name=' + name,function (data) {
+                                        var name = JSON.parse(data);
+                                            alert(name);
+                                        }
+                                    )
+                                }
+                            )
                         }
                     });
                 });
