@@ -34,11 +34,14 @@ public class Controller {
         response.getWriter().write(result);
     }
 
-    @MappingMethod(url = "api/subChapterById")
+    @MappingMethod(url = "api/subChapterByName")
     public static void returnSubChaptersById(HttpServletRequest request, HttpServletResponse response)
             throws ClassNotFoundException, IllegalAccessException, IOException {
         Dao d = new ChapterDao();
-        String result = String.valueOf(d.getInformstioAboutChildren(request.getParameter("name")));
-        response.getWriter().write(result);
+        //Chapter chapter = d.getInformstioAboutChildren(request.getParameter("name"));
+        String chapter = d.getInformstioAboutChildren(request.getParameter("name"));
+        MyJsonSerializer m2 = new MyJsonSerializer();
+        String result = m2.write(chapter);
+        response.getWriter().write(chapter);
     }
 }

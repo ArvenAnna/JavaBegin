@@ -71,8 +71,8 @@ public class ChapterDao implements Dao {
 
     @Override
     public String getInformstioAboutChildren(String name) {
-        ArrayList <Character> arrayList = new ArrayList<>();
-        String s = "";
+        Chapter chapter = new Chapter();
+        String s = new String();
         try (Connection connection = ConnectionPool.getDataSource().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sqlGetByid)) {
             preparedStatement.setString(1, name);
@@ -81,16 +81,15 @@ public class ChapterDao implements Dao {
                 FileReader reader = new FileReader(resultSet.getString("name"));
                 int c;
                 while ((c = reader.read()) != -1) {
-
                     s+=((char) c);
                 }
-
             }
         } catch (SQLException e) {
             logger.info("connection have some error");
         } catch (IOException e) {
             e.printStackTrace();
         }
+        chapter.setName(s.toString());
         return s;
     }
 

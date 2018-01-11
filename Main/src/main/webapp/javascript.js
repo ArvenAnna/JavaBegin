@@ -21,11 +21,12 @@ $(function () {
                             $(e.target).parent().find('.animenu__nav__child').append(li2);
 
 
-                            li2.on('click', {id: subchapters[0].name},
-                                function () {
-                                    $.get('api/subChapterById?name=' + name,function (data) {
-                                        var name = JSON.parse(data);
-                                            alert(name);
+                            li2.on('click', {name: subchapters[i].name},
+                                function (e) {
+                                    var name = e.data.name;
+                                    $.get('api/subChapterByName?name=' + name, function (data) {
+                                            var h = $('<h1>' + data + '</h1>');
+                                            $('#l').append(h);
                                         }
                                     )
                                 }
