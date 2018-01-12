@@ -1,10 +1,12 @@
 package com.main.acad.servlet;
 
 import com.main.acad.annotation.MappingMethod;
+import com.main.acad.error.ControllerNotFoundException;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.BufferedReader;
@@ -14,24 +16,25 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Servlet extends HttpServlet {
+public class Servlet extends HttpServlet implements javax.servlet.Servlet{
     private static final long serialVersionUID = 1L;
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String url = request.getRequestURL().toString();
+        url = url.substring(url.indexOf("4") + 2);
 
-            url = url.substring(url.indexOf("4") + 2);
+      //  String s = String.valueOf(request.getRequestURL());
+
         try {
             invokeController(url, request, response);
         } catch (Exception e) {
-            e.printStackTrace();
+            response.sendRedirect(response.encodeRedirectURL("/exception_page.html"));
         }
     }
 
     public static void invokeController(String url, HttpServletRequest request, HttpServletResponse response) throws Exception {
         List<Class<?>> classes = getClasses("com.main.acad.controller");
-
         for (Class<?> s : classes) {
             String string = getMethod(s, url);
             Class clazz = Class.forName(s.getName());
@@ -70,7 +73,6 @@ public class Servlet extends HttpServlet {
                 }
             }
         }
-        return m;
+        throw new ControllerNotFoundException("This is controller method is not find");
     }
-
 }
