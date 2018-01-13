@@ -1,50 +1,37 @@
 package com.main.acad.util;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+import org.apache.commons.dbcp.BasicDataSource;
+
+import javax.sql.DataSource;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
 
 public class ConnectionPool {
-    private int maxPoolSize = 10;
-    private int initialPoolSize = 1;
-    private int currentPoolSize = 0;
-    private String dbUrl = "/localhost:5432/javaBegin";
-    private String dbUser = "postgres";
-    private String dbPassword = "root";
-    private List<Connection> pool = new ArrayList<>(maxPoolSize);
 
-    public ConnectionPool() throws ClassNotFoundException, SQLException {
-        initPooledConnections();
-    }
+    private static BasicDataSource dataSource;
 
-    private void initPooledConnections() throws ClassNotFoundException, SQLException {
-        for (int i = 0; i < initialPoolSize; i++) {
-            openAndPoolConnection();
-        }
-    }
+    static ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+    static InputStream input = classLoader.getResourceAsStream("config.properties");
+    static Properties prop = new Properties();
 
-    private  void openAndPoolConnection() throws SQLException {
+    static {
         try {
-            Class.forName("org.postgresql.Driver");
-        } catch (ClassNotFoundException e) {
+            prop.load(input);
+        } catch (IOException e) {
             e.printStackTrace();
         }
-        Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
-        pool.add(conn);
-        currentPoolSize++;
+        dataSource = new BasicDataSource();
+        dataSource.setDriverClassName(prop.getProperty("driver"));
+        dataSource.setUrl(prop.getProperty("url"));
+        dataSource.setUsername(prop.getProperty("login"));
+        dataSource.setPassword(prop.getProperty("password"));
+
+        dataSource.setMinIdle(1);
+        dataSource.setMaxIdle(5);
     }
 
-    public Connection borrowConnection() throws InterruptedException, SQLException {
-        if ( currentPoolSize < maxPoolSize) {
-            openAndPoolConnection();
-        }
-        return pool.get(currentPoolSize);
-    }
-
-    public void surrenderConnection(Connection conn) {
-        currentPoolSize--;
-        pool.remove(conn);
+    public static DataSource getDataSource() {
+        return dataSource;
     }
 }

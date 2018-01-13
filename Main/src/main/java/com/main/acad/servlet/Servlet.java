@@ -10,66 +10,89 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.BufferedReader;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Logger;
 
-public class Servlet extends HttpServlet implements javax.servlet.Servlet{
+public class Servlet extends HttpServlet implements javax.servlet.Servlet {
     private static final long serialVersionUID = 1L;
+    private static final Logger logger = Logger.getLogger(HttpServlet.class.getName());
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) {
         String url = request.getRequestURL().toString();
         url = url.substring(url.indexOf("4") + 2);
-
-      //  String s = String.valueOf(request.getRequestURL());
-
         try {
             invokeController(url, request, response);
         } catch (Exception e) {
-            response.sendRedirect(response.encodeRedirectURL("/exception_page.html"));
+            try {
+                logger.info("An error occurred in the HttpServlet class in the doGet method");
+                response.sendRedirect(response.encodeRedirectURL("/exception_page.html"));
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
         }
     }
 
-    public static void invokeController(String url, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        List<Class<?>> classes = getClasses("com.main.acad.controller");
-        for (Class<?> s : classes) {
-            String string = getMethod(s, url);
-            Class clazz = Class.forName(s.getName());
-            Object o = clazz.newInstance();
-            Class c = o.getClass();
-            Class[] paramTypes = new Class[]{HttpServletRequest.class, HttpServletResponse.class};
-            Method m = c.getMethod(string, paramTypes);
-            Object[] args = new Object[]{request, response};
-            m.invoke(o, args);
+    public static void invokeController(String url, HttpServletRequest request, HttpServletResponse response) {
+        List<Class<?>> listClasses = null;
+        try {
+            listClasses = getClasses("com.main.acad.controller");
+        } catch (Exception e) {
+            logger.info("An error occurred in the HttpServlet class in the invokeController method");
+            e.printStackTrace();
+        }
+        for (Class<?> classForech : listClasses) {
+            String getMethod = getMethod(classForech, url);
+            try {
+                Class clazz = Class.forName(classForech.getName());
+                Object newInstance = clazz.newInstance();
+                Class newInstanceClass = newInstance.getClass();
+                Class[] paramTypes = new Class[]{HttpServletRequest.class, HttpServletResponse.class};
+                Method method = newInstanceClass.getMethod(getMethod, paramTypes);
+                Object[] args = new Object[]{request, response};
+                method.invoke(newInstance, args);
+            } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
+                logger.info("An error occurred in the HttpServlet class in the invokeController method");
+                e.printStackTrace();
+            }
         }
     }
 
-    public static List<Class<?>> getClasses(String pack) throws Exception {
-        ClassLoader cl = MappingMethod.class.getClassLoader();
-        String packageDir = pack.replaceAll("[.]", "/");
-        List<Class<?>> classes = new ArrayList<>();
-        URL upackage = cl.getResource(packageDir);
-        InputStream in = (InputStream) upackage.getContent();
-        BufferedReader br = new BufferedReader(new InputStreamReader(in));
-        String line = null;
-        while ((line = br.readLine()) != null) {
-            if (line.endsWith(".class"))
-                classes.add(Class.forName(pack + "." + line.substring(0, line.lastIndexOf('.'))));
+    public static List<Class<?>> getClasses(String namePackage) {
+        ClassLoader classLoader = MappingMethod.class.getClassLoader();
+        String packageDir = namePackage.replaceAll("[.]", "/");
+        List<Class<?>> listClasses = new ArrayList<>();
+        URL upackage = classLoader.getResource(packageDir);
+        InputStream inputStream = null;
+        try {
+            inputStream = (InputStream) upackage.getContent();
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+            String line = null;
+            while ((line = bufferedReader.readLine()) != null) {
+                if (line.endsWith(".class"))
+                    listClasses.add(Class.forName(namePackage + "." + line.substring(0, line.lastIndexOf('.'))));
+            }
+            return listClasses;
+        } catch (IOException | ClassNotFoundException e) {
+            logger.info("An error occurred in the HttpServlet class in the getClasses method");
+            e.printStackTrace();
         }
-        return classes;
+        return listClasses;
     }
 
-    public static String getMethod(Class cl, String url) {
-        Method[] method = cl.getMethods();
-        String m = null;
+    public static String getMethod(Class clazz, String url) {
+        Method[] method = clazz.getMethods();
+        String nameMethod = null;
         for (Method md : method) {
             if (md.isAnnotationPresent(MappingMethod.class)) {
                 if (Arrays.toString(md.getAnnotations()).contains(url)) {
-                    m = md.getName();
-                    return m;
+                    nameMethod = md.getName();
+                    return nameMethod;
                 }
             }
         }

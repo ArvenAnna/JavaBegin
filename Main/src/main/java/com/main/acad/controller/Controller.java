@@ -1,47 +1,53 @@
 package com.main.acad.controller;
 
 import com.main.acad.annotation.MappingMethod;
-import com.main.acad.dao.ChapterDao;
-import com.main.acad.dao.Dao;
 import com.main.acad.entity.Chapter;
-import com.main.acad.serializator.MyJsonSerializer;
-import com.main.acad.service.Service;
-import com.main.acad.service.ServiceImplement;
+import com.main.acad.serializator.JsonSerializatorImplementation;
+import com.main.acad.service.StrategySimulationServiceImplementation;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class Controller {
-    private Service serviceImplement = new ServiceImplement();
+    private static final Logger logger = Logger.getLogger(Controller.class.getName());
 
-    public Controller() throws SQLException, ClassNotFoundException {
-    }
+    StrategySimulationServiceImplementation strategySimulationServiceImplementation = StrategySimulationServiceImplementation.getInstance();
 
     @MappingMethod(url = "api/chapter")
-    public void returnChapters(HttpServletRequest request, HttpServletResponse response)
-            throws ClassNotFoundException, IllegalAccessException, IOException, SQLException, InterruptedException {
-        List chaptersList = serviceImplement.listChapters();
-        MyJsonSerializer m = new MyJsonSerializer();
-        String result = m.write(chaptersList);
-        response.getWriter().write(result);
+    public void returnChapters(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            List chaptersList = strategySimulationServiceImplementation.getlistChapters();
+            JsonSerializatorImplementation jsonSerializator = new JsonSerializatorImplementation();
+            String result = jsonSerializator.write(chaptersList);
+            response.getWriter().write(result);
+        } catch (IllegalAccessException | IOException e) {
+            logger.info("An error occurred in the Controller in the returnChapters method");
+        }
     }
 
     @MappingMethod(url = "api/subChapter")
-    public void returnSubChapters(HttpServletRequest request, HttpServletResponse response)
-            throws ClassNotFoundException, IllegalAccessException, IOException {
-        List<Chapter> child = serviceImplement.listChildren(Integer.parseInt(request.getParameter("id")));
-        MyJsonSerializer m2 = new MyJsonSerializer();
-        String result = m2.write(child);
-        response.getWriter().write(result);
+    public void returnSubChapters(HttpServletRequest request, HttpServletResponse response) {
+        List<Chapter> child = strategySimulationServiceImplementation.getlistChildren(Integer.parseInt(request.getParameter("id")));
+        JsonSerializatorImplementation jsonSerializer = new JsonSerializatorImplementation();
+        try {
+            String result = jsonSerializer.write(child);
+            response.getWriter().write(result);
+        } catch (IllegalAccessException | IOException e) {
+            logger.info("An error occurred in the Controller in the returnSubChapters method");
+        }
     }
 
     @MappingMethod(url = "api/subChapterByName")
-    public void returnSubChaptersById(HttpServletRequest request, HttpServletResponse response)
-            throws ClassNotFoundException, IllegalAccessException, IOException, SQLException {
-        String chapter = serviceImplement.getInformstioAboutChildren(request.getParameter("name"));
-        response.getWriter().write(chapter);
+    public void returnSubChaptersById(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            String chapter = strategySimulationServiceImplementation.getInformstioAboutChildren(request.getParameter("name"));
+            response.getWriter().write(chapter);
+        } catch (IOException e) {
+            logger.info("An error occurred in the Controller in the returnSubChaptersById method");
+        }
     }
 }

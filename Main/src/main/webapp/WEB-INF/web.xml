@@ -35,7 +35,7 @@
     </filter>
     <filter-mapping>
         <filter-name>HttpServletFilter</filter-name>
-        <url-pattern>*.html</url-pattern>
+        <url-pattern>/api/subChapterByName</url-pattern>
     </filter-mapping>
 
 </web-app>

@@ -18,8 +18,6 @@ public class Mouse {
         this.name = name;
     }
 
-
     public Mouse() {
-
     }
 }

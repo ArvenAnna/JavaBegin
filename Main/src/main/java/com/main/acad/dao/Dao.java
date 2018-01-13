@@ -3,8 +3,6 @@ package com.main.acad.dao;
 import com.main.acad.entity.Chapter;
 
 import java.io.FileReader;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.List;
 
 public interface Dao {
@@ -17,8 +15,8 @@ public interface Dao {
 
     FileReader getInformstioAboutChildren(String name);
 
-    List<Chapter> listChapters() throws SQLException, InterruptedException;
+    List<Chapter> getlistChapters();
 
-    List<Chapter> listChildren(int id);
+    List<Chapter> getlistChildren(int id);
 
 }

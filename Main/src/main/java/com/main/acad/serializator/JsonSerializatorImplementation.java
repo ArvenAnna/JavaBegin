@@ -5,7 +5,7 @@ import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MyJsonSerializer implements JsonSerializer {
+public class JsonSerializatorImplementation implements JsonSerializer {
 
     @Override
     public String write(Object obj) throws IllegalAccessException {
