@@ -8,17 +8,18 @@ import java.io.IOException;
 import java.util.List;
 import java.util.logging.Logger;
 
-public class StrategySimulationServiceImplementation implements StrategySimulationService {
-    private ChapterDao dao = ChapterDao.getInstance();
-    private static StrategySimulationServiceImplementation instance;
-    private static final Logger logger = Logger.getLogger(StrategySimulationServiceImplementation.class.getName());
+public class ChaptersServiceImplementation implements ChaptersService {
 
-    private StrategySimulationServiceImplementation() {
+    private ChapterDao dao = ChapterDao.getInstance();
+    private static ChaptersServiceImplementation instance;
+    private static final Logger logger = Logger.getLogger(ChaptersServiceImplementation.class.getName());
+
+    private ChaptersServiceImplementation() {
     }
 
-    public static StrategySimulationServiceImplementation getInstance() {
+    public static ChaptersServiceImplementation getInstance() {
         if (instance == null) {
-            instance = new StrategySimulationServiceImplementation();
+            instance = new ChaptersServiceImplementation();
         }
         return instance;
     }
@@ -40,13 +41,13 @@ public class StrategySimulationServiceImplementation implements StrategySimulati
     }
 
     @Override
-    public List<Chapter> getlistChapters() {
-        return this.dao.getlistChapters();
+    public List<Chapter> listChapters() {
+        return dao.getlistChapters();
     }
 
     @Override
-    public List<Chapter> getlistChildren(int id) {
-        return this.dao.getlistChildren(id);
+    public List<Chapter> listChildren(int id) {
+        return dao.getlistChildren(id);
     }
 
 }

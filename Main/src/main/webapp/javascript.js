@@ -38,3 +38,7 @@ function onClickHandlerForLastChapterChild(event) {
     $.get(url, buildChapterContent);
 }
 
+function buiilChpatersContentFromSearch(value) {
+    var url = 'api/subChapterByName?name=' + value;
+    $.get(url, buildChapterContent);
+}

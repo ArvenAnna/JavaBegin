@@ -4,11 +4,11 @@ import com.main.acad.entity.Chapter;
 
 import java.util.List;
 
-public interface StrategySimulationService {
+public interface ChaptersService {
 
     String getInformstioAboutChildren(String name);
 
-    List<Chapter> getlistChapters();
+    List<Chapter> listChapters();
 
-    List<Chapter> getlistChildren(int id);
+    List<Chapter> listChildren(int id);
 }

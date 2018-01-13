@@ -25,7 +25,7 @@ public class ConnectionPool {
     private static Properties properties = new Properties();
 
     private ConnectionPool() {
-        this.maxPoolSize = 10;
+        this.maxPoolSize = 100;
         this.pool = new LinkedBlockingQueue<>(maxPoolSize);
         this.currentPoolSize = 0;
         this.dataBaseUrl = properties.getProperty("url");

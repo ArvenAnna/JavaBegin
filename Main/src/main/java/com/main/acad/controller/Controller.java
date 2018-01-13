@@ -8,12 +8,24 @@ import com.main.acad.service.StrategySimulationServiceImplementation;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Logger;
 
 public class Controller {
+
     private static final Logger logger = Logger.getLogger(Controller.class.getName());
+
+    private static Controller instance;
+
+    private Controller() {
+    }
+
+    public static Controller getInstance() {
+        if (instance == null) {
+            instance = new Controller();
+        }
+        return instance;
+    }
 
     StrategySimulationServiceImplementation strategySimulationServiceImplementation = StrategySimulationServiceImplementation.getInstance();
 
@@ -26,6 +38,7 @@ public class Controller {
             response.getWriter().write(result);
         } catch (IllegalAccessException | IOException e) {
             logger.info("An error occurred in the Controller in the returnChapters method");
+            e.printStackTrace();
         }
     }
 
@@ -38,6 +51,7 @@ public class Controller {
             response.getWriter().write(result);
         } catch (IllegalAccessException | IOException e) {
             logger.info("An error occurred in the Controller in the returnSubChapters method");
+            e.printStackTrace();
         }
     }
 
@@ -48,6 +62,7 @@ public class Controller {
             response.getWriter().write(chapter);
         } catch (IOException e) {
             logger.info("An error occurred in the Controller in the returnSubChaptersById method");
+            e.printStackTrace();
         }
     }
 }

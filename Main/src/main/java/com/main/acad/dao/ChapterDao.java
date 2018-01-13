@@ -1,7 +1,7 @@
 package com.main.acad.dao;
 
 import com.main.acad.entity.Chapter;
-import com.main.acad.error.ChapterDaoMethodhasError;
+import com.main.acad.error.ChapterDaoFailedExeption;
 import com.main.acad.util.ConnectionPool;
 
 import java.io.IOException;
@@ -48,9 +48,8 @@ public class ChapterDao implements Dao {
             preparedStatement.executeUpdate();
             connectionPool.surrenderConnection(connection);
             logger.info("Chapter successfully saved. Chapter details: " + chapter);
-        } catch (SQLException e) {
+        } catch (SQLException  | InterruptedException e) {
             logger.info("An error occurred in the ChapterDao class in the addChapter method");
-        } catch (InterruptedException e) {
             e.printStackTrace();
         }
         throw new UnsupportedOperationException();
@@ -66,9 +65,8 @@ public class ChapterDao implements Dao {
             preparedStatement.executeUpdate();
             connectionPool.surrenderConnection(connection);
             logger.info("Chapter successfully update. Chapter details: " + chapter);
-        } catch (SQLException e) {
+        } catch (SQLException | InterruptedException e) {
             logger.info("An error occurred in the ChapterDao class in the updateChapter method");
-        } catch (InterruptedException e) {
             e.printStackTrace();
         }
         throw new UnsupportedOperationException();
@@ -85,9 +83,8 @@ public class ChapterDao implements Dao {
             preparedStatement.executeUpdate();
             connectionPool.surrenderConnection(connection);
             logger.info("Chapter successfully remove. Chapter id: " + chapter.getId());
-        } catch (SQLException e) {
+        } catch (SQLException | InterruptedException e) {
             logger.info("An error occurred in the ChapterDao class in the updateChapter method");
-        } catch (InterruptedException e) {
             e.printStackTrace();
         }
         throw new UnsupportedOperationException();
@@ -108,9 +105,8 @@ public class ChapterDao implements Dao {
             }
             connectionPool.surrenderConnection(connection);
             logger.info("All Chapters successfully get. List chapters details : " + chaptersList.size());
-        } catch (SQLException e) {
+        } catch (SQLException |InterruptedException e) {
             logger.info("An error occurred in the ChapterDao class in the getlistChapters method");
-        } catch (InterruptedException e) {
             e.printStackTrace();
         }
         return chaptersList;
@@ -128,12 +124,11 @@ public class ChapterDao implements Dao {
             }
             connectionPool.surrenderConnection(connection);
             logger.info("All information about chapter child successfully get.");
-        } catch (SQLException | IOException e) {
+        } catch (SQLException | IOException | InterruptedException e) {
             logger.info("An error occurred in the ChapterDao class in the getInformstioAboutChildren method");
-        } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        throw new ChapterDaoMethodhasError("An error occurred in the ChapterDao class in the getInformstioAboutChildren method");
+        return null;
     }
 
     @Override
@@ -153,13 +148,11 @@ public class ChapterDao implements Dao {
             connectionPool.surrenderConnection(connection);
             logger.info("All information about list childChapters successfully get.List details :" + chaptersList);
             return chaptersList;
-
-        } catch (SQLException e) {
+        } catch (SQLException | InterruptedException e) {
             logger.info("An error occurred in the ChapterDao class in the getlistChildren method");
-        } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        throw new ChapterDaoMethodhasError("An error occurred in the ChapterDao class in the getlistChildren method");
+        throw new ChapterDaoFailedExeption("An error occurred in the ChapterDao class in the getlistChildren method");
     }
 }
 

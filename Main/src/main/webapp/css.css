@@ -201,7 +201,10 @@ body{
     background: url(images/tit_bot.jpg) left top no-repeat}
 
 #form_id{
+    background:#decdb1;
     height: 40px;
+    padding-left:20px;
+    padding-top:15px;
 }
 
 #calendar table {
