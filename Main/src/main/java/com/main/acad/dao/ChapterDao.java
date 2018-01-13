@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 public class ChapterDao implements Dao {
+    ConnectionPool connectionPool = ConnectionPool.getInstance();
 
     private static final Logger logger = Logger.getLogger(Dao.class.getName());
 
@@ -40,27 +41,35 @@ public class ChapterDao implements Dao {
 
     @Override
     public void addChapter(Chapter chapter) {
-        try (Connection connection = ConnectionPool.getDataSource().getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(sqlInsertQuery)) {
+        try {
+            Connection connection = connectionPool.borrowConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlInsertQuery);
             preparedStatement.setString(1, chapter.getName());
             preparedStatement.executeUpdate();
+            connectionPool.surrenderConnection(connection);
             logger.info("Chapter successfully saved. Chapter details: " + chapter);
         } catch (SQLException e) {
             logger.info("An error occurred in the ChapterDao class in the addChapter method");
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
         throw new UnsupportedOperationException();
     }
 
     @Override
     public void updateChapter(Chapter chapter) {
-        try (Connection connection = ConnectionPool.getDataSource().getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(sqlUpdateQuery)) {
+        try {
+            Connection connection = connectionPool.borrowConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlUpdateQuery);
             preparedStatement.setString(1, chapter.getName());
             preparedStatement.setInt(2, chapter.getId());
             preparedStatement.executeUpdate();
+            connectionPool.surrenderConnection(connection);
             logger.info("Chapter successfully update. Chapter details: " + chapter);
         } catch (SQLException e) {
             logger.info("An error occurred in the ChapterDao class in the updateChapter method");
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
         throw new UnsupportedOperationException();
     }
@@ -69,13 +78,17 @@ public class ChapterDao implements Dao {
     public void removeChapter(int id) {
         Chapter chapter = new Chapter();
         chapter.setId(id);
-        try (Connection connection = ConnectionPool.getDataSource().getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(sqlRemoveQuery)) {
+        try {
+            Connection connection = connectionPool.borrowConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlRemoveQuery);
             preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();
+            connectionPool.surrenderConnection(connection);
             logger.info("Chapter successfully remove. Chapter id: " + chapter.getId());
         } catch (SQLException e) {
             logger.info("An error occurred in the ChapterDao class in the updateChapter method");
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
         throw new UnsupportedOperationException();
     }
@@ -83,7 +96,8 @@ public class ChapterDao implements Dao {
     @Override
     public List<Chapter> getlistChapters() {
         List<Chapter> chaptersList = new ArrayList<>();
-        try (Connection connection = ConnectionPool.getDataSource().getConnection()) {
+        try {
+            Connection connection = connectionPool.borrowConnection();
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(sqlGetAllQuery);
             while (resultSet.next()) {
@@ -92,25 +106,32 @@ public class ChapterDao implements Dao {
                 chapter.setName(resultSet.getString("name"));
                 chaptersList.add(chapter);
             }
+            connectionPool.surrenderConnection(connection);
             logger.info("All Chapters successfully get. List chapters details : " + chaptersList.size());
         } catch (SQLException e) {
             logger.info("An error occurred in the ChapterDao class in the getlistChapters method");
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
         return chaptersList;
     }
 
     @Override
     public FileReader getInformstioAboutChildren(String name) {
-        try (Connection connection = ConnectionPool.getDataSource().getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(sqlGetByidQuery)) {
+        try {
+            Connection connection = connectionPool.borrowConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlGetByidQuery);
             preparedStatement.setString(1, name);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 return new FileReader(resultSet.getString("name"));
             }
+            connectionPool.surrenderConnection(connection);
             logger.info("All information about chapter child successfully get.");
         } catch (SQLException | IOException e) {
             logger.info("An error occurred in the ChapterDao class in the getInformstioAboutChildren method");
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
         throw new ChapterDaoMethodhasError("An error occurred in the ChapterDao class in the getInformstioAboutChildren method");
     }
@@ -118,8 +139,9 @@ public class ChapterDao implements Dao {
     @Override
     public List<Chapter> getlistChildren(int id) {
         List<Chapter> chaptersList = new ArrayList<>();
-        try (Connection connection = ConnectionPool.getDataSource().getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(sqlGetChildQuery)) {
+        try {
+            Connection connection = connectionPool.borrowConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlGetChildQuery);
             preparedStatement.setInt(1, id);
             preparedStatement.setInt(2, id);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -128,11 +150,14 @@ public class ChapterDao implements Dao {
                 chapter.setName(resultSet.getString("name"));
                 chaptersList.add(chapter);
             }
+            connectionPool.surrenderConnection(connection);
             logger.info("All information about list childChapters successfully get.List details :" + chaptersList);
             return chaptersList;
 
         } catch (SQLException e) {
             logger.info("An error occurred in the ChapterDao class in the getlistChildren method");
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
         throw new ChapterDaoMethodhasError("An error occurred in the ChapterDao class in the getlistChildren method");
     }
