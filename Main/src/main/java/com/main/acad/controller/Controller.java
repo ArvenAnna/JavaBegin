@@ -3,7 +3,7 @@ package com.main.acad.controller;
 import com.main.acad.annotation.MappingMethod;
 import com.main.acad.entity.Chapter;
 import com.main.acad.serializator.JsonSerializatorImplementation;
-import com.main.acad.service.StrategySimulationServiceImplementation;
+import com.main.acad.service.ChaptersServiceImplementation;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,9 +17,6 @@ public class Controller {
 
     private static Controller instance;
 
-    private Controller() {
-    }
-
     public static Controller getInstance() {
         if (instance == null) {
             instance = new Controller();
@@ -27,12 +24,12 @@ public class Controller {
         return instance;
     }
 
-    StrategySimulationServiceImplementation strategySimulationServiceImplementation = StrategySimulationServiceImplementation.getInstance();
+    ChaptersServiceImplementation strategySimulationServiceImplementation = ChaptersServiceImplementation.getInstance();
 
     @MappingMethod(url = "api/chapter")
     public void returnChapters(HttpServletRequest request, HttpServletResponse response) {
         try {
-            List chaptersList = strategySimulationServiceImplementation.getlistChapters();
+            List chaptersList = strategySimulationServiceImplementation.listChapters();
             JsonSerializatorImplementation jsonSerializator = new JsonSerializatorImplementation();
             String result = jsonSerializator.write(chaptersList);
             response.getWriter().write(result);
@@ -44,7 +41,7 @@ public class Controller {
 
     @MappingMethod(url = "api/subChapter")
     public void returnSubChapters(HttpServletRequest request, HttpServletResponse response) {
-        List<Chapter> child = strategySimulationServiceImplementation.getlistChildren(Integer.parseInt(request.getParameter("id")));
+        List<Chapter> child = strategySimulationServiceImplementation.listChildren(Integer.parseInt(request.getParameter("id")));
         JsonSerializatorImplementation jsonSerializer = new JsonSerializatorImplementation();
         try {
             String result = jsonSerializer.write(child);

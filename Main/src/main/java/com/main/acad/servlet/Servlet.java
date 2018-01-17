@@ -24,6 +24,7 @@ public class Servlet extends HttpServlet implements javax.servlet.Servlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) {
+        response.setContentType("text/html");
         String url = request.getRequestURL().toString();
         url = url.substring(url.indexOf("4") + 2);
         try {
@@ -58,7 +59,7 @@ public class Servlet extends HttpServlet implements javax.servlet.Servlet {
                 method.invoke(newInstance, args);
             } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
                 logger.info("An error occurred in the HttpServlet class in the invokeController method");
-                e.printStackTrace();
+                throw new ControllerNotFoundException("error");
             }
         }
     }

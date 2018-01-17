@@ -42,3 +42,7 @@ function buiilChpatersContentFromSearch(value) {
     var url = 'api/subChapterByName?name=' + value;
     $.get(url, buildChapterContent);
 }
+
+function exitLogin() {
+    self.location = "index.html";
+}

@@ -15,10 +15,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-public class ChapterDao implements Dao {
+public class ChapterDaoImplementation implements ChapterRealization {
     ConnectionPool connectionPool = ConnectionPool.getInstance();
 
-    private static final Logger logger = Logger.getLogger(Dao.class.getName());
+    private static final Logger logger = Logger.getLogger(ChapterRealization.class.getName());
 
     private String sqlInsertQuery = "INSERT INTO chapters (name) VALUES(?)";
     private String sqlUpdateQuery = "UPDATE chapters SET name =? WHERE id_chapter=?";
@@ -26,15 +26,15 @@ public class ChapterDao implements Dao {
     private String sqlGetByidQuery = "SELECT c.name FROM chapters c WHERE c.id_chapter  IN(SELECT r.id_refrence FROM chapters c INNER JOIN \"references\" r ON  r.id = c.id_chapter WHERE c.name = ?)";
     private String sqlGetAllQuery = "SELECT * FROM \"chapters\" c INNER JOIN \"references\" r ON r.id_chapter = c.id_chapter where r.id = r.id_chapter";
     private String sqlGetChildQuery = "SELECT name FROM chapters WHERE id_chapter IN (SELECT r.id FROM chapters c INNER JOIN \"references\" r ON r.id_chapter = c.id_chapter WHERE r.id_chapter = ?  AND r.id != ?)";
+    private static Connection connection;
+    private static ChapterDaoImplementation instance;
 
-    private static ChapterDao instance;
-
-    private ChapterDao() {
+    private ChapterDaoImplementation() {
     }
 
-    public static ChapterDao getInstance() {
+    public static ChapterDaoImplementation getInstance() {
         if (instance == null) {
-            instance = new ChapterDao();
+            instance = new ChapterDaoImplementation();
         }
         return instance;
     }
@@ -42,7 +42,7 @@ public class ChapterDao implements Dao {
     @Override
     public void addChapter(Chapter chapter) {
         try {
-            Connection connection = connectionPool.borrowConnection();
+            connection = connectionPool.borrowConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sqlInsertQuery);
             preparedStatement.setString(1, chapter.getName());
             preparedStatement.executeUpdate();
@@ -58,7 +58,7 @@ public class ChapterDao implements Dao {
     @Override
     public void updateChapter(Chapter chapter) {
         try {
-            Connection connection = connectionPool.borrowConnection();
+            connection = connectionPool.borrowConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sqlUpdateQuery);
             preparedStatement.setString(1, chapter.getName());
             preparedStatement.setInt(2, chapter.getId());
@@ -77,7 +77,7 @@ public class ChapterDao implements Dao {
         Chapter chapter = new Chapter();
         chapter.setId(id);
         try {
-            Connection connection = connectionPool.borrowConnection();
+            connection = connectionPool.borrowConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sqlRemoveQuery);
             preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();
@@ -94,7 +94,7 @@ public class ChapterDao implements Dao {
     public List<Chapter> getlistChapters() {
         List<Chapter> chaptersList = new ArrayList<>();
         try {
-            Connection connection = connectionPool.borrowConnection();
+            connection = connectionPool.borrowConnection();
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(sqlGetAllQuery);
             while (resultSet.next()) {
@@ -115,7 +115,7 @@ public class ChapterDao implements Dao {
     @Override
     public FileReader getInformstioAboutChildren(String name) {
         try {
-            Connection connection = connectionPool.borrowConnection();
+            connection = connectionPool.borrowConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sqlGetByidQuery);
             preparedStatement.setString(1, name);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -135,7 +135,8 @@ public class ChapterDao implements Dao {
     public List<Chapter> getlistChildren(int id) {
         List<Chapter> chaptersList = new ArrayList<>();
         try {
-            Connection connection = connectionPool.borrowConnection();
+
+            connection = connectionPool.borrowConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sqlGetChildQuery);
             preparedStatement.setInt(1, id);
             preparedStatement.setInt(2, id);

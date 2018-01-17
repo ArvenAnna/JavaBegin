@@ -1,16 +1,17 @@
 package com.main.acad.service;
 
-import com.main.acad.dao.ChapterDao;
+import com.main.acad.dao.ChapterDaoImplementation;
 import com.main.acad.entity.Chapter;
 
 import java.io.FileReader;
 import java.io.IOException;
+import java.sql.Connection;
 import java.util.List;
 import java.util.logging.Logger;
 
 public class ChaptersServiceImplementation implements ChaptersService {
 
-    private ChapterDao dao = ChapterDao.getInstance();
+    private ChapterDaoImplementation dao = ChapterDaoImplementation.getInstance();
     private static ChaptersServiceImplementation instance;
     private static final Logger logger = Logger.getLogger(ChaptersServiceImplementation.class.getName());
 

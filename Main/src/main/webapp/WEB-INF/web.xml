@@ -25,6 +25,16 @@
         <url-pattern>/api/*</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>LoginServlet</servlet-name>
+        <servlet-class>com.main.acad.servlet.LoginServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>LoginServlet</servlet-name>
+        <url-pattern>/login</url-pattern>
+    </servlet-mapping>
+
     <filter>
         <filter-name>HttpServletFilter</filter-name>
         <filter-class>com.main.acad.servlet.HttpServletFilter</filter-class>
@@ -37,5 +47,8 @@
         <filter-name>HttpServletFilter</filter-name>
         <url-pattern>/api/subChapterByName</url-pattern>
     </filter-mapping>
+
+
+
 
 </web-app>

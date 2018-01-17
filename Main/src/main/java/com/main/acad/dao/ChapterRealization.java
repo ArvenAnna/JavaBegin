@@ -5,7 +5,7 @@ import com.main.acad.entity.Chapter;
 import java.io.FileReader;
 import java.util.List;
 
-public interface Dao {
+public interface ChapterRealization {
 
     void addChapter(Chapter chapter);
 
