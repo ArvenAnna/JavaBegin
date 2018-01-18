@@ -24,12 +24,12 @@ public class Controller {
         return instance;
     }
 
-    ChaptersServiceImplementation strategySimulationServiceImplementation = ChaptersServiceImplementation.getInstance();
+    private ChaptersServiceImplementation chaptersServiceImplementation = ChaptersServiceImplementation.getInstance();
 
     @MappingMethod(url = "api/chapter")
     public void returnChapters(HttpServletRequest request, HttpServletResponse response) {
         try {
-            List chaptersList = strategySimulationServiceImplementation.listChapters();
+            List chaptersList = chaptersServiceImplementation.listChapters();
             JsonSerializatorImplementation jsonSerializator = new JsonSerializatorImplementation();
             String result = jsonSerializator.write(chaptersList);
             response.getWriter().write(result);
@@ -41,7 +41,7 @@ public class Controller {
 
     @MappingMethod(url = "api/subChapter")
     public void returnSubChapters(HttpServletRequest request, HttpServletResponse response) {
-        List<Chapter> child = strategySimulationServiceImplementation.listChildren(Integer.parseInt(request.getParameter("id")));
+        List<Chapter> child = chaptersServiceImplementation.listChildren(Integer.parseInt(request.getParameter("id")));
         JsonSerializatorImplementation jsonSerializer = new JsonSerializatorImplementation();
         try {
             String result = jsonSerializer.write(child);
@@ -55,7 +55,7 @@ public class Controller {
     @MappingMethod(url = "api/subChapterByName")
     public void returnSubChaptersById(HttpServletRequest request, HttpServletResponse response) {
         try {
-            String chapter = strategySimulationServiceImplementation.getInformstioAboutChildren(request.getParameter("name"));
+            String chapter = chaptersServiceImplementation.getInformstioAboutChildren(request.getParameter("name"));
             response.getWriter().write(chapter);
         } catch (IOException e) {
             logger.info("An error occurred in the Controller in the returnSubChaptersById method");

@@ -14,18 +14,27 @@ public class LoginServlet extends HttpServlet {
 
     public void doGet(HttpServletRequest req, HttpServletResponse resp) {
         UserDao userDao = new UserDao();
-        User user = userDao.findByUser(req.getParameter("login"), Integer.valueOf(req.getParameter("password")));
-        if (user.getRole().trim().equals("admin")) {
+        User user;
+        if (userDao.findByUser(req.getParameter("login"), Integer.valueOf(req.getParameter("password"))) == null) {
             try {
-                resp.getWriter().write("This is logged admin ");
+                resp.getWriter().write("Your login or password have some error please write again");
             } catch (IOException e) {
                 e.printStackTrace();
             }
         } else {
-            try {
-                resp.getWriter().write("This is logged user ");
-            } catch (IOException e) {
-                e.printStackTrace();
+            user = userDao.findByUser(req.getParameter("login"), Integer.valueOf(req.getParameter("password")));
+            if (user.getRole().trim().equals("admin")) {
+                try {
+                    resp.getWriter().write("This is logged admin ");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else if (user.getRole().trim().equals("user")) {
+                try {
+                    resp.getWriter().write("This is logged user ");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }

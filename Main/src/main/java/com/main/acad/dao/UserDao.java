@@ -12,9 +12,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import java.util.logging.Logger;
 
 public class UserDao implements UserDaoMethods {
 
+    private static final Logger logger = Logger.getLogger(UserDao.class.getName());
     private static final String FIND_ALL = "SELECT * FROM users ORDER BY login";
     private static final String FIND_BY_USER = "SELECT * FROM users WHERE login=? AND password=?";
     private static final String EXIT_USER = "SELECT * FROM users WHERE login =?";
@@ -43,8 +45,10 @@ public class UserDao implements UserDaoMethods {
                 users.add(user);
             }
         } catch (Exception e) {
+            logger.info("An error occurred in the UserDao class in the findAll method");
             e.printStackTrace();
         }
+        logger.info("All users successfully find");
         return users;
     }
 
@@ -57,7 +61,6 @@ public class UserDao implements UserDaoMethods {
             preparedStatement.setString(1, login);
             preparedStatement.setInt(2, password);
             ResultSet resultSet = preparedStatement.executeQuery();
-
             if (resultSet.next()) {
                 login = resultSet.getString("login");
                 password = resultSet.getInt("password");
@@ -67,11 +70,14 @@ public class UserDao implements UserDaoMethods {
                         .password(password)
                         .role(role)
                         .build();
+                logger.info("All users successfully find");
                 return user;
+            }else{
+                return null;
             }
         } catch (SQLException e) {
+            logger.info("An error occurred in the UserDao class in the findByUser method");
             e.printStackTrace();
-            throw new RuntimeException(e);
         }
         throw new UnsupportedOperationException();
     }
@@ -88,7 +94,9 @@ public class UserDao implements UserDaoMethods {
             while (resultSet.next()) {
                 return false;
             }
+            logger.info(userLogin + "is exist");
         } catch (Exception e) {
+            logger.info("An error occurred in the UserDao class in the exitUser method");
             e.printStackTrace();
         }
         return true;
@@ -103,14 +111,16 @@ public class UserDao implements UserDaoMethods {
             preparedStatement.setInt(2, password);
             preparedStatement.setString(3, role);
             preparedStatement.executeUpdate();
+            logger.info( "New user successfully create");
             return true;
         } catch (Exception e) {
+            logger.info("An error occurred in the UserDao class in the createNewUser method");
             e.printStackTrace();
         }
         return false;
     }
 
-    public Connection getConnection() {
+    private Connection getConnection() {
         Connection connection = null;
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         InputStream inputStream = classLoader.getResourceAsStream("config.properties");

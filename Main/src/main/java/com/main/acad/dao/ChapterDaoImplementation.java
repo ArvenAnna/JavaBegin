@@ -20,12 +20,12 @@ public class ChapterDaoImplementation implements ChapterRealization {
 
     private static final Logger logger = Logger.getLogger(ChapterRealization.class.getName());
 
-    private String sqlInsertQuery = "INSERT INTO chapters (name) VALUES(?)";
-    private String sqlUpdateQuery = "UPDATE chapters SET name =? WHERE id_chapter=?";
-    private String sqlRemoveQuery = "DELETE  FROM chapters WHERE id_chapter=?";
-    private String sqlGetByidQuery = "SELECT c.name FROM chapters c WHERE c.id_chapter  IN(SELECT r.id_refrence FROM chapters c INNER JOIN \"references\" r ON  r.id = c.id_chapter WHERE c.name = ?)";
-    private String sqlGetAllQuery = "SELECT * FROM \"chapters\" c INNER JOIN \"references\" r ON r.id_chapter = c.id_chapter where r.id = r.id_chapter";
-    private String sqlGetChildQuery = "SELECT name FROM chapters WHERE id_chapter IN (SELECT r.id FROM chapters c INNER JOIN \"references\" r ON r.id_chapter = c.id_chapter WHERE r.id_chapter = ?  AND r.id != ?)";
+    private static String sqlInsertQuery = "INSERT INTO chapters (name) VALUES(?)";
+    private static String sqlUpdateQuery = "UPDATE chapters SET name =? WHERE id_chapter=?";
+    private static String sqlRemoveQuery = "DELETE  FROM chapters WHERE id_chapter=?";
+    private static String sqlGetByidQuery = "SELECT c.name FROM chapters c WHERE c.id_chapter  IN(SELECT r.id_refrence FROM chapters c INNER JOIN \"references\" r ON  r.id = c.id_chapter WHERE c.name = ?)";
+    private static String sqlGetAllQuery = "SELECT * FROM \"chapters\" c INNER JOIN \"references\" r ON r.id_chapter = c.id_chapter where r.id = r.id_chapter";
+    private static String sqlGetChildQuery = "SELECT name FROM chapters WHERE id_chapter IN (SELECT r.id FROM chapters c INNER JOIN \"references\" r ON r.id_chapter = c.id_chapter WHERE r.id_chapter = ?  AND r.id != ?)";
     private static Connection connection;
     private static ChapterDaoImplementation instance;
 
