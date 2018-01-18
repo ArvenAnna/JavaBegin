@@ -1,5 +1,7 @@
 package com.main.acad.util;
 
+import com.main.acad.error.ConnectionPoolFailedException;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
@@ -36,7 +38,7 @@ public class ConnectionPool {
             openAndPoolConnection();
         } catch (ClassNotFoundException e) {
             logger.info("An error occurred in ConnectionPool class with private Constructore");
-            e.printStackTrace();
+            throw new ConnectionPoolFailedException(e.getMessage());
         }
     }
 
@@ -45,7 +47,7 @@ public class ConnectionPool {
             properties.load(inputStream);
         } catch (IOException e) {
             logger.info("An error occurred in ConnectionPool class with config.properties file");
-            e.printStackTrace();
+            throw new ConnectionPoolFailedException(e.getMessage());
         }
     }
 
@@ -63,7 +65,7 @@ public class ConnectionPool {
             currentPoolSize++;
         } catch (SQLException e) {
             logger.info("An error occurred in ConnectionPool class with openAndPoolConnection method");
-            e.printStackTrace();
+            throw new ConnectionPoolFailedException(e.getMessage());
         }
     }
 

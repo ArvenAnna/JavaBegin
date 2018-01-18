@@ -15,7 +15,7 @@ function loginServletCall() {
         "password": document.getElementById("password").value
     };
 
-    $.get("/login", userDate, function (data) {
+    $.get('api/login', userDate, function (data) {
         if (data === "Your login or password have some error please write again") {
             $('.mydiv').empty().append(data.trim(data));
         } else {

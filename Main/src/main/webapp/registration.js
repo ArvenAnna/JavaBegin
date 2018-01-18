@@ -20,9 +20,9 @@ function loginServletCall() {
         "role": document.getElementById("role").value
     };
 
-    $.get("/registration", userLogin, function (data) {
+    $.get('api/checkDateUser', userLogin, function (data) {
         if (data === "this is free login") {
-            $.get("/createNewUser", allDate, function (data) {
+            $.get('api/createNewUser', allDate, function (data) {
                 self.location = "index.html";
             });
         } else {

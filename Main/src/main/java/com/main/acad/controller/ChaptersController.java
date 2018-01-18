@@ -2,6 +2,7 @@ package com.main.acad.controller;
 
 import com.main.acad.annotation.MappingMethod;
 import com.main.acad.entity.Chapter;
+import com.main.acad.error.ChapterDaoFailedExeption;
 import com.main.acad.serializator.JsonSerializatorImplementation;
 import com.main.acad.service.ChaptersServiceImplementation;
 
@@ -11,31 +12,21 @@ import java.io.IOException;
 import java.util.List;
 import java.util.logging.Logger;
 
-public class Controller {
+public class ChaptersController {
 
-    private static final Logger logger = Logger.getLogger(Controller.class.getName());
-
-    private static Controller instance;
-
-    public static Controller getInstance() {
-        if (instance == null) {
-            instance = new Controller();
-        }
-        return instance;
-    }
-
+    private static final Logger logger = Logger.getLogger(ChaptersController.class.getName());
     private ChaptersServiceImplementation chaptersServiceImplementation = ChaptersServiceImplementation.getInstance();
 
     @MappingMethod(url = "api/chapter")
     public void returnChapters(HttpServletRequest request, HttpServletResponse response) {
         try {
-            List chaptersList = chaptersServiceImplementation.listChapters();
+            List<Chapter> chaptersList = chaptersServiceImplementation.listChapters();
             JsonSerializatorImplementation jsonSerializator = new JsonSerializatorImplementation();
             String result = jsonSerializator.write(chaptersList);
             response.getWriter().write(result);
-        } catch (IllegalAccessException | IOException e) {
-            logger.info("An error occurred in the Controller in the returnChapters method");
-            e.printStackTrace();
+        } catch (IllegalAccessException | ChapterDaoFailedExeption | IOException e) {
+            logger.info("An error occurred in the Controller in the returnChapters method" + e.getMessage());
+            throw new IllegalArgumentException();
         }
     }
 
@@ -47,8 +38,8 @@ public class Controller {
             String result = jsonSerializer.write(child);
             response.getWriter().write(result);
         } catch (IllegalAccessException | IOException e) {
-            logger.info("An error occurred in the Controller in the returnSubChapters method");
-            e.printStackTrace();
+            logger.info("An error occurred in the Controller in the returnSubChapters method" + e.getMessage());
+            throw new IllegalArgumentException();
         }
     }
 
@@ -58,8 +49,8 @@ public class Controller {
             String chapter = chaptersServiceImplementation.getInformstioAboutChildren(request.getParameter("name"));
             response.getWriter().write(chapter);
         } catch (IOException e) {
-            logger.info("An error occurred in the Controller in the returnSubChaptersById method");
-            e.printStackTrace();
+            logger.info("An error occurred in the Controller in the returnSubChaptersById method" + e.getMessage());
+            throw new IllegalArgumentException();
         }
     }
 }

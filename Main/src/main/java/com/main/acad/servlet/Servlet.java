@@ -31,7 +31,7 @@ public class Servlet extends HttpServlet implements javax.servlet.Servlet {
             invokeController(url, request, response);
         } catch (Exception e) {
             try {
-                logger.info("An error occurred in the HttpServlet class in the doGet method");
+                logger.info("An error occurred in the HttpServlet class in the doGet method" + e.getMessage());
                 response.sendRedirect(response.encodeRedirectURL("/exception_page.html"));
             } catch (IOException e1) {
                 e1.printStackTrace();
@@ -39,32 +39,33 @@ public class Servlet extends HttpServlet implements javax.servlet.Servlet {
         }
     }
 
-    public static void invokeController(String url, HttpServletRequest request, HttpServletResponse response) {
+    private void invokeController(String url, HttpServletRequest request, HttpServletResponse response) {
         List<Class<?>> listClasses = null;
         try {
             listClasses = getClasses("com.main.acad.controller");
         } catch (Exception e) {
-            logger.info("An error occurred in the HttpServlet class in the invokeController method");
-            e.printStackTrace();
+            logger.info("An error occurred in the HttpServlet class in the invokeController method" + e.getMessage());
         }
         for (Class<?> classForech : listClasses) {
             String getMethod = getMethod(classForech, url);
-            try {
-                Class clazz = Class.forName(classForech.getName());
-                Object newInstance = clazz.newInstance();
-                Class newInstanceClass = newInstance.getClass();
-                Class[] paramTypes = new Class[]{HttpServletRequest.class, HttpServletResponse.class};
-                Method method = newInstanceClass.getMethod(getMethod, paramTypes);
-                Object[] args = new Object[]{request, response};
-                method.invoke(newInstance, args);
-            } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
-                logger.info("An error occurred in the HttpServlet class in the invokeController method");
-                throw new ControllerNotFoundException("error");
+            if (getMethod != null) {
+                try {
+                    Class clazz = Class.forName(classForech.getName());
+                    Object newInstance = clazz.newInstance();
+                    Class newInstanceClass = newInstance.getClass();
+                    Class[] paramTypes = new Class[]{HttpServletRequest.class, HttpServletResponse.class};
+                    Method method = newInstanceClass.getMethod(getMethod, paramTypes);
+                    Object[] args = new Object[]{request, response};
+                    method.invoke(newInstance, args);
+                } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
+                    logger.info("An error occurred in the HttpServlet class in the invokeController method" + e.getMessage());
+                    throw new ControllerNotFoundException("error");
+                }
             }
         }
     }
 
-    public static List<Class<?>> getClasses(String namePackage) {
+    private List<Class<?>> getClasses(String namePackage) {
         ClassLoader classLoader = MappingMethod.class.getClassLoader();
         String packageDir = namePackage.replaceAll("[.]", "/");
         List<Class<?>> listClasses = new ArrayList<>();
@@ -80,13 +81,12 @@ public class Servlet extends HttpServlet implements javax.servlet.Servlet {
             }
             return listClasses;
         } catch (IOException | ClassNotFoundException e) {
-            logger.info("An error occurred in the HttpServlet class in the getClasses method");
-            e.printStackTrace();
+            logger.info("An error occurred in the HttpServlet class in the getClasses method" + e.getMessage());
         }
         return listClasses;
     }
 
-    public static String getMethod(Class clazz, String url) {
+    private String getMethod(Class clazz, String url) {
         Method[] method = clazz.getMethods();
         String nameMethod = null;
         for (Method md : method) {
@@ -97,6 +97,6 @@ public class Servlet extends HttpServlet implements javax.servlet.Servlet {
                 }
             }
         }
-        throw new ControllerNotFoundException("This is controller method is not find");
+        return nameMethod;
     }
 }
