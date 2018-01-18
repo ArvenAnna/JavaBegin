@@ -21,3 +21,6 @@ function loginServletCall() {
     });
 };
 
+function registration() {
+    self.location="registration.html";
+}

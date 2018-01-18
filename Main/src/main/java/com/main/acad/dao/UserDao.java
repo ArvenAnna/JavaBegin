@@ -13,10 +13,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-public class UserDao implements UserDaoMethods{
+public class UserDao implements UserDaoMethods {
 
     private static final String FIND_ALL = "SELECT * FROM users ORDER BY login";
     private static final String FIND_BY_USER = "SELECT * FROM users WHERE login=? AND password=?";
+    private static final String EXIT_USER = "SELECT * FROM users WHERE login =?";
+    private static final String CREATE_USER = "INSERT INTO users( login, password, role) VALUES (?, ?, ?);";
     private static String dataBaseUrl;
     private static String dataBaseUser;
     private static String dataBasePassword;
@@ -74,6 +76,40 @@ public class UserDao implements UserDaoMethods{
         throw new UnsupportedOperationException();
     }
 
+    @Override
+    public boolean exitUser(String userLogin) {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        try {
+            connection = getConnection();
+            preparedStatement = connection.prepareStatement(EXIT_USER);
+            preparedStatement.setString(1, userLogin);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                return false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
+
+    @Override
+    public boolean createNewUser(String login, Integer password, String role) {
+        try {
+            Connection connection = getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(CREATE_USER);
+            preparedStatement.setString(1, login);
+            preparedStatement.setInt(2, password);
+            preparedStatement.setString(3, role);
+            preparedStatement.executeUpdate();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     public Connection getConnection() {
         Connection connection = null;
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
@@ -91,4 +127,5 @@ public class UserDao implements UserDaoMethods{
         }
         return connection;
     }
+
 }
