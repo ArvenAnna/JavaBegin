@@ -9,13 +9,13 @@ import javax.servlet.FilterConfig;
 import java.io.IOException;
 
 public class HttpServletFilter implements Filter {
-
+private static final String ENCODING = "UTF-8";
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) {
 
         try {
             //Setting the character set for the request
-            request.setCharacterEncoding("UTF-8");
+            request.setCharacterEncoding(ENCODING);
             // pass the request on
             chain.doFilter(request, response);
         } catch (ServletException | IOException e) {
