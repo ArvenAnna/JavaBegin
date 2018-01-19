@@ -10,19 +10,17 @@ import java.io.IOException;
 
 public class HttpServletFilter implements Filter {
 private static final String ENCODING = "UTF-8";
+private static final String ENCODING_TEXT = "text/html;charset=UTF-8";
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) {
 
         try {
-            //Setting the character set for the request
             request.setCharacterEncoding(ENCODING);
-            // pass the request on
             chain.doFilter(request, response);
         } catch (ServletException | IOException e) {
             e.printStackTrace();
         }
-        //Setting the character set for the response
-        response.setContentType("text/html; charset=UTF-8");
+        response.setContentType(ENCODING_TEXT);
     }
 
     @Override

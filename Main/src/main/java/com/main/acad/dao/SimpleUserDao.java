@@ -1,36 +1,43 @@
 package com.main.acad.dao;
 
 import com.main.acad.entity.User;
+import com.main.acad.util.ConnectionPool;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 import java.util.logging.Logger;
 
 public class SimpleUserDao implements UserDao {
+
+    ConnectionPool connectionPool = ConnectionPool.getInstance();
 
     private static final Logger logger = Logger.getLogger(UserDao.class.getName());
     private static final String FIND_ALL = "SELECT * FROM users ORDER BY login";
     private static final String FIND_BY_USER = "SELECT * FROM users WHERE login=? AND password=?";
     private static final String EXIT_USER = "SELECT * FROM users WHERE login =?";
     private static final String CREATE_USER = "INSERT INTO users( login, password, role) VALUES (?, ?, ?);";
-    private static String dataBaseUrl;
-    private static String dataBaseUser;
-    private static String dataBasePassword;
+    private static Connection connection;
+    private static SimpleUserDao instance;
+
+    private SimpleUserDao() {
+    }
+
+    public static SimpleUserDao getInstance() {
+        if (instance == null) {
+            instance = new SimpleUserDao();
+        }
+        return instance;
+    }
 
     public List<User> findAll() {
-        Connection connection = null;
         PreparedStatement preparedStatement = null;
-        List<User> users = new ArrayList<User>();
+        List<User> users = new ArrayList<>();
         try {
-            connection = getConnection();
+            connection = connectionPool.borrowConnection();
             preparedStatement = connection.prepareStatement(FIND_ALL);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
@@ -47,16 +54,18 @@ public class SimpleUserDao implements UserDao {
         } catch (Exception e) {
             logger.info("An error occurred in the UserDao class in the findAll method");
             e.printStackTrace();
+        }finally {
+            connectionPool.surrenderConnection(connection);
         }
         logger.info("All users successfully find");
         return users;
     }
 
     public User findByUser(String login, Integer password) {
-        Connection connection = null;
+
         PreparedStatement preparedStatement = null;
         try {
-            connection = getConnection();
+            connection = connectionPool.borrowConnection();
             preparedStatement = connection.prepareStatement(FIND_BY_USER);
             preparedStatement.setString(1, login);
             preparedStatement.setInt(2, password);
@@ -72,22 +81,24 @@ public class SimpleUserDao implements UserDao {
                         .build();
                 logger.info("All users successfully find");
                 return user;
-            }else{
+            } else {
                 return null;
             }
-        } catch (SQLException e) {
+        } catch (SQLException |InterruptedException e) {
             logger.info("An error occurred in the UserDao class in the findByUser method");
             e.printStackTrace();
+        } finally {
+            connectionPool.surrenderConnection(connection);
         }
         throw new UnsupportedOperationException();
     }
 
     @Override
     public boolean existUser(String userLogin) {
-        Connection connection = null;
+
         PreparedStatement preparedStatement = null;
         try {
-            connection = getConnection();
+            connection = connectionPool.borrowConnection();
             preparedStatement = connection.prepareStatement(EXIT_USER);
             preparedStatement.setString(1, userLogin);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -98,6 +109,8 @@ public class SimpleUserDao implements UserDao {
         } catch (Exception e) {
             logger.info("An error occurred in the UserDao class in the exitUser method");
             e.printStackTrace();
+        } finally {
+            connectionPool.surrenderConnection(connection);
         }
         return true;
     }
@@ -105,37 +118,21 @@ public class SimpleUserDao implements UserDao {
     @Override
     public boolean createNewUser(String login, Integer password, String role) {
         try {
-            Connection connection = getConnection();
+            connection = connectionPool.borrowConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(CREATE_USER);
             preparedStatement.setString(1, login);
             preparedStatement.setInt(2, password);
             preparedStatement.setString(3, role);
             preparedStatement.executeUpdate();
-            logger.info( "New user successfully create");
+            logger.info("New user successfully create");
             return true;
         } catch (Exception e) {
             logger.info("An error occurred in the UserDao class in the createNewUser method");
             e.printStackTrace();
+        } finally {
+            connectionPool.surrenderConnection(connection);
         }
         return false;
-    }
-
-    private Connection getConnection() {
-        Connection connection = null;
-        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        InputStream inputStream = classLoader.getResourceAsStream("config.properties");
-        Properties properties = new Properties();
-        try {
-            properties.load(inputStream);
-            dataBaseUrl = properties.getProperty("url");
-            dataBaseUser = properties.getProperty("login");
-            dataBasePassword = properties.getProperty("password");
-            Class.forName(properties.getProperty("driver"));
-            connection = DriverManager.getConnection(dataBaseUrl, dataBaseUser, dataBasePassword);
-        } catch (ClassNotFoundException | IOException | SQLException e) {
-            e.printStackTrace();
-        }
-        return connection;
     }
 
 }
