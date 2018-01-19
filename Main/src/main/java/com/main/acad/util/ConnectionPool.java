@@ -36,7 +36,7 @@ public class ConnectionPool {
         try {
             Class.forName(properties.getProperty("driver"));
             openAndPoolConnection();
-        } catch (ClassNotFoundException e) {
+        } catch (ReflectiveOperationException e) {
             logger.info("An error occurred in ConnectionPool class with private Constructore");
             throw new ConnectionPoolFailedException(e.getMessage());
         }
