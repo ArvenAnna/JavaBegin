@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.BufferedReader;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.ArrayList;
@@ -31,7 +30,7 @@ public class Servlet extends HttpServlet implements javax.servlet.Servlet {
             invokeController(url, request, response);
         } catch (Exception e) {
             try {
-                logger.info("An error occurred in the HttpServlet class in the doGet method" + e.getMessage());
+                logger.info("An error occurred in the Servlet class in the doGet method" + e.getMessage());
                 response.sendRedirect(response.encodeRedirectURL("/exception_page.html"));
             } catch (IOException e1) {
                 e1.printStackTrace();
@@ -40,59 +39,55 @@ public class Servlet extends HttpServlet implements javax.servlet.Servlet {
     }
 
     private void invokeController(String url, HttpServletRequest request, HttpServletResponse response) {
-        List<Class<?>> listClasses = null;
+        List<Class<?>> listControllers = null;
         try {
-            listClasses = getClasses("com.main.acad.controller");
-        } catch (Exception e) {
-            logger.info("An error occurred in the HttpServlet class in the invokeController method" + e.getMessage());
-        }
-        for (Class<?> classForech : listClasses) {
-            String getMethod = getMethod(classForech, url);
-            if (getMethod != null) {
-                try {
-                    Class clazz = Class.forName(classForech.getName());
+            listControllers = getAllControllers("com.main.acad.controller");
+            for (Class<?> foreachControllers : listControllers) {
+                String methodOfController = getMethod(foreachControllers, url);
+                if (methodOfController != null) {
+                    Class clazz = Class.forName(foreachControllers.getName());
                     Object newInstance = clazz.newInstance();
                     Class newInstanceClass = newInstance.getClass();
                     Class[] paramTypes = new Class[]{HttpServletRequest.class, HttpServletResponse.class};
-                    Method method = newInstanceClass.getMethod(getMethod, paramTypes);
+                    Method method = newInstanceClass.getMethod(methodOfController, paramTypes);
                     Object[] args = new Object[]{request, response};
                     method.invoke(newInstance, args);
-                } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
-                    logger.info("An error occurred in the HttpServlet class in the invokeController method" + e.getMessage());
-                    throw new ControllerNotFoundException("error");
                 }
             }
+        } catch (Exception e) {
+            logger.info("An error occurred in the Servlet class in the invokeController method" + e.getMessage());
+            throw new ControllerNotFoundException(e.getMessage());
         }
     }
 
-    private List<Class<?>> getClasses(String namePackage) {
+    private List<Class<?>> getAllControllers(String namePackage) {
         ClassLoader classLoader = MappingMethod.class.getClassLoader();
         String packageDir = namePackage.replaceAll("[.]", "/");
-        List<Class<?>> listClasses = new ArrayList<>();
-        URL upackage = classLoader.getResource(packageDir);
+        List<Class<?>> listControllers = new ArrayList<>();
+        URL packageName = classLoader.getResource(packageDir);
         InputStream inputStream = null;
         try {
-            inputStream = (InputStream) upackage.getContent();
+            inputStream = (InputStream) packageName.getContent();
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
             String line = null;
             while ((line = bufferedReader.readLine()) != null) {
                 if (line.endsWith(".class"))
-                    listClasses.add(Class.forName(namePackage + "." + line.substring(0, line.lastIndexOf('.'))));
+                    listControllers.add(Class.forName(namePackage + "." + line.substring(0, line.lastIndexOf('.'))));
             }
-            return listClasses;
+            return listControllers;
         } catch (IOException | ClassNotFoundException e) {
-            logger.info("An error occurred in the HttpServlet class in the getClasses method" + e.getMessage());
+            logger.info("An error occurred in the Servlet class in the getAllControllers method" + e.getMessage());
+            throw new ControllerNotFoundException(e.getMessage());
         }
-        return listClasses;
     }
 
     private String getMethod(Class clazz, String url) {
         Method[] method = clazz.getMethods();
         String nameMethod = null;
-        for (Method md : method) {
-            if (md.isAnnotationPresent(MappingMethod.class)) {
-                if (Arrays.toString(md.getAnnotations()).contains(url)) {
-                    nameMethod = md.getName();
+        for (Method searchMethod : method) {
+            if (searchMethod.isAnnotationPresent(MappingMethod.class)) {
+                if (Arrays.toString(searchMethod.getAnnotations()).contains(url)) {
+                    nameMethod = searchMethod.getName();
                     return nameMethod;
                 }
             }

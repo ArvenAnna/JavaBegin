@@ -28,7 +28,7 @@ public class ChaptersServiceImplementation implements ChaptersService {
 
     @Override
     public String getInformstioAboutChildren(String name) throws ChapterDaoFailedExeption{
-        FileReader fileReader = this.dao.getInformstioAboutChildren(name);
+        FileReader fileReader = dao.getInformstioAboutChildren(name);
         StringBuilder filePage = new StringBuilder();
         int count;
         try {

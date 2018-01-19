@@ -60,8 +60,8 @@ public class ConnectionPool {
 
     private void openAndPoolConnection() {
         try {
-            Connection conn = DriverManager.getConnection(dataBaseUrl, dataBaseUser, dataBasePassword);
-            pool.offer(conn);
+            Connection connection = DriverManager.getConnection(dataBaseUrl, dataBaseUser, dataBasePassword);
+            pool.offer(connection);
             currentPoolSize++;
         } catch (SQLException e) {
             logger.info("An error occurred in ConnectionPool class with openAndPoolConnection method");
@@ -77,8 +77,8 @@ public class ConnectionPool {
         return pool.take();
     }
 
-    public void surrenderConnection(Connection conn) {
+    public void surrenderConnection(Connection connection) {
         logger.info("Connecton successfully remove in queue");
-        pool.offer(conn);
+        pool.offer(connection);
     }
 }

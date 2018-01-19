@@ -5,9 +5,9 @@ import com.main.acad.entity.User;
 import java.util.List;
 
 public interface UserDao {
-    List<User> findAll();
+    List<User> findAllUsers();
 
-    User findByUser(String login, Integer password);
+    User findUser(String login, Integer password);
 
     boolean existUser(String userLogin);
 

@@ -33,12 +33,10 @@
             <param-value>UTF-8</param-value>
         </init-param>
     </filter>
+
     <filter-mapping>
         <filter-name>HttpServletFilter</filter-name>
         <url-pattern>/api/subChapterByName</url-pattern>
     </filter-mapping>
-
-
-
 
 </web-app>

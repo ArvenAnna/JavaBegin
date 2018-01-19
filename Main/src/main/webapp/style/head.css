@@ -20,7 +20,7 @@ a:hover {
 body {
     font: 12px Arial, Helvetica, sans-serif;
     color: #000000;
-    background: #694815 url(images/bg.jpg) repeat-x top;
+    background: #694815 url(../images/bg.jpg) repeat-x top;
 }
 
 #main {
@@ -42,7 +42,7 @@ body {
     padding-right: 20px;
     height: 80px;
 
-    background: url(images/picture.jpg) 7px 0 no-repeat;
+    background: url(../images/picture.jpg) 7px 0 no-repeat;
 }
 
 #logo a {
@@ -61,7 +61,7 @@ body {
     width: 770px;
     height: 75px;
     margin-left: 7px;
-    background: url(images/menu.jpg) top repeat-x;
+    background: url(../images/menu.jpg) top repeat-x;
     text-align: center;
 }
 
@@ -91,20 +91,20 @@ body {
 
 #buttons a:hover {
     text-decoration: underline;
-    background: url(images/but_h.jpg) 0 0 repeat-x;
+    background: url(../images/but_h.jpg) 0 0 repeat-x;
 }
 
 #content {
     width: 784px;
-    background: url(images/content_bg.jpg) 7px repeat-y #FFFFFF;
+    background: url(../images/content_bg.jpg) 7px repeat-y #FFFFFF;
 }
 
 #content_top {
-    background: url(images/content_top.gif) 7px top no-repeat;
+    background: url(../images/content_top.gif) 7px top no-repeat;
 }
 
 #content_bot {
-    background: url(images/content_bot.gif) 7px bottom no-repeat;
+    background: url(../images/content_bot.gif) 7px bottom no-repeat;
 }
 
 #left {
@@ -168,7 +168,7 @@ body {
     text-align: center;
     padding-top: 12px;
     height: 36px;
-    background: url(images/tit.gif) left top no-repeat;
+    background: url(../images/tit.gif) left top no-repeat;
     width: 261px;
     margin: 0 0 0 0;
 }
@@ -182,7 +182,7 @@ body {
 }
 
 .tit_b {
-    background: url(images/tit_bot.jpg) left top no-repeat
+    background: url(../images/tit_bot.jpg) left top no-repeat
 }
 
 #form_id {
@@ -247,7 +247,7 @@ body {
     text-align: center;
     clear: both;
     margin: 0 auto;
-    background: url(images/futer.jpg) bottom repeat-x #FFFFFF;
+    background: url(../images/futer.jpg) bottom repeat-x #FFFFFF;
     border-left: 7px solid #FFFFFF;
     border-right: 7px solid #FFFFFF;
 }

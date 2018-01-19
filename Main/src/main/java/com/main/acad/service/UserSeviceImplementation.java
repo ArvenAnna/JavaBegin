@@ -22,13 +22,13 @@ public class UserSeviceImplementation implements UsersService {
     }
 
     @Override
-    public List<User> findAll() {
-        return dao.findAll();
+    public List<User> findAllUsers() {
+        return dao.findAllUsers();
     }
 
     @Override
     public User findByUser(String login, Integer password) {
-        return dao.findByUser(login,password);
+        return dao.findUser(login,password);
     }
 
     @Override
@@ -38,6 +38,6 @@ public class UserSeviceImplementation implements UsersService {
 
     @Override
     public boolean createNewUser(String login, Integer password, String role) {
-        return createNewUser(login,password,role);
+        return dao.createNewUser(login,password,role);
     }
 }

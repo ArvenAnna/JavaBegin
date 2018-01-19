@@ -5,7 +5,7 @@ import com.main.acad.entity.User;
 import java.util.List;
 
 public interface UsersService {
-    List<User> findAll();
+    List<User> findAllUsers();
 
     User findByUser(String login, Integer password);
 
