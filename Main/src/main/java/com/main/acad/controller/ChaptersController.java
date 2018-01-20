@@ -3,6 +3,7 @@ package com.main.acad.controller;
 import com.main.acad.annotation.MappingMethod;
 import com.main.acad.entity.Chapter;
 import com.main.acad.error.ChapterDaoFailedExeption;
+import com.main.acad.error.ConnectionPoolFailedException;
 import com.main.acad.error.ControllerNotFoundException;
 import com.main.acad.serializator.JsonSerializatorImplementation;
 import com.main.acad.service.ChaptersServiceImplementation;
@@ -25,7 +26,7 @@ public class ChaptersController {
             JsonSerializatorImplementation jsonSerializator = new JsonSerializatorImplementation();
             String jsonString = jsonSerializator.write(chaptersList);
             response.getWriter().write(jsonString);
-        } catch (IllegalAccessException | ChapterDaoFailedExeption | IOException e) {
+        } catch (IllegalAccessException | IOException | ChapterDaoFailedExeption | ConnectionPoolFailedException e) {
             logger.info("An error occurred in the ChaptersController in the returnChapters method" + e.getMessage());
             throw new ControllerNotFoundException(e.getMessage());
         }
@@ -38,7 +39,7 @@ public class ChaptersController {
         try {
             String jsonString = jsonSerializer.write(childrenList);
             response.getWriter().write(jsonString);
-        } catch (IllegalAccessException | IOException e) {
+        } catch (IllegalAccessException | IOException | ChapterDaoFailedExeption | ConnectionPoolFailedException e) {
             logger.info("An error occurred in the ChaptersController in the returnSubChapters method" + e.getMessage());
             throw new ControllerNotFoundException(e.getMessage());
         }
@@ -49,7 +50,7 @@ public class ChaptersController {
         try {
             String subChapterDate = chaptersServiceImplementation.getInformstioAboutChildren(request.getParameter("name"));
             response.getWriter().write(subChapterDate);
-        } catch (IOException e) {
+        } catch (IOException | ChapterDaoFailedExeption | ConnectionPoolFailedException e) {
             logger.info("An error occurred in the ChaptersController in the returnSubChaptersById method" + e.getMessage());
             throw new ControllerNotFoundException(e.getMessage());
         }

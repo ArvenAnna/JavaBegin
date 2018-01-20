@@ -3,7 +3,9 @@ package com.main.acad.controller;
 import com.main.acad.annotation.MappingMethod;
 
 import com.main.acad.entity.User;
+import com.main.acad.error.ConnectionPoolFailedException;
 import com.main.acad.error.ControllerNotFoundException;
+import com.main.acad.error.UserDaoFailedException;
 import com.main.acad.service.UserSeviceImplementation;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,7 +23,7 @@ public class UsersConntroller {
                 Integer.valueOf(request.getParameter("password")), request.getParameter("role"));
         try {
             response.getWriter().write(String.valueOf(result));
-        } catch (IOException e) {
+        } catch (IOException | ConnectionPoolFailedException| UserDaoFailedException e) {
             logger.info("An error occurred in the ChaptersController in the createNewUser method" + e.getMessage());
             throw new ControllerNotFoundException(e.getMessage());
         }
@@ -35,7 +37,7 @@ public class UsersConntroller {
             } else {
                 response.getWriter().write("this is login exist");
             }
-        } catch (IOException e) {
+        } catch (IOException | ConnectionPoolFailedException| UserDaoFailedException e) {
             logger.info("An error occurred in the ChaptersController in the checkDateUser method" + e.getMessage());
             throw new ControllerNotFoundException(e.getMessage());
         }
@@ -54,7 +56,7 @@ public class UsersConntroller {
                     response.getWriter().write("This is logged user ");
                 }
             }
-        } catch (IOException e) {
+        } catch (IOException | ConnectionPoolFailedException| UserDaoFailedException e) {
             logger.info("An error occurred in the ChaptersController in the checkUser method" + e.getMessage());
             throw new ControllerNotFoundException(e.getMessage());
         }

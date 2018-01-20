@@ -27,7 +27,7 @@ public class ChaptersServiceImplementation implements ChaptersService {
     }
 
     @Override
-    public String getInformstioAboutChildren(String name) throws ChapterDaoFailedExeption{
+    public String getInformstioAboutChildren(String name) {
         FileReader fileReader = dao.getInformstioAboutChildren(name);
         StringBuilder filePage = new StringBuilder();
         int count;
@@ -38,17 +38,18 @@ public class ChaptersServiceImplementation implements ChaptersService {
             logger.info("File : " + name + " successfully read");
         } catch (IOException e) {
             logger.info("An error occurred in the ChaptersServiceImplementation class in the getInformstioAboutChildren method");
+            throw new ChapterDaoFailedExeption(e.getMessage());
         }
         return filePage.toString();
     }
 
     @Override
-    public List<Chapter> listChapters()throws ChapterDaoFailedExeption {
+    public List<Chapter> listChapters() throws ChapterDaoFailedExeption {
         return dao.getlistChapters();
     }
 
     @Override
-    public List<Chapter> listChildren(int id)throws ChapterDaoFailedExeption {
+    public List<Chapter> listChildren(int id) throws ChapterDaoFailedExeption {
         return dao.getlistChildren(id);
     }
 

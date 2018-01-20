@@ -33,7 +33,7 @@ public class Servlet extends HttpServlet implements javax.servlet.Servlet {
                 logger.info("An error occurred in the Servlet class in the doGet method" + e.getMessage());
                 response.sendRedirect(response.encodeRedirectURL("/exception_page.html"));
             } catch (IOException e1) {
-                e1.printStackTrace();
+                throw new IllegalArgumentException(e.getMessage());
             }
         }
     }
@@ -56,7 +56,7 @@ public class Servlet extends HttpServlet implements javax.servlet.Servlet {
             }
         } catch (Exception e) {
             logger.info("An error occurred in the Servlet class in the invokeController method" + e.getMessage());
-            throw new ControllerNotFoundException(e.getMessage());
+            throw new IllegalArgumentException(e.getMessage());
         }
     }
 
@@ -77,7 +77,7 @@ public class Servlet extends HttpServlet implements javax.servlet.Servlet {
             return listControllers;
         } catch (IOException | ClassNotFoundException e) {
             logger.info("An error occurred in the Servlet class in the getAllControllers method" + e.getMessage());
-            throw new ControllerNotFoundException(e.getMessage());
+            throw new IllegalArgumentException(e.getMessage());
         }
     }
 
