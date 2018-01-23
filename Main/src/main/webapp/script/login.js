@@ -16,13 +16,20 @@ function loginServletCall() {
     };
 
     $.get('api/login', userDate, function (data) {
-        if (data === "Your login or password have some error please write again") {
-            $('.mydiv').empty().append(data.trim(data));
-        } else {
-            $('.mydiv').empty().append(data.trim(data));
-            self.location = "head.html";
+            if (data === "Your login or password have some error please write again") {
+                $('.mydiv').empty().append(data.trim(data));
+            } else {
+                $('.mydiv').empty().append(data.trim(data));
+                if (data.trim(data) === "This is logged admin") {
+                    self.location = "head.html";
+                }
+                else if (data.trim(data) === "This is logged user") {
+                    self.location = "user.html";
+                }
+            }
         }
-    });
+    )
+    ;
 }
 
 function registration() {

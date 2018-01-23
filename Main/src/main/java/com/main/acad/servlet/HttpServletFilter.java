@@ -30,3 +30,4 @@ private static final String ENCODING_TEXT = "text/html;charset=UTF-8";
     public void init(FilterConfig filterConfig) {
     }
 }
+

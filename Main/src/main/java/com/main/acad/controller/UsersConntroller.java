@@ -51,9 +51,9 @@ public class UsersConntroller {
                 response.getWriter().write("Your login or password have some error please write again");
             } else {
                 if (user.getRole().trim().equals("admin")) {
-                    response.getWriter().write("This is logged admin ");
+                    response.getWriter().write("This is logged admin");
                 } else if (user.getRole().trim().equals("user")) {
-                    response.getWriter().write("This is logged user ");
+                    response.getWriter().write("This is logged user");
                 }
             }
         } catch (IOException | ConnectionPoolFailedException | UserDaoFailedException e) {
