@@ -50,3 +50,7 @@ function exitLogin() {
 function addNewFile() {
     self.location = "create.html";
 }
+
+function deleteFile() {
+    self.location = "delete.html";
+}

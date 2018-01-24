@@ -31,6 +31,12 @@ public class SimpleChapterDao implements ChapterDao {
     private static final String GET_CHILDREN_INFORMATION_BY_ID = "SELECT name FROM chapters WHERE id_chapter IN (SELECT r.id FROM chapters c INNER JOIN \"references\" r ON r.id_chapter = c.id_chapter WHERE r.id_chapter = ?  AND r.id != ?)";
     private static final String GET_ID = "SELECT id_chapter FROM chapters WHERE name =?";
     private static final String INSERT_INTO_REFERENCES = "INSERT INTO \"references\" ( id, id_chapter, id_refrence) VALUES (?, ?, ?)";
+    private static final String GET_ALL_SUBCHAPTERS = "SELECT c.name FROM chapters c WHERE c.id_chapter  IN(SELECT id FROM \"references\" WHERE id_refrence IS NOT NULL)";
+    private static final String REMOVE_ROW_REFERENCES = "DELETE FROM \"references\" WHERE id=?";
+    private static final String REMOVE_ROW_CHAPTER = "DELETE FROM chapters WHERE id_chapter=?";
+    private static final String GET_ID_REFERENCES = "SELECT id_refrence FROM \"references\" WHERE id=?";
+    private static final String GET_NAME_FROM_CHAPTERS = "SELECT name FROM chapters where id_chapter=?";
+
     private static Connection connection;
     private static SimpleChapterDao instance;
 
@@ -174,12 +180,77 @@ public class SimpleChapterDao implements ChapterDao {
             writeFile.close();
             addChapter(String.valueOf(directoryFile));
             addChapter(nameSubChapters);
-            addRowIntoReferences( selectID(nameSubChapters), selectID(chapterName),selectID(String.valueOf(directoryFile)));
+            addRowIntoReferences(selectID(nameSubChapters), selectID(chapterName), selectID(String.valueOf(directoryFile)));
             logger.info("Create new subChapter successfully ");
             return true;
         } catch (IOException e) {
             logger.info("An error occurred in the SimpleChapterDao class in the createNewChildChapter method" + e.getMessage());
             throw new ChapterDaoFailedExeption(e.getMessage());
+        }
+    }
+
+    @Override
+    public List<Chapter> getListAllSubChapters() {
+        List<Chapter> chaptersList = new ArrayList<>();
+        try {
+            connection = connectionPool.borrowConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(GET_ALL_SUBCHAPTERS);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Chapter chapter = new Chapter();
+                chapter.setName(resultSet.getString("name"));
+                chaptersList.add(chapter);
+            }
+            logger.info("All information about list allChildrenChapters successfully get");
+            return chaptersList;
+        } catch (SQLException | InterruptedException e) {
+            logger.info("An error occurred in the SimpleChapterDao class in the getListAllSubChapters method" + e.getMessage());
+            throw new ChapterDaoFailedExeption(e.getMessage());
+        } finally {
+            connectionPool.surrenderConnection(connection);
+        }
+    }
+
+    @Override
+    public boolean deleteSubChapter(String nameSubChapter) {
+        int id_chapter = selectID(nameSubChapter);
+        int id_references = selectIdReferences(id_chapter);
+        String path = selectName(id_references);
+        path = path.replaceAll("\\\\", "\\\\\\\\");
+        deleteFileInFolder(path);
+        deleteFromReferences(id_chapter);
+        deleteFromChapters(id_chapter);
+        deleteFromChapters(id_references);
+        return true;
+    }
+
+    private void deleteFromChapters(Integer idChapter) {
+        try {
+            connection = connectionPool.borrowConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(REMOVE_ROW_CHAPTER);
+            preparedStatement.setInt(1, idChapter);
+            preparedStatement.executeUpdate();
+            logger.info(" successfully remove from deleteFromChapters ");
+        } catch (SQLException | InterruptedException e) {
+            logger.info("An error occurred in the SimpleChapterDao class in the deleteFromCahpters method" + e.getMessage());
+            throw new ChapterDaoFailedExeption(e.getMessage());
+        } finally {
+            connectionPool.surrenderConnection(connection);
+        }
+    }
+
+    private void deleteFromReferences(Integer idReference) {
+        try {
+            connection = connectionPool.borrowConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(REMOVE_ROW_REFERENCES);
+            preparedStatement.setInt(1, idReference);
+            preparedStatement.executeUpdate();
+            logger.info(" successfully remove from deleteFromReferences ");
+        } catch (SQLException | InterruptedException e) {
+            logger.info("An error occurred in the SimpleChapterDao class in the deleteFromReferences method" + e.getMessage());
+            throw new ChapterDaoFailedExeption(e.getMessage());
+        } finally {
+            connectionPool.surrenderConnection(connection);
         }
     }
 
@@ -202,7 +273,45 @@ public class SimpleChapterDao implements ChapterDao {
         }
     }
 
-    private void addRowIntoReferences( Integer subChapterName, Integer chapterName,Integer dirChaptersChild) {
+    private Integer selectIdReferences(Integer id) {
+        Integer result = 0;
+        try {
+            connection = connectionPool.borrowConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(GET_ID_REFERENCES);
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next())
+                result = resultSet.getInt(1);
+            logger.info("Chapter successfully saved");
+            return result;
+        } catch (SQLException | InterruptedException e) {
+            logger.info("An error occurred in the SimpleChapterDao class in the selectIdReferences method" + e.getMessage());
+            throw new ChapterDaoFailedExeption(e.getMessage());
+        } finally {
+            connectionPool.surrenderConnection(connection);
+        }
+    }
+
+    private String selectName(Integer id) {
+        String result = "";
+        try {
+            connection = connectionPool.borrowConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(GET_NAME_FROM_CHAPTERS);
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next())
+                result = resultSet.getString(1);
+            logger.info("name successfully get");
+            return result;
+        } catch (SQLException | InterruptedException e) {
+            logger.info("An error occurred in the SimpleChapterDao class in the selectName method" + e.getMessage());
+            throw new ChapterDaoFailedExeption(e.getMessage());
+        } finally {
+            connectionPool.surrenderConnection(connection);
+        }
+    }
+
+    private void addRowIntoReferences(Integer subChapterName, Integer chapterName, Integer dirChaptersChild) {
         try {
             connection = connectionPool.borrowConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_INTO_REFERENCES);
@@ -217,6 +326,11 @@ public class SimpleChapterDao implements ChapterDao {
         } finally {
             connectionPool.surrenderConnection(connection);
         }
+    }
+
+    private static void deleteFileInFolder(String path) {
+        File file = new File(path);
+        file.delete();
     }
 }
 

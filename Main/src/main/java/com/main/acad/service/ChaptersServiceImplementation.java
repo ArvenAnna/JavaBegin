@@ -58,5 +58,15 @@ public class ChaptersServiceImplementation implements ChaptersService {
         return dao.createNewChildChapter(nameFile, chapterName, chapterText, nameSubChapters);
     }
 
+    @Override
+    public List<Chapter> listAllSubChapters() {
+        return dao.getListAllSubChapters();
+    }
+
+    @Override
+    public boolean deleteSubChapter(String nameSubChapter) {
+        return dao.deleteSubChapter(nameSubChapter);
+    }
+
 }
 

@@ -67,4 +67,28 @@ public class ChaptersController {
             throw new ControllerNotFoundException(e.getMessage());
         }
     }
+
+    @MappingMethod(url = "/api/allSubChapters")
+    public void getAllsubChapter(HttpServletRequest request, HttpServletResponse response) {
+        List<Chapter> listAllChildrenChapters = chaptersServiceImplementation.listAllSubChapters();
+        JsonSerializatorImplementation jsonSerializer = new JsonSerializatorImplementation();
+        try {
+            String jsonString = jsonSerializer.write(listAllChildrenChapters);
+            response.getWriter().write(jsonString);
+        } catch (IllegalAccessException | IOException | ChapterDaoFailedExeption | ConnectionPoolFailedException e) {
+            logger.info("An error occurred in the ChaptersController in the getAllsubChapter method" + e.getMessage());
+            throw new ControllerNotFoundException(e.getMessage());
+        }
+    }
+
+    @MappingMethod(url = "/api/deleteSubChapter")
+    public void deleteSubChapter(HttpServletRequest request, HttpServletResponse response) {
+        boolean result = chaptersServiceImplementation.deleteSubChapter(request.getParameter("name"));
+        try {
+            response.getWriter().write(String.valueOf(result));
+        } catch (IOException e) {
+            logger.info("An error occurred in the ChaptersController in the deleteSubChapter method" + e.getMessage());
+            throw new ControllerNotFoundException(e.getMessage());
+        }
+    }
 }

@@ -20,4 +20,8 @@ public interface ChapterDao {
     List<Chapter> getlistChildren(int id);
 
     boolean createNewChildChapter(String chapterName,String nameFile,String context,String nameSubChapters);
+
+    List<Chapter> getListAllSubChapters();
+
+    boolean deleteSubChapter(String nameSubChapter);
 }

@@ -9,8 +9,7 @@
     <script src="http://code.jquery.com/jquery-1.10.2.js"
             type="text/javascript"></script>
     <script src="script/create.js" type="text/javascript"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js">
-    </script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 </head>
 <body>
 <div id="bg">
@@ -27,15 +26,18 @@
                     <option>Java SE</option>
                     <option>Git</option>
                 </select>
-                    Insert name file
-                    <textarea rows="1" cols="13" id="name_file"></textarea>
-                    Insert name subChapter
-                    <textarea rows="1" cols="13" id="name_subChapters"></textarea>
                 </p>
-                <textarea rows="7" cols="80" id="text">
-
-                </textarea>
+                <br/><br/>
+                <p>
+                Insert name file
+                <input id="name_file" placeholder="write name file" />
+                Insert name subChapter
+                <input id="name_subChapters" placeholder="write name Sub Chapter"/>
+                </p>
                 <br/>
+
+                <input id="text" class="text" placeholder=" Write the contents of the file"/>
+                <br/><br/><br/>
                 <button onclick="clickOnButton()">Create newChildChapter</button>
                 <br/>
                 <br/>

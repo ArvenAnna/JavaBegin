@@ -22,9 +22,9 @@ body {
     color: #000000;
     background: #694815 url(../images/bg.jpg) repeat-x top;
 }
-#create{
-    height: 400px;
-    width: auto;
+#delete{
+    height: 500px;
+    width: 190px;
 }
 
 #main {

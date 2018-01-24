@@ -8,6 +8,7 @@ function clickOnButton() {
     $.get('/api/createFile', chapterDate, function (data) {
         if (data) {
             $('.result').empty().append("The file successfully save ");
+            location.reload();
         } else {
             $('.result').empty().append("The file have error ");
         }
