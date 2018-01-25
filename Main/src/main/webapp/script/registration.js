@@ -29,4 +29,8 @@ function loginServletCall() {
             $('.div_result').empty().append(data);
         }
     });
+};
+
+function exit() {
+    self.location = "index.html";
 }

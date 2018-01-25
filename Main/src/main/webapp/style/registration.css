@@ -1,123 +1,151 @@
-/* Full-width input fields */
-input[type=text], input[type=pass] {
-    width: 100%;
-    padding: 12px 20px;
-    margin: 8px 0;
-    display: inline-block;
-    border: 1px solid #ccc;
-    box-sizing: border-box;
+
+#button {
+    margin-left: 110px;
+    margin-top: 10px;
 }
 
-
-/* Set a style for all buttons */
-button {
-    background-color: brown;
-    color: white;
-    padding: 14px 20px;
-    margin: 8px 0;
-    border: none;
-    cursor: pointer;
-    width: 14%;
+#role {
+    width: 100px;
+    background-color: #f4f4f4
+}
+#contact{
+    text-align: center;
+}
+body {
+    margin: 0;
+    color: #333;
+    padding: 10px 8px 8px;
+    font-size: 15px;
+    font-family: Tahoma, Arial, sans-serif;
+    background-color: #fff
 }
 
-button:hover {
-    opacity: 0.8;
-}
-
-/* Extra styles for the cancel button */
-.cancelbtn {
+.kangndo1 {
     width: auto;
-    padding: 10px 18px;
-    background-color: red;
+    min-width: 500px;
+    max-width: 980px;
+    border-spacing: 0;
+    border-collapse: collapse;
+    margin: 80px auto;
+    padding: 0
 }
 
-.container {
-    padding: 16px;
+#kangndo2 {
+    padding: 10px 10px 0;
+    border: 1px solid #826644;
+    border-bottom-width: 0;
+    border-radius: 7px 7px 0 0;
+    background-color: #826644
 }
 
-span.psw {
-    float: right;
-    padding-top: 16px;
+#kangndo3 {
+    text-align: center;
+    padding: 10px;
+    border: 1px solid #ececec;
+    border-bottom-width: 0;
+    background-color: #f4f4f4;
+    border-radius: 5px 5px 0 0
 }
 
-/* The Modal (background) */
-.modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
-    left: 0;
-    top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: red; /* Fallback color */
-    background-color: red; /* Black w/ opacity */
-    padding-top: 60px;
+.kangndo4 {
+    color: #6B4423;
+    font-size: 36px;
+    font-family: time new roman
 }
 
-/* Modal Content/Box */
-.modal-content {
-    background-color: red;
-    margin: 0% auto 15% auto; /* 0% from the top, 15% from the bottom and centered */
-    border: 1px solid #888;
-    width: 60%; /* Could be more or less, depending on screen size */
+#kangndo5 {
+    white-space: nowrap;
+    background-color: #6B4423
 }
 
-/* The Close Button (x) */
-.close {
-    position: absolute;
-    right: 25px;
-    top: 0;
-    color: red;
-    font-size: 35px;
-    font-weight: bold;
+.kangndo6 {
+    color: #fff;
+    font-size: 24px;
+    padding: 5px 0;
+    text-align: center
 }
 
-.close:hover,
-.close:focus {
-    color: red;
+#kangndo7 {
+    padding: 0 10px 10px;
+    border: 1px solid #826644;
+    border-top-width: 0;
+    border-radius: 0 0 7px 7px;
+    background-color: #826644
+}
+
+#kangndo8 {
+    padding: 30px;
+    border: 1px solid #ececec;
+    border-top-width: 0;
+    background-color: #f4f4f4;
+    border-radius: 0 0 7px 7px
+}
+
+#kangndo9 {
+    text-align: center;
+    display: block
+}
+
+.kangndo10 {
+    min-width: 70%;
+    display: inline-block;
+    color: #fff !important;
+    padding: 10px 12px;
+    margin: 6px;
+    font-size: 14px;
+    font-weight: 700;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
     cursor: pointer;
+    border: 1px solid #826644;
+    border-radius: 4px;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.15) inset, 0 1px 1px rgba(0, 0, 0, 0.075);
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.2);
+    background-color: #826644
 }
-html, #page { padding:0; margin:0;}
-body { margin:0; padding:0; width:100%; color:red; font:normal 12px/2.0em Sans-Serif;}
-h1, h2, h3, h4, h5, h6 {color:red;}
-#page { background:white;}
-#header, #footer, #top-nav, #content, #content #contentbar, #content #sidebar { margin:0; padding:0;}
 
-/* Logo */
-#logo { padding:10px; width:auto; float:left;}
-#logo h1 a, h1 a:hover { color:white; text-decoration:none;}
-#logo h1 span { color:#d3d3f9;}
+.kangndo10:hover {
+    background-color: #6B4423
+}
 
-/* Header - * Цвет за Cool logo */
-#header { background:white; }
-#header-inner { margin:0 auto; padding:10px; width:970px;background:#fff;}
+.kangndo11 {
+    min-width: 260px;
+    margin: 0 0 5px
+}
 
-/* Feature */
-.feature { background:white;padding:0;}
-.feature-inner { margin:auto;padding:10px;width:970px;background:#000000; }
-.feature-inner h1 {color:red;font-size:32px;}
+input {
+    border: 1px solid #b2bcc0;
+    border-radius: 4px;
+    padding: 12px;
+    box-shadow: 0 0 5px #E7E7E7 inset
+}
 
-/* Menu */
-#top-nav { margin:0 auto; padding:0px 0 0; height:37px; float:right;}
-#top-nav ul { list-style:none; padding:0; height:37px; float:left;}
-#top-nav ul li { margin:0; padding:0 0 0 8px; float:left;}
-#top-nav ul li a { display:block; margin:0; padding:8px 20px; color:#000000; text-decoration:none;}
-#top-nav ul li.active a, #top-nav ul li a:hover { color:#d3d3f9;}
+@media only screen and (max-width: 800px) {
+    .kangndo1 {
+        min-width: 60%;
+        max-width: none;
+        border-spacing: 0;
+        border-collapse: collapse;
+        margin: 0 auto
+    }
 
-/* Content */
-#content-inner { margin:0 auto; padding:10px; width:970px;background:#fff;}
-#content #contentbar { margin:0; padding:0; float:right; width:760px;}
-#content #contentbar .article { margin:0 0 24px; padding:0 20px 0 15px; color:#0B0B61;}
-#content #sidebar { padding:0; float:left; width:200px;}
-#content #sidebar .widget { margin:0 0 12px; padding:8px 8px 8px 13px;line-height:1.4em;}
-#content #sidebar .widget h3 a { text-decoration:none;}
-#content #sidebar .widget ul { margin:0; padding:0; list-style:none; color:#959595;}
-#content #sidebar .widget ul li { margin:0;}
-#content #sidebar .widget ul li { padding:4px 0; width:185px;}
-#content #sidebar .widget ul li a { color:#000000; text-decoration:none; margin-left:-16px; padding:4px 8px 4px 16px;}
-#content #sidebar .widget ul li a:hover { color:#d3d3f9; font-weight:bold; text-decoration:none;}
+    .kangndo6 {
+        font-size: 1.2em;
+        padding: .25em
+    }
 
+    .kangndo11 {
+        min-width: 60%;
+        width: auto
+    }
 
-/* Clear both sides to assist with div alignment  */
-.clr { clear:both; padding:0; margin:0; width:100%; font-size:0px; line-height:0px;}
+    #kangndo8 {
+        padding: 1em
+    }
+
+    .kangndo4 {
+        font-size: 1.2em;
+        padding: .25em
+    }
+}

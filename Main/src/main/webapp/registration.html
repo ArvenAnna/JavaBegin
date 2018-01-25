@@ -8,43 +8,57 @@
 <body>
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script type="text/javascript" src="script/registration.js" charset="UTF-8"></script>
-<div id="page">
-    <header id="header">
-        <div id="header-inner">
-        </div>
-    </header>
-    <div id="content">
-        <div id="content-inner">
-            <main id="contentbar">
-                <div class="article">
-                    <p> Login :</p>
-                    <input type="login" id="login" value=""/>
-                    <nav class="nav_login">
-                        <div class="div_login">
-                        </div>
-                    </nav>
-                    <p> Password :</p>
-                    <input type="password" id="password" value=""/>
-                    <nav class="nav_password">
-                        <div class="div_password">
-                        </div>
-                    </nav>
-                    <p> Role :</p>
-                    <select id="role">
+<table class="kangndo1">
+    <tr>
+        <td>
+            <div id="kangndo2">
+                <div id="kangndo3">
+                    <span class="kangndo4"> Java Begin </span>
+                </div>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td id="kangndo5">
+            <div class="kangndo6">
+                <img style="position:relative; top:3px;" src="images/lock.png" alt=""/> Registration
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div id="kangndo7">
+                <div id="kangndo8">
+                    <form id="kangndo9">
+                        <input class="kangndo11" name="username" type="login" id="login" placeholder="Username"/>
+                        <br/>
+                        <input class="kangndo11" name="password" type="password" id="password" placeholder="Password">
+                        <br/>
+                    <select id="role" title="Role :">
                         <option>admin</option>
                         <option>user</option>
                     </select>
-                    <p>
-                        <button id="button">Registration</button>
-                    </p>
-                    <nav class="nav_result">
-                        <div class="div_result">
+						</form>
+                     <input class="registration" type="submit" id="button" value="Registration" align="centre"/>
+                        <input class="exit" type="submit" id="exit" onclick=exit() value="Exit"/>
+
+                        <br/>
+                        <nav class="nav_result">
+                            <div class="div_result">
+                            </div>
+                        </nav>
+                        <div>
+                            <br/>
                         </div>
-                    </nav>
+                        <br/>
+                    <div id="contact">
+                        Contact Us:<br/><b>sasha.zhurylo@gmail.com</b>
+                    </div>
                 </div>
-            </main>
-        </div>
-    </div>
-</div>
+            </div>
+        </td>
+    </tr>
+</table>
 </body>
+
 </html>

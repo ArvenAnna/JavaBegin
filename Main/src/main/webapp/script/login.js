@@ -18,6 +18,7 @@ function loginServletCall() {
     $.get('api/login', userDate, function (data) {
             if (data === "Your login or password have some error please write again") {
                 $('.mydiv').empty().append(data.trim(data));
+                self.location = "/";
             } else {
                 $('.mydiv').empty().append(data.trim(data));
                 if (data.trim(data) === "This is logged admin") {

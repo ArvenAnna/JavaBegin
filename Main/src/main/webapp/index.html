@@ -8,31 +8,57 @@
 <body>
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script type="text/javascript" src="script/login.js" charset="UTF-8"></script>
-<div id="page">
-    <header id="header">
-        <div id="header-inner">
-        </div>
-    </header>
-    <div id="content">
-        <div id="content-inner">
-            <main id="contentbar">
-                <div class="article">
-                    <p> Login</p>
-                    <p><input type="login" id="login" value=""/> Input your login please</p>
-                    <p> Password </p>
-                    <p><input type="password" id="password" value=""/> Input your password please</p>
-                    <p>
-                        <button id="button">Log in</button>
-                        <button id="buttonRegistration" onclick=registration()>Registration</button>
-                    </p>
-                    <nav class="cl">
-                        <div class="mydiv">
-                        </div>
-                    </nav>
+<table class="kangndo1">
+    <tr>
+        <td>
+            <div id="kangndo2">
+                <div id="kangndo3">
+                    <span class="kangndo4"> Java Begin </span>
                 </div>
-            </main>
-        </div>
-    </div>
-</div>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td id="kangndo5">
+            <div class="kangndo6">
+                <img style="position:relative; top:3px;" src="images/lock.png" alt=""/> Authorization
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div id="kangndo7">
+                <div id="kangndo8">
+                    <form id="kangndo9">
+                        <input type="hidden" name="popup" value="true"/>
+                        <input class="kangndo11" name="username" type="login" id="login" placeholder="Username"
+                               required="required"/>
+                        <br/>
+                        <input class="kangndo11" name="password" type="password" id="password" placeholder="Password"
+                               required="required">
+                        <br/>
+                        <input class="login" type="submit" id="button" value="LOG IN"/>
+
+                        <input class="registration" type="submit" id="buttonRegistration" onclick=registration()
+                               value="Registration"/>
+                        <br/>
+                        <nav class="cl">
+                            <div class="mydiv">
+                            </div>
+                        </nav>
+
+                        <div>
+                            <br/>
+                        </div>
+                        <br/>
+
+                        Contact Us:<br/><b>sasha.zhurylo@gmail.com</b>
+                    </form>
+                </div>
+            </div>
+        </td>
+    </tr>
+</table>
 </body>
+
 </html>
