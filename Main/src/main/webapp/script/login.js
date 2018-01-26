@@ -15,22 +15,41 @@ function loginServletCall() {
         "password": document.getElementById("password").value
     };
 
-    $.get('api/login', userDate, function (data) {
-            if (data === "Your login or password have some error please write again") {
-                $('.mydiv').empty().append(data.trim(data));
-                self.location = "/";
+    var userDataJson = JSON.stringify(userDate);
+
+    $.ajax({
+        type: "POST",
+        url: 'api/login',
+        data: userDataJson,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: [function () {
+            if (data.responseText === "Your login or password have some error please write again") {
+                $('.mydiv').empty().append(data.responseText.trim(data.responseText));
             } else {
-                $('.mydiv').empty().append(data.trim(data));
-                if (data.trim(data) === "This is logged admin") {
+                $('.mydiv').empty().append(data.responseText.trim(data.responseText));
+                if (data.responseText.trim(data.responseText) === "This is logged admin") {
                     self.location = "head.html";
                 }
-                else if (data.trim(data) === "This is logged user") {
+                else if (data.responseText.trim(data.responseText) === "This is logged user") {
+                    self.location = "user.html";
+                }
+            }
+        }],
+        error: function (data) {
+            if (data.responseText === "Your login or password have some error please write again") {
+                $('.mydiv').empty().append(data.responseText.trim(data.responseText));
+            } else {
+                $('.mydiv').empty().append(data.responseText.trim(data.responseText));
+                if (data.responseText.trim(data.responseText) === "This is logged admin") {
+                    self.location = "head.html";
+                }
+                else if (data.responseText.trim(data.responseText) === "This is logged user") {
                     self.location = "user.html";
                 }
             }
         }
-    )
-    ;
+    });
 }
 
 function registration() {

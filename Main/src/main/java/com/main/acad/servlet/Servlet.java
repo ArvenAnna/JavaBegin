@@ -1,7 +1,10 @@
 package com.main.acad.servlet;
 
 import com.main.acad.annotation.MappingMethod;
+import com.main.acad.serializator.JsonSerializatorImplementation;
+import com.main.acad.serializator.JsonSerializer;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -26,6 +29,25 @@ public class Servlet extends HttpServlet implements javax.servlet.Servlet {
         String url = request.getRequestURL().toString();
         url = url.substring(url.indexOf("4") + 2);
         try {
+            invokeController(url, request, response);
+        } catch (Exception e) {
+            try {
+                logger.info("An error occurred in the Servlet class in the doGet method" + e.getMessage());
+                response.sendRedirect(response.encodeRedirectURL("/exception_page.html"));
+            } catch (IOException e1) {
+                throw new IllegalArgumentException(e.getMessage());
+            }
+        }
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setContentType("text/html");
+        String url = request.getRequestURL().toString();
+        url = url.substring(url.indexOf("4") + 2);
+        try {
+            JsonSerializer jsonSerializer = new JsonSerializatorImplementation();
+
             invokeController(url, request, response);
         } catch (Exception e) {
             try {

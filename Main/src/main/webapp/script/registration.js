@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    $("#button").click(function () {
+    $("#registration").click(function () {
         if (document.getElementById("password").value === null || document.getElementById("password").value === ""
             || document.getElementById("login").value === null || document.getElementById("login").value === ""
             || document.getElementById("role").value === null || document.getElementById("role").value === "") {
@@ -16,8 +16,7 @@ function loginServletCall() {
     };
     var allDate = {
         "login": document.getElementById("login").value,
-        "password": document.getElementById("password").value,
-        "role": document.getElementById("role").value
+        "password": document.getElementById("password").value
     };
 
     $.get('api/checkDateUser', userLogin, function (data) {

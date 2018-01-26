@@ -172,6 +172,7 @@ public class SimpleChapterDao implements ChapterDao {
     @Override
     public boolean createNewChildChapter(String chapterName, String nameFile, String chapterText, String nameSubChapters) {
         try {
+            nameFile = nameFile.trim() + ".html";
             File directoryFile = new File("D:\\IT\\JavaBeginFiles\\" + chapterName + "\\" + nameFile.trim());
             FileOutputStream fileOutputStream = new FileOutputStream(directoryFile);
             OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fileOutputStream);
@@ -181,6 +182,8 @@ public class SimpleChapterDao implements ChapterDao {
             addChapter(String.valueOf(directoryFile));
             addChapter(nameSubChapters);
             addRowIntoReferences(selectID(nameSubChapters), selectID(chapterName), selectID(String.valueOf(directoryFile)));
+            outputStreamWriter.close();
+            fileOutputStream.close();
             logger.info("Create new subChapter successfully ");
             return true;
         } catch (IOException e) {
@@ -217,7 +220,7 @@ public class SimpleChapterDao implements ChapterDao {
         int id_references = selectIdReferences(id_chapter);
         String path = selectName(id_references);
         path = path.replaceAll("\\\\", "\\\\\\\\");
-        deleteFileInFolder(path);
+        deleteFileInFolder(path.trim());
         deleteFromReferences(id_chapter);
         deleteFromChapters(id_chapter);
         deleteFromChapters(id_references);
@@ -331,6 +334,10 @@ public class SimpleChapterDao implements ChapterDao {
     private static void deleteFileInFolder(String path) {
         File file = new File(path);
         file.delete();
+    }
+
+    public static void main(String[] args) {
+        deleteFileInFolder("D:\\IT\\JavaBeginFiles\\Git\\test.html");
     }
 }
 

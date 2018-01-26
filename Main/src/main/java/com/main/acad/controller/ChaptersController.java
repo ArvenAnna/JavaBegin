@@ -25,7 +25,7 @@ public class ChaptersController {
         try {
             List<Chapter> chaptersList = chaptersServiceImplementation.listChapters();
             JsonSerializatorImplementation jsonSerializator = new JsonSerializatorImplementation();
-            String jsonString = jsonSerializator.write(chaptersList);
+            String jsonString = jsonSerializator.writee(chaptersList);
             response.getWriter().write(jsonString);
         } catch (IllegalAccessException | IOException | ChapterDaoFailedExeption | ConnectionPoolFailedException e) {
             logger.info("An error occurred in the ChaptersController in the returnChapters method" + e.getMessage());
@@ -38,7 +38,7 @@ public class ChaptersController {
         List<Chapter> childrenList = chaptersServiceImplementation.listChildren(Integer.parseInt(request.getParameter("id")));
         JsonSerializatorImplementation jsonSerializer = new JsonSerializatorImplementation();
         try {
-            String jsonString = jsonSerializer.write(childrenList);
+            String jsonString = jsonSerializer.writee(childrenList);
             response.getWriter().write(jsonString);
         } catch (IllegalAccessException | IOException | ChapterDaoFailedExeption | ConnectionPoolFailedException e) {
             logger.info("An error occurred in the ChaptersController in the returnSubChapters method" + e.getMessage());
@@ -59,7 +59,9 @@ public class ChaptersController {
 
     @MappingMethod(url = "api/createFile")
     public void createNewFile(HttpServletRequest request, HttpServletResponse response) {
-        boolean result = chaptersServiceImplementation.createNewChildChapter(request.getParameter("chapterName"), request.getParameter("nameFile"), request.getParameter("chapterText"), request.getParameter("nameSubChapters"));
+        boolean result = chaptersServiceImplementation.createNewChildChapter(request.getParameter("chapterName"),
+                request.getParameter("nameFile"), request.getParameter("chapterText"),
+                request.getParameter("nameSubChapters"));
         try {
             response.getWriter().write(String.valueOf(result));
         } catch (IOException e) {
@@ -73,7 +75,7 @@ public class ChaptersController {
         List<Chapter> listAllChildrenChapters = chaptersServiceImplementation.listAllSubChapters();
         JsonSerializatorImplementation jsonSerializer = new JsonSerializatorImplementation();
         try {
-            String jsonString = jsonSerializer.write(listAllChildrenChapters);
+            String jsonString = jsonSerializer.writee(listAllChildrenChapters);
             response.getWriter().write(jsonString);
         } catch (IllegalAccessException | IOException | ChapterDaoFailedExeption | ConnectionPoolFailedException e) {
             logger.info("An error occurred in the ChaptersController in the getAllsubChapter method" + e.getMessage());
