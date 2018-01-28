@@ -4,7 +4,7 @@ import com.main.acad.annotation.MappingMethod;
 
 import com.main.acad.entity.User;
 import com.main.acad.error.ConnectionPoolFailedException;
-import com.main.acad.error.ControllerNotFoundException;
+import com.main.acad.error.ControllerFailedException;
 import com.main.acad.error.UserDaoFailedException;
 import com.main.acad.serializator.JsonSerializatorImplementation;
 import com.main.acad.serializator.JsonSerializer;
@@ -28,7 +28,7 @@ public class UsersConntroller {
             response.getWriter().write(String.valueOf(result));
         } catch (IOException | ConnectionPoolFailedException | UserDaoFailedException e) {
             logger.info("An error occurred in the ChaptersController in the createNewUser method" + e.getMessage());
-            throw new ControllerNotFoundException(e.getMessage());
+            throw new ControllerFailedException(e.getMessage());
         }
     }
 
@@ -42,7 +42,7 @@ public class UsersConntroller {
             }
         } catch (IOException | ConnectionPoolFailedException | UserDaoFailedException e) {
             logger.info("An error occurred in the ChaptersController in the checkDateUser method" + e.getMessage());
-            throw new ControllerNotFoundException(e.getMessage());
+            throw new ControllerFailedException(e.getMessage());
         }
     }
 
@@ -54,7 +54,7 @@ public class UsersConntroller {
             JsonSerializer jsonSerializer = new JsonSerializatorImplementation();
             userr = (User) jsonSerializer.read(jsonString, User.class, null);
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new ControllerFailedException(e.getMessage());
         }
         User user = userSeviceImplementation.findByUser(userr.getLogin(), userr.getPassword());
         try {
@@ -69,7 +69,7 @@ public class UsersConntroller {
             }
         } catch (IOException | ConnectionPoolFailedException | UserDaoFailedException e) {
             logger.info("An error occurred in the ChaptersController in the checkUser method" + e.getMessage());
-            throw new ControllerNotFoundException(e.getMessage());
+            throw new ControllerFailedException(e.getMessage());
         }
     }
 }

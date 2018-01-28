@@ -1,10 +1,10 @@
 package com.main.acad.controller;
 
 import com.main.acad.annotation.MappingMethod;
-import com.main.acad.dao.SimpleUserDao;
 import com.main.acad.entity.Chapter;
 import com.main.acad.error.ChapterDaoFailedExeption;
 import com.main.acad.error.ConnectionPoolFailedException;
+import com.main.acad.error.ControllerFailedException;
 import com.main.acad.error.ControllerNotFoundException;
 import com.main.acad.serializator.JsonSerializatorImplementation;
 import com.main.acad.service.ChaptersServiceImplementation;
@@ -29,7 +29,7 @@ public class ChaptersController {
             response.getWriter().write(jsonString);
         } catch (IllegalAccessException | IOException | ChapterDaoFailedExeption | ConnectionPoolFailedException e) {
             logger.info("An error occurred in the ChaptersController in the returnChapters method" + e.getMessage());
-            throw new ControllerNotFoundException(e.getMessage());
+            throw new ControllerFailedException(e.getMessage());
         }
     }
 
@@ -42,7 +42,7 @@ public class ChaptersController {
             response.getWriter().write(jsonString);
         } catch (IllegalAccessException | IOException | ChapterDaoFailedExeption | ConnectionPoolFailedException e) {
             logger.info("An error occurred in the ChaptersController in the returnSubChapters method" + e.getMessage());
-            throw new ControllerNotFoundException(e.getMessage());
+            throw new ControllerFailedException(e.getMessage());
         }
     }
 
@@ -53,7 +53,7 @@ public class ChaptersController {
             response.getWriter().write(subChapterDate);
         } catch (IOException | ChapterDaoFailedExeption | ConnectionPoolFailedException e) {
             logger.info("An error occurred in the ChaptersController in the returnSubChaptersById method" + e.getMessage());
-            throw new ControllerNotFoundException(e.getMessage());
+            throw new ControllerFailedException(e.getMessage());
         }
     }
 
@@ -66,7 +66,7 @@ public class ChaptersController {
             response.getWriter().write(String.valueOf(result));
         } catch (IOException e) {
             logger.info("An error occurred in the ChaptersController in the createNewFile method" + e.getMessage());
-            throw new ControllerNotFoundException(e.getMessage());
+            throw new ControllerFailedException(e.getMessage());
         }
     }
 
@@ -79,7 +79,7 @@ public class ChaptersController {
             response.getWriter().write(jsonString);
         } catch (IllegalAccessException | IOException | ChapterDaoFailedExeption | ConnectionPoolFailedException e) {
             logger.info("An error occurred in the ChaptersController in the getAllsubChapter method" + e.getMessage());
-            throw new ControllerNotFoundException(e.getMessage());
+            throw new ControllerFailedException(e.getMessage());
         }
     }
 
@@ -90,19 +90,19 @@ public class ChaptersController {
             response.getWriter().write(String.valueOf(result));
         } catch (IOException e) {
             logger.info("An error occurred in the ChaptersController in the deleteSubChapter method" + e.getMessage());
-            throw new ControllerNotFoundException(e.getMessage());
+            throw new ControllerFailedException(e.getMessage());
         }
     }
 
     @MappingMethod(url = "/api/updateSubChapter")
     public void updateSubChapter(HttpServletRequest request, HttpServletResponse response) {
-      Boolean result = chaptersServiceImplementation.updateSubChapter(request.getParameter("chapterName")
-               ,request.getParameter("changedTextSubChapter"));
+        Boolean result = chaptersServiceImplementation.updateSubChapter(request.getParameter("chapterName")
+                , request.getParameter("changedTextSubChapter"));
         try {
             response.getWriter().write(String.valueOf(result));
         } catch (IOException e) {
             logger.info("An error occurred in the ChaptersController in the updateSubChapter method" + e.getMessage());
-            throw new ControllerNotFoundException(e.getMessage());
+            throw new ControllerFailedException(e.getMessage());
         }
     }
 }
