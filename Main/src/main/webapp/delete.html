@@ -9,19 +9,65 @@
     <script src="http://code.jquery.com/jquery-1.10.2.js"
             type="text/javascript"></script>
     <script src="script/delete.js" type="text/javascript"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js">
+    </script>
 </head>
 <body>
 <div id="bg">
     <div id="main">
-        <div id="logo"></div>
+        <div id="header">
+            <div id="logo">
+                <h1>
+                    <button id="exit" onclick="exit()">Exit to head</button>
+                </h1>
+            </div>
+            <div id="buttons">
+                <nav class="animenu">
+                    <ul class="animenu__nav">
+                        <li class="child"></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
         <div id="content">
-            <div id="delete">
-                <li class="child"></li>
-                <div class="mydiv">
+            <div id="content_top">
+                <div id="content_bot">
+                    <div id="right">
+                        <div id="archives">
+                            <div class="tit_b">
+                                <form id="form_id">
+                                    <div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="tit_b">
+                                <div id="calendar">
+                                    <ul>
+                                    </ul>
+                                </div>
+                            </div>
+                            <h2>News</h2>
+                            <div class="tit_b">
+                                <div class="lo">
+                                    <ul>
+                                        <li><a href="#">Example</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="left">
+                        <nav class="cl">
+                            <div class="mydiv">
+                            </div>
+                        </nav>
+
+                        <h1 id="l"></h1>
+                        <div id="leftTop" style="clear: both">
+                        </div>
+                    </div>
                 </div>
             </div>
-            <button onclick="exit()">Exit to head page</button>
         </div>
         <div id="footer">
             <p>Copyright &copy; 2018. Web Design by Alex Zhurylo </p>

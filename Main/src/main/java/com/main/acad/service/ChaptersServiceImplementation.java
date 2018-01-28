@@ -36,6 +36,7 @@ public class ChaptersServiceImplementation implements ChaptersService {
                 filePage.append((char) count);
             }
             logger.info("File : " + name + " successfully read");
+            fileReader.close();
         } catch (IOException e) {
             logger.info("An error occurred in the ChaptersServiceImplementation class in the getInformstioAboutChildren method");
             throw new ChapterDaoFailedExeption(e.getMessage());
@@ -66,6 +67,11 @@ public class ChaptersServiceImplementation implements ChaptersService {
     @Override
     public boolean deleteSubChapter(String nameSubChapter) {
         return dao.deleteSubChapter(nameSubChapter);
+    }
+
+    @Override
+    public boolean updateSubChapter(String chapterName,String newTextFile) {
+     return dao.updateSubChapter(chapterName,newTextFile);
     }
 
 }

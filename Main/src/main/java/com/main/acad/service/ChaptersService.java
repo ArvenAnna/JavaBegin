@@ -17,4 +17,6 @@ public interface ChaptersService {
     List<Chapter> listAllSubChapters();
 
     boolean deleteSubChapter(String nameSubChapter);
+
+    boolean updateSubChapter(String chapterName,String newTextFile);
 }

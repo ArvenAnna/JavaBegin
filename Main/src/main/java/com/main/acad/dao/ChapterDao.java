@@ -24,4 +24,6 @@ public interface ChapterDao {
     List<Chapter> getListAllSubChapters();
 
     boolean deleteSubChapter(String nameSubChapter);
-}
+
+    boolean updateSubChapter(String chapterName,String newTextFile);
+    }

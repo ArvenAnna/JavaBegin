@@ -8,7 +8,7 @@ $(function () {
                 ' class="animenu__nav__child"></ul>');
             variableLi.append(variableUl);
             $('.animenu__nav').append(variableLi);
-            variableLi.mouseover({id: headerItems[i].id}, buildChapterChild)
+            variableLi.mouseover({id: headerItems[i].id}, buildChapterChild);
         }
     });
 });
@@ -24,36 +24,28 @@ function showChildrenChapters(e, data) {
     for (var i = 0; i < subchapters.length; i++) {
         var varLi = $('<li>' + '<a href="#">' + subchapters[i].name + '</a>' + '</li>');
         $(e.target).parent().find('.animenu__nav__child').append(varLi);
-        varLi.on('click', {name: subchapters[i].name}, onClickHandlerForLastChapterChild);
+        varLi.on('click', {name: subchapters[i].name}, updateChapter);
     }
 }
 
-function buildChapterContent(data) {
-    var variableH = $('<h1>' + data + '</h1>');
-    $('#l').parent().find('#l').empty().append(variableH);
+function updateChapter(event) {
+    $.get('api/subChapterByName?name=' + event.data.name, function (data) {
+        $('.changedTextSubChapter').empty().append(data);
+    });
+    var nameChildChapter = event.data;
+    $(".updateButton").on("click", nameChildChapter, update);
 }
 
-function onClickHandlerForLastChapterChild(event) {
-    var url = 'api/subChapterByName?name=' + event.data.name;
-    $.get(url, buildChapterContent);
+function update(e) {
+    var chapterData = {
+        "chapterName": e.data.name,
+        "changedTextSubChapter": document.getElementById("changedTextSubChapter").value
+    };
+    $.get('/api/updateSubChapter', chapterData, function (data) {
+        location.reload();
+    });
 }
 
-function buiilChpatersContentFromSearch(value) {
-    var url = 'api/subChapterByName?name=' + value;
-    $.get(url, buildChapterContent);
-}
-
-function exitLogin() {
-    self.location = "index.html";
-}
-
-function addNewFile() {
-    self.location = "create.html";
-}
-
-function deleteFile() {
-    self.location = "delete.html";
-}
-function updateFile(){
-    self.location = "update.html";
+function exit() {
+    self.location = "head.html";
 }

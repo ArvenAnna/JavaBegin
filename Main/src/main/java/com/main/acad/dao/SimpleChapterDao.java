@@ -4,13 +4,13 @@ import com.main.acad.entity.Chapter;
 import com.main.acad.error.ChapterDaoFailedExeption;
 import com.main.acad.util.ConnectionPool;
 
-import java.io.FileReader;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.File;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
 import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.Writer;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
+import java.io.FileReader;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -36,6 +36,8 @@ public class SimpleChapterDao implements ChapterDao {
     private static final String REMOVE_ROW_CHAPTER = "DELETE FROM chapters WHERE id_chapter=?";
     private static final String GET_ID_REFERENCES = "SELECT id_refrence FROM \"references\" WHERE id=?";
     private static final String GET_NAME_FROM_CHAPTERS = "SELECT name FROM chapters where id_chapter=?";
+    private static final String GET_NAME_CHAPTER = "SELECT c.name FROM chapters c WHERE c.id_chapter IN (SELECT r.id_chapter FROM \"references\" r INNER JOIN chapters c ON c.id_chapter = r.id WHERE c.name =?)";
+    private static final String GET_PATH = "SELECT c.name FROM chapters c WHERE c.id_chapter IN(SELECT r.id_refrence FROM \"references\" r INNER JOIN chapters c ON c.id_chapter = r.id WHERE c.name = ?)";
 
     private static Connection connection;
     private static SimpleChapterDao instance;
@@ -227,6 +229,72 @@ public class SimpleChapterDao implements ChapterDao {
         return true;
     }
 
+    @Override
+    public boolean updateSubChapter(String subChapterName, String newTextFile) {
+        try {
+            String chapterName = getNameChapter(subChapterName);
+            String path = getPathOfFile(subChapterName);
+            deleteFileInFolder(path);
+            createFile(path, newTextFile);
+            return true;
+        } catch (ChapterDaoFailedExeption e) {
+            logger.info("An error occurred in the SimpleChapterDao class in the updateSubChapter method" + e.getMessage());
+            throw new ChapterDaoFailedExeption(e.getMessage());
+        }
+    }
+
+    private void createFile(String nameFile, String chapterText) {
+        try {
+            File directoryFile = new File(nameFile.trim());
+            FileOutputStream fileOutputStream = new FileOutputStream(directoryFile);
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fileOutputStream);
+            Writer writeFile = new BufferedWriter(outputStreamWriter);
+            writeFile.write(chapterText.trim());
+            writeFile.close();
+        } catch (IOException e) {
+            logger.info("An error occurred in the SimpleChapterDao class in the createFile method" + e.getMessage());
+            throw new ChapterDaoFailedExeption(e.getMessage());
+        }
+    }
+
+    private String getPathOfFile(String nameSubChapter) {
+        String pathOfFile = "";
+        try {
+            connection = connectionPool.borrowConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(GET_PATH);
+            preparedStatement.setString(1, nameSubChapter);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next())
+                pathOfFile = resultSet.getString(1);
+            logger.info("path successfully get");
+            return pathOfFile;
+        } catch (SQLException | InterruptedException e) {
+            logger.info("An error occurred in the SimpleChapterDao class in the getPathOfFile method" + e.getMessage());
+            throw new ChapterDaoFailedExeption(e.getMessage());
+        } finally {
+            connectionPool.surrenderConnection(connection);
+        }
+    }
+
+    private String getNameChapter(String nameSubChapter) {
+        String nameChapter = "";
+        try {
+            connection = connectionPool.borrowConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(GET_NAME_CHAPTER);
+            preparedStatement.setString(1, nameSubChapter);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next())
+                nameChapter = resultSet.getString(1);
+            logger.info("name Chapter successfully get");
+            return nameChapter;
+        } catch (SQLException | InterruptedException e) {
+            logger.info("An error occurred in the SimpleChapterDao class in the getNameChapter method" + e.getMessage());
+            throw new ChapterDaoFailedExeption(e.getMessage());
+        } finally {
+            connectionPool.surrenderConnection(connection);
+        }
+    }
+
     private void deleteFromChapters(Integer idChapter) {
         try {
             connection = connectionPool.borrowConnection();
@@ -334,10 +402,6 @@ public class SimpleChapterDao implements ChapterDao {
     private static void deleteFileInFolder(String path) {
         File file = new File(path);
         file.delete();
-    }
-
-    public static void main(String[] args) {
-        deleteFileInFolder("D:\\IT\\JavaBeginFiles\\Git\\test.html");
     }
 }
 

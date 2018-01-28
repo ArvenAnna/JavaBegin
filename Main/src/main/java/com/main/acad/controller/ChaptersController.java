@@ -93,4 +93,16 @@ public class ChaptersController {
             throw new ControllerNotFoundException(e.getMessage());
         }
     }
+
+    @MappingMethod(url = "/api/updateSubChapter")
+    public void updateSubChapter(HttpServletRequest request, HttpServletResponse response) {
+      Boolean result = chaptersServiceImplementation.updateSubChapter(request.getParameter("chapterName")
+               ,request.getParameter("changedTextSubChapter"));
+        try {
+            response.getWriter().write(String.valueOf(result));
+        } catch (IOException e) {
+            logger.info("An error occurred in the ChaptersController in the updateSubChapter method" + e.getMessage());
+            throw new ControllerNotFoundException(e.getMessage());
+        }
+    }
 }

@@ -2,7 +2,7 @@ $(document).ready(function () {
     $("#registration").click(function () {
         if (document.getElementById("password").value === null || document.getElementById("password").value === ""
             || document.getElementById("login").value === null || document.getElementById("login").value === ""
-            || document.getElementById("role").value === null || document.getElementById("role").value === "") {
+        ) {
             $('.div_result').empty().append("You did not fill all the fields");
         } else {
             loginServletCall();
