@@ -31,7 +31,11 @@ function showChildrenChapters(e, data) {
 function deleteChapter(event) {
     var url = 'api/deleteSubChapter?name=' + event.data.name;
     $.get(url, function (data) {
-        if (data) {
+        if (data === "") {
+            alert("You don't have access to delete file");
+            self.location = "/";
+        }
+        else if (data) {
             $('.mydiv').empty().append("Successufull delete file");
             location.reload();
         }

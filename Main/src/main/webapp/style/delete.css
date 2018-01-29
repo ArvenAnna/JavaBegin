@@ -108,6 +108,7 @@ body {
 }
 
 #left {
+    height: 300px;
     width: 502px;
     padding: 0 0 0 0;
     margin: 0 0 0 0;
@@ -451,4 +452,10 @@ body {
 
 .animenu__nav--open .animenu__nav__child {
     display: block;
+}
+#exit{
+    width:100px;
+    margin-left:auto;
+    background-color: #e4e4e4;
+    border-radius:5px;
 }

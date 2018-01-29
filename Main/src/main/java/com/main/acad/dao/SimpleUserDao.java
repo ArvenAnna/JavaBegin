@@ -12,12 +12,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-public class SimpleUserDao implements UserDao{
+public class SimpleUserDao implements UserDao {
 
     private ConnectionPool connectionPool = ConnectionPool.getInstance();
     private static final Logger logger = Logger.getLogger(UserDao.class.getName());
     private static final String FIND_ALL_USERS = "SELECT * FROM users ORDER BY login";
     private static final String FIND_BY_USER = "SELECT * FROM users WHERE login=? AND password=?";
+    private static final String FIND_BY_USER_BY_LOGIN = "SELECT * FROM users WHERE login=?";
     private static final String EXIT_USER = "SELECT * FROM users WHERE login =?";
     private static final String CREATE_USER = "INSERT INTO users( login, password, role) VALUES (?, ?, ?);";
     private static Connection connection;
@@ -33,6 +34,7 @@ public class SimpleUserDao implements UserDao{
         return instance;
     }
 
+    @Override
     public List<User> findAllUsers() {
         List<User> users = new ArrayList<>();
         try {
@@ -60,6 +62,7 @@ public class SimpleUserDao implements UserDao{
         return users;
     }
 
+    @Override
     public User findUser(String login, Integer password) {
         try {
             connection = connectionPool.borrowConnection();
@@ -120,6 +123,35 @@ public class SimpleUserDao implements UserDao{
             return true;
         } catch (Exception e) {
             logger.info("An error occurred in the SimpleUserDao class in the createNewUser method");
+            throw new UserDaoFailedException(e.getMessage());
+        } finally {
+            connectionPool.surrenderConnection(connection);
+        }
+    }
+
+    @Override
+    public  String findUserByLogin(String login) {
+        try {
+            connection = connectionPool.borrowConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_USER_BY_LOGIN);
+            preparedStatement.setString(1, login);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                login = resultSet.getString("login");
+                Integer password = resultSet.getInt("password");
+                String role = resultSet.getString("role");
+                User user = User._myuserbuilder()
+                        .login(login)
+                        .password(password)
+                        .role(role)
+                        .build();
+                logger.info("User successfully find");
+                return user.getRole();
+            } else {
+                return null;
+            }
+        } catch (SQLException | InterruptedException e) {
+            logger.info("An error occurred in the SimpleUserDao class in the findUserByLogin method");
             throw new UserDaoFailedException(e.getMessage());
         } finally {
             connectionPool.surrenderConnection(connection);

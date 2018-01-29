@@ -42,7 +42,12 @@ function update(e) {
         "changedTextSubChapter": document.getElementById("changedTextSubChapter").value
     };
     $.get('/api/updateSubChapter', chapterData, function (data) {
-        location.reload();
+        if (data === "") {
+            alert("You don't have access to update new file");
+            self.location = "/";
+        } else {
+            location.reload();
+        }
     });
 }
 

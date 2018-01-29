@@ -6,7 +6,11 @@ function clickOnButton() {
         "nameSubChapters": document.getElementById("name_subChapters").value
     };
     $.get('/api/createFile', chapterDate, function (data) {
-        if (data) {
+        if (data === "") {
+            alert("You don't have access to create new file");
+            self.location = "/";
+        }
+        else if (true) {
             $('.result').empty().append("The file successfully save ");
             location.reload();
         } else {

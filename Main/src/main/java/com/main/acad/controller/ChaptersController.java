@@ -5,7 +5,6 @@ import com.main.acad.entity.Chapter;
 import com.main.acad.error.ChapterDaoFailedExeption;
 import com.main.acad.error.ConnectionPoolFailedException;
 import com.main.acad.error.ControllerFailedException;
-import com.main.acad.error.ControllerNotFoundException;
 import com.main.acad.serializator.JsonSerializatorImplementation;
 import com.main.acad.service.ChaptersServiceImplementation;
 

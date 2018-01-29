@@ -1,16 +1,29 @@
 .changedTextSubChapter {
-    color: #727796;
+    color: #3046d0;
     margin-top: 10px;
     margin-left: 15px;
 }
 
 .updateButton {
-    color: #8766b2;
+    background-color: #c2b3a1;
+    width: 170px;
+    height: 35px;
+    margin-left: 20px;
     margin-top: 10px;
-    margin-left: 30px;
-    padding: 8px;
-    background-color: white;
+    border-radius: 8px;
+}
+.changedTextSubChapter{
+    background-color: #e4e4e4;
+    border-radius:25px;
+}
 
+#exit{
+    background-color: #c2b3a1;
+    width: 170px;
+    height: 35px;
+    margin-left: 20px;
+    margin-top: 10px;
+    border-radius: 8px;
 }
 
 * {
@@ -111,16 +124,10 @@ body {
 
 #content {
     width: 784px;
-    background: url(../images/content_bg.jpg) 7px repeat-y #FFFFFF;
+    background-color:#e2cba9;
 }
 
-#content_top {
-    background: url(../images/content_top.gif) 7px top no-repeat;
-}
 
-#content_bot {
-    background: url(../images/content_bot.gif) 7px bottom no-repeat;
-}
 
 #left {
     width: 502px;

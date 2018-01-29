@@ -1,3 +1,21 @@
+Skip to content
+This repository
+Search
+Pull requests
+Issues
+Marketplace
+Explore
+@sasha96
+Sign out
+Watch 2
+Star 0  Fork 2 ArvenAnna/JavaBegin
+Code  Issues 0  Pull requests 2  Projects 0  Wiki  Insights
+Branch: sashaZhurylo Find file Copy pathJavaBegin/Main/src/main/webapp/style/head.css
+a6b7915  6 days ago
+@dooky96 dooky96 new file
+1 contributor
+RawBlameHistory
+454 lines (375 sloc)  7.22 KB
 * {
     border: 0;
     margin: 0;
@@ -451,4 +469,10 @@ body {
 
 .animenu__nav--open .animenu__nav__child {
     display: block;
+}
+#exit{
+    width:100px;
+    margin-left:auto;
+    background-color: #e4e4e4;
+    border-radius:5px;
 }

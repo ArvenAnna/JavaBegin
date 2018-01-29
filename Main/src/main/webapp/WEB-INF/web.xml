@@ -36,7 +36,17 @@
 
     <filter-mapping>
         <filter-name>HttpServletFilter</filter-name>
-        <url-pattern>/api/subChapterByName</url-pattern>
+        <url-pattern>/api/*</url-pattern>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>CookieFilter</filter-name>
+        <filter-class>com.main.acad.servlet.CookieFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>CookieFilter</filter-name>
+        <url-pattern>/api/*</url-pattern>
     </filter-mapping>
 
 </web-app>

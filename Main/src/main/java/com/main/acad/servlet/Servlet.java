@@ -33,7 +33,7 @@ public class Servlet extends HttpServlet implements javax.servlet.Servlet {
             try {
                 logger.info("An error occurred in the Servlet class in the doGet method" + e.getMessage());
                 response.sendRedirect(response.encodeRedirectURL("/exception_page.html"));
-            } catch (IOException e1) {
+            } catch (Exception e1) {
                 throw new ControllerNotFoundException(e.getMessage());
             }
         }
