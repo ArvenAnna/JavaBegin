@@ -74,5 +74,10 @@ public class ChaptersServiceImplementation implements ChaptersService {
      return dao.updateSubChapter(chapterName,newTextFile);
     }
 
+    @Override
+    public List<Chapter> getListSimilarChapter(String chapterSimilar){
+        return dao.getListSimilarChapter(chapterSimilar);
+    }
+
 }
 

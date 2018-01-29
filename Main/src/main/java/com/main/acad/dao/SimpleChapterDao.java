@@ -38,6 +38,7 @@ public class SimpleChapterDao implements ChapterDao {
     private static final String GET_NAME_FROM_CHAPTERS = "SELECT name FROM chapters where id_chapter=?";
     private static final String GET_NAME_CHAPTER = "SELECT c.name FROM chapters c WHERE c.id_chapter IN (SELECT r.id_chapter FROM \"references\" r INNER JOIN chapters c ON c.id_chapter = r.id WHERE c.name =?)";
     private static final String GET_PATH = "SELECT c.name FROM chapters c WHERE c.id_chapter IN(SELECT r.id_refrence FROM \"references\" r INNER JOIN chapters c ON c.id_chapter = r.id WHERE c.name = ?)";
+    private static final String SEARCH_SIMILAR = "SELECT c.name FROM chapters c INNER JOIN \"references\" r ON c.id_chapter = r.id WHERE c.name LIKE ? AND r.id_refrence IS NOT NULL";
 
     private static Connection connection;
     private static SimpleChapterDao instance;
@@ -243,6 +244,29 @@ public class SimpleChapterDao implements ChapterDao {
         }
     }
 
+    @Override
+    public List<Chapter> getListSimilarChapter(String chapterSimilar) {
+        List<Chapter> chaptersList = new ArrayList<>();
+        try {
+            connection = connectionPool.borrowConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(SEARCH_SIMILAR);
+            preparedStatement.setString(1, chapterSimilar + "%");
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Chapter chapter = new Chapter();
+                chapter.setName(resultSet.getString("name"));
+                chaptersList.add(chapter);
+            }
+            logger.info("All Chapters successfully get");
+        } catch (SQLException | InterruptedException e) {
+            logger.info("An error occurred in the SimpleChapterDao class in the getListSimilarChapter method" + e.getMessage());
+            throw new ChapterDaoFailedExeption(e.getMessage());
+        } finally {
+            connectionPool.surrenderConnection(connection);
+        }
+        return chaptersList;
+    }
+
     private void createFile(String nameFile, String chapterText) {
         try {
             File directoryFile = new File(nameFile.trim());
@@ -403,5 +427,6 @@ public class SimpleChapterDao implements ChapterDao {
         File file = new File(path);
         file.delete();
     }
+
 }
 

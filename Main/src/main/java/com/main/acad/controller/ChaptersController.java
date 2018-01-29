@@ -104,4 +104,17 @@ public class ChaptersController {
             throw new ControllerFailedException(e.getMessage());
         }
     }
+
+    @MappingMethod(url = "api/similarChapter")
+    public void returnSimilarChapter(HttpServletRequest request, HttpServletResponse response) {
+        List<Chapter> childrenList = chaptersServiceImplementation.getListSimilarChapter(request.getParameter("name"));
+        JsonSerializatorImplementation jsonSerializer = new JsonSerializatorImplementation();
+        try {
+            String jsonString = jsonSerializer.writee(childrenList);
+            response.getWriter().write(jsonString);
+        } catch (IllegalAccessException | IOException | ChapterDaoFailedExeption | ConnectionPoolFailedException e) {
+            logger.info("An error occurred in the ChaptersController in the returnSimilarChapter method" + e.getMessage());
+            throw new ControllerFailedException(e.getMessage());
+        }
+    }
 }

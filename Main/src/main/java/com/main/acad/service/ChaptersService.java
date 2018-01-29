@@ -19,4 +19,6 @@ public interface ChaptersService {
     boolean deleteSubChapter(String nameSubChapter);
 
     boolean updateSubChapter(String chapterName,String newTextFile);
+
+    List<Chapter> getListSimilarChapter(String chapterSimilar);
 }

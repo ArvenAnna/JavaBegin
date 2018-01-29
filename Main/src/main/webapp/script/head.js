@@ -28,19 +28,30 @@ function showChildrenChapters(e, data) {
     }
 }
 
-function buildChapterContent(data) {
-    var variableH = $('<h1>' + data + '</h1>');
-    $('#l').parent().find('#l').empty().append(variableH);
+function buildChapterSearch(data) {
+    var nameChapter = JSON.parse(data);
+    $('#l').parent().find('#l').empty();
+    for(var i = 0; i < nameChapter.length; i ++){
+        var variableH = $('<a>' + nameChapter[i].name + '</a>' + '<br/>');
+        $('#l').parent().find('#l').append(variableH);
+        variableH.on('click', {name: nameChapter[i].name},onClickHandlerForLastChapterChild);
+    }
 }
 
 function onClickHandlerForLastChapterChild(event) {
     var url = 'api/subChapterByName?name=' + event.data.name;
+    $('#mySearch').val('');
     $.get(url, buildChapterContent);
 }
 
 function buiilChpatersContentFromSearch(value) {
-    var url = 'api/subChapterByName?name=' + value;
-    $.get(url, buildChapterContent);
+    var url = 'api/similarChapter?name=' + value;
+    $.get(url, buildChapterSearch);
+}
+
+function buildChapterContent(data) {
+    var variableH = $('<h1>' + data + '</h1>');
+    $('#l').parent().find('#l').empty().append(variableH);
 }
 
 function exitLogin() {

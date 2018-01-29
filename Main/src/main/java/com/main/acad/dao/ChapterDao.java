@@ -19,11 +19,14 @@ public interface ChapterDao {
 
     List<Chapter> getlistChildren(int id);
 
-    boolean createNewChildChapter(String chapterName,String nameFile,String context,String nameSubChapters);
+    boolean createNewChildChapter(String chapterName, String nameFile, String context, String nameSubChapters);
 
     List<Chapter> getListAllSubChapters();
 
     boolean deleteSubChapter(String nameSubChapter);
 
-    boolean updateSubChapter(String chapterName,String newTextFile);
-    }
+    boolean updateSubChapter(String chapterName, String newTextFile);
+
+    List<Chapter> getListSimilarChapter(String chapterSimilar);
+
+}
