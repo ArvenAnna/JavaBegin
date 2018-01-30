@@ -20,16 +20,16 @@ public class MyJsonSerializerTest {
         serializer = new JsonSerializatorImplementation();
     }
 
-//    @Test
-//    public void testWriteMouse() throws IllegalAccessException {
-//        Mouse mouse = new Mouse();
-//        mouse.setAge(10);
-//        mouse.setName("mouse");
-//        String expectedResult = "{\"age\":10,\"name\":\"mouse\"}";
-//        String actualResult = serializer.write(mouse);
-//        assertEquals(expectedResult, actualResult);
-//    }
-//
+    @Test
+    public void testWriteMouse() throws IllegalAccessException {
+        Mouse mouse = new Mouse();
+        mouse.setAge(10);
+        mouse.setName("mouse");
+        String expectedResult = "{\"age\":10,\"name\":\"mouse\"}";
+        String actualResult = serializer.write(mouse);
+        assertEquals(expectedResult, actualResult);
+    }
+
 //    @Test
 //    public void testWriteCat() throws IllegalAccessException {
 //        Cat cat = new Cat();
@@ -91,34 +91,34 @@ public class MyJsonSerializerTest {
         }
         assertEquals(user, actualResult);
     }
-//
-//    @Test
-//    public void testReadList() throws Exception {
-//        List<String> list = new ArrayList<>();
-//        list.add("window");
-//        list.add("desc");
-//        list.add("pen");
-//        String expectedResult = "[\"window\",\"desc\",\"pen\"]";
-//        Object actualResult = serializer.read(expectedResult, list.getClass(), null);
-//        assertEquals(list, actualResult);
-//    }
-//
-//    @Test
-//    public void testReadMouseList() throws Exception {
-//        List<Mouse> list = new ArrayList<>();
-//        Mouse mouse = new Mouse();
-//        mouse.setAge(10);
-//        mouse.setName("mouse");
-//        Mouse mouse2 = new Mouse();
-//        mouse2.setAge(9);
-//        mouse2.setName("micky");
-//        String json = "[{\"age\":10,\"name\":\"mouse\"},{\"age\":9,\"name\":\"micky\"}]";
-//        list.add(mouse);
-//        list.add(mouse2);
-//        Object actualResult = serializer.read(json, list.getClass(), Mouse.class);
-//        assertEquals(list, actualResult);
-//    }
-//
+
+    @Test
+    public void testReadList() throws Exception {
+        List<String> list = new ArrayList<>();
+        list.add("window");
+        list.add("desc");
+        list.add("pen");
+        String expectedResult = "[\"window\",\"desc\",\"pen\"]";
+        Object actualResult = serializer.read(expectedResult, list.getClass(), null);
+        assertEquals(list, actualResult);
+    }
+
+    @Test
+    public void testReadMouseList() throws Exception {
+        List<Mouse> list = new ArrayList<>();
+        Mouse mouse = new Mouse();
+        mouse.setAge(10);
+        mouse.setName("mouse");
+        Mouse mouse2 = new Mouse();
+        mouse2.setAge(9);
+        mouse2.setName("micky");
+        String json = "[{\"age\":10,\"name\":\"mouse\"},{\"age\":9,\"name\":\"micky\"}]";
+        list.add(mouse);
+        list.add(mouse2);
+        Object actualResult = serializer.read(json, list.getClass(), Mouse.class);
+        assertEquals(list, actualResult);
+    }
+
 //    @Test
 //    public void testReadCatsList() throws Exception {
 //        List<Cat> list = new ArrayList<>();

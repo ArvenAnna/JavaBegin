@@ -148,7 +148,9 @@ public class SimpleUserDao implements UserDao {
                 logger.info("User successfully find");
                 return user.getRole();
             } else {
-                return null;
+                logger.info("User not find");
+                User user = new User();
+                return user.getRole();
             }
         } catch (SQLException | InterruptedException e) {
             logger.info("An error occurred in the SimpleUserDao class in the findUserByLogin method");

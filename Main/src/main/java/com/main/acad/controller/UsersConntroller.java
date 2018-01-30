@@ -48,22 +48,22 @@ public class UsersConntroller {
 
     @MappingMethod(url = "api/login")
     public void checkUser(HttpServletRequest request, HttpServletResponse response) {
-        User userr = null;
+        User userData = null;
         try {
             String jsonString = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
             JsonSerializer jsonSerializer = new JsonSerializatorImplementation();
-            userr = (User) jsonSerializer.read(jsonString, User.class, null);
+            userData = (User) jsonSerializer.read(jsonString, User.class, null);
         } catch (Exception e) {
             throw new ControllerFailedException(e.getMessage());
         }
-        User user = userSeviceImplementation.findByUser(userr.getLogin(), userr.getPassword());
+        User newUser = userSeviceImplementation.findByUser(userData.getLogin(), userData.getPassword());
         try {
-            if (user == null) {
+            if (newUser == null) {
                 response.getWriter().write("Your login or password have some error please write again");
             } else {
-                if (user.getRole().trim().equals("admin")) {
+                if (newUser.getRole().trim().equals("admin")) {
                     response.getWriter().write("This is logged admin");
-                } else if (user.getRole().trim().equals("user")) {
+                } else if (newUser.getRole().trim().equals("user")) {
                     response.getWriter().write("This is logged user");
                 }
             }

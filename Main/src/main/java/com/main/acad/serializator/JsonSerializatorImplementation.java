@@ -10,7 +10,7 @@ import java.util.List;
 public class JsonSerializatorImplementation implements JsonSerializer {
 
     @Override
-    public String writee(Object obj) throws IllegalAccessException {
+    public String write(Object obj) throws IllegalAccessException {
         if (obj instanceof List) {
             return writeList(obj);
         } else {
@@ -202,26 +202,4 @@ public class JsonSerializatorImplementation implements JsonSerializer {
             return list;
         }
     }
-
-
-//    public static void testReadUser(){
-//        String json = "{\"login\":\"sasha\",\"password\":1,\"role\":\"null\"}";
-//        User user = new User();
-//        user.setLogin("sasha");
-//        user.setPassword(1);
-//      //  user.setRole("admin");
-//        Object actualResult = null;
-//        try {
-//         JsonSerializer   serializer = new JsonSerializatorImplementation();
-//            actualResult = serializer.read(json, User.class, null);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        System.out.println(user);
-//        System.out.println(actualResult);
-//    }
-
-//    public static void main(String[] args) {
-//        testReadUser();
-//    }
 }

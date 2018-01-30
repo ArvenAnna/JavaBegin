@@ -5,6 +5,7 @@ import com.main.acad.error.ChapterDaoFailedExeption;
 import com.main.acad.util.ConnectionPool;
 
 import java.io.File;
+import java.io.InputStream;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.Writer;
@@ -18,9 +19,13 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 import java.util.logging.Logger;
 
 public class SimpleChapterDao implements ChapterDao {
+    private static ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+    private static InputStream inputStream = classLoader.getResourceAsStream("config.properties");
+    private static Properties properties = new Properties();
     private ConnectionPool connectionPool = ConnectionPool.getInstance();
     private static final Logger logger = Logger.getLogger(ChapterDao.class.getName());
     private static final String INSERT_CHAPTER = "INSERT INTO chapters (name) VALUES(?)";
@@ -174,24 +179,39 @@ public class SimpleChapterDao implements ChapterDao {
 
     @Override
     public boolean createNewChildChapter(String chapterName, String nameFile, String chapterText, String nameSubChapters) {
+        FileOutputStream fileOutputStream = null;
+        OutputStreamWriter outputStreamWriter = null;
+        Writer writeFile = null;
+        try {
+            properties.load(inputStream);
+        } catch (IOException e) {
+            logger.info("An error occurred in SimpleChapterDao class with createNewChildChapter methods");
+            throw new ChapterDaoFailedExeption(e.getMessage());
+        }
         try {
             nameFile = nameFile.trim() + ".html";
-            File directoryFile = new File("D:\\IT\\JavaBeginFiles\\" + chapterName + "\\" + nameFile.trim());
-            FileOutputStream fileOutputStream = new FileOutputStream(directoryFile);
-            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(fileOutputStream);
-            Writer writeFile = new BufferedWriter(outputStreamWriter);
+            File directoryFile = new File(properties.getProperty("directoryFile") + chapterName + "\\" + nameFile.trim());
+            fileOutputStream = new FileOutputStream(directoryFile);
+            outputStreamWriter = new OutputStreamWriter(fileOutputStream);
+            writeFile = new BufferedWriter(outputStreamWriter);
             writeFile.write(chapterText.trim());
-            writeFile.close();
             addChapter(String.valueOf(directoryFile));
             addChapter(nameSubChapters);
             addRowIntoReferences(selectID(nameSubChapters), selectID(chapterName), selectID(String.valueOf(directoryFile)));
-            outputStreamWriter.close();
-            fileOutputStream.close();
             logger.info("Create new subChapter successfully ");
             return true;
         } catch (IOException e) {
             logger.info("An error occurred in the SimpleChapterDao class in the createNewChildChapter method" + e.getMessage());
             throw new ChapterDaoFailedExeption(e.getMessage());
+        } finally {
+            try {
+                writeFile.close();
+                outputStreamWriter.close();
+                fileOutputStream.close();
+            } catch (IOException e) {
+                logger.info("An error occurred in the SimpleChapterDao class in the createNewChildChapter method" + e.getMessage());
+                throw new ChapterDaoFailedExeption(e.getMessage());
+            }
         }
     }
 
