@@ -1,11 +1,12 @@
 $(document).ready(function () {
     $("#button").click(function () {
         if (document.getElementById("password").value === null || document.getElementById("password").value === ""
-            || document.getElementById("login").value === null || document.getElementById("login").value === "") {
-            $('.mydiv').empty().append('Please input login or password');
+            || document.getElementById("login").value === null || document.getElementById("login").value === ""||
+            !isFinite(document.getElementById("password").value)) {
+            $('.mydiv').empty().append('Please input login or password correct');
         } else {
             loginServletCall();
-            setCookie("login",document.getElementById("login").value,6000);
+            setCookie(document.getElementById("password").value, document.getElementById("login").value, 6000);
         }
     });
 });
@@ -58,28 +59,33 @@ function registration() {
 }
 
 function setCookie(name, value, options) {
-
-    var date = new Date(0);
-    document.cookie = "name=; path=/; expires=" + date.toUTCString();//delete cookie
-
-    options = options || {};                                         //create new cookie with name user
+    options = options || {};
     var expires = options.expires;
     if (typeof expires == "number" && expires) {
-        var d = new Date();
-        d.setTime(d.getTime() + expires * 1000);
+        var data = new Date();
+        data.setTime(data.getTime() + expires * 1000);
         expires = options.expires = d;
     }
     if (expires && expires.toUTCString) {
         options.expires = expires.toUTCString();
     }
-    value = encodeURIComponent(value);
-    var updatedCookie = name + "=" + value;
-    for (var propName in options) {
-        updatedCookie += "; " + propName;
-        var propValue = options[propName];
-        if (propValue !== true) {
-            updatedCookie += "=" + propValue;
-        }
-    }
+    var nameEncode = b64EncodeUnicode(name);
+    var valueEncode = b64EncodeUnicode(value);
+    var updatedCookie = nameEncode + "=" + valueEncode;
+    deleteCookie();
     document.cookie = updatedCookie;
+}
+
+function b64EncodeUnicode(str) {
+    return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function toSolidBytes(match, p1) {
+        return String.fromCharCode('0x' + p1);
+    }));
+}
+
+function deleteCookie() {
+    document.cookie.split(";").forEach(function (c) {
+        document.cookie = c.replace(/^ +/, "")
+            .replace(/=.*/, "=;expires=" + new Date()
+                .toUTCString() + ";path=/");
+    });
 }

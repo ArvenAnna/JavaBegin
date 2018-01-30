@@ -3,6 +3,8 @@ package com.main.acad.servlet;
 import com.main.acad.dao.SimpleUserDao;
 import com.main.acad.dao.UserDao;
 import com.main.acad.error.NoAccessToFileException;
+import com.main.acad.error.UserDaoFailedException;
+import com.main.acad.util.EncryptUtils;
 
 import java.io.IOException;
 import java.util.logging.Logger;
@@ -29,19 +31,26 @@ public class CookieFilter implements Filter {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         String url = httpServletRequest.getRequestURL().toString();
         Cookie arrayCookies[] = httpServletRequest.getCookies();
-        String cookieValue = "";
+        String cookieNameUser = "";
+        Integer cookiePassword = 0;
         for (Cookie cokies : arrayCookies) {
-            cookieValue = cokies.getValue();
+            String password = cokies.getName();
+            String nameUser = cokies.getValue();
+            String subString = nameUser.substring(0, 2);
+            password += subString;
+            nameUser = nameUser.substring(2, nameUser.length());
+            cookiePassword = Integer.valueOf(EncryptUtils.base64decode(password));
+            cookieNameUser = EncryptUtils.base64decode(nameUser);
         }
         UserDao dao = SimpleUserDao.getInstance();
-        String userStatus = dao.findUserByLogin(cookieValue);
+        String userStatus = dao.findUserByLogin(cookieNameUser, cookiePassword);
         if (userStatus.equals("admin")) {
             try {
                 chain.doFilter(request, response);
             } catch (ServletException | IOException e) {
-                e.printStackTrace();
+                throw new NoAccessToFileException("error in CookieFilter");
             }
-        } else {
+        }else if  (!userStatus.equals("admin")){
             if (url.equals("http://localhost:8084/api/createFile") ||
                     url.equals("http://localhost:8084/api/deleteSubChapter") ||
                     url.equals("http://localhost:8084/api/updateSubChapter")
@@ -49,8 +58,8 @@ public class CookieFilter implements Filter {
             } else {
                 try {
                     chain.doFilter(request, response);
-                } catch (ServletException | IOException e) {
-                    throw new NoAccessToFileException("error in Filter");
+                } catch (ServletException | UserDaoFailedException | IOException e) {
+                    throw new NoAccessToFileException("error in CookieFilter");
                 }
             }
         }

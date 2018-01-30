@@ -18,7 +18,7 @@ public class SimpleUserDao implements UserDao {
     private static final Logger logger = Logger.getLogger(UserDao.class.getName());
     private static final String FIND_ALL_USERS = "SELECT * FROM users ORDER BY login";
     private static final String FIND_BY_USER = "SELECT * FROM users WHERE login=? AND password=?";
-    private static final String FIND_BY_USER_BY_LOGIN = "SELECT * FROM users WHERE login=?";
+    private static final String FIND_BY_USER_BY_LOGIN = "SELECT * FROM users WHERE login=? AND password=?";
     private static final String EXIT_USER = "SELECT * FROM users WHERE login =?";
     private static final String CREATE_USER = "INSERT INTO users( login, password, role) VALUES (?, ?, ?);";
     private static Connection connection;
@@ -130,15 +130,16 @@ public class SimpleUserDao implements UserDao {
     }
 
     @Override
-    public  String findUserByLogin(String login) {
+    public  String findUserByLogin(String login,Integer password) {
         try {
             connection = connectionPool.borrowConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_USER_BY_LOGIN);
             preparedStatement.setString(1, login);
+            preparedStatement.setInt(2, password);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 login = resultSet.getString("login");
-                Integer password = resultSet.getInt("password");
+                password = resultSet.getInt("password");
                 String role = resultSet.getString("role");
                 User user = User._myuserbuilder()
                         .login(login)
@@ -149,7 +150,11 @@ public class SimpleUserDao implements UserDao {
                 return user.getRole();
             } else {
                 logger.info("User not find");
-                User user = new User();
+                User user  = User._myuserbuilder()
+                        .login(login)
+                        .password(password)
+                        .role("null")
+                        .build();
                 return user.getRole();
             }
         } catch (SQLException | InterruptedException e) {

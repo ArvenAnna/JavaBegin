@@ -13,5 +13,5 @@ public interface UserDao {
 
     boolean createNewUser(String login, Integer password, String role);
 
-    String findUserByLogin(String login);
+    String findUserByLogin(String login,Integer password);
 }
