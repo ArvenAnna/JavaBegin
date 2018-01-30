@@ -250,7 +250,7 @@ public class SimpleChapterDao implements ChapterDao {
         try {
             connection = connectionPool.borrowConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(SEARCH_SIMILAR);
-            preparedStatement.setString(1, chapterSimilar + "%");
+            preparedStatement.setString(1, "%" + chapterSimilar + "%");
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 Chapter chapter = new Chapter();
