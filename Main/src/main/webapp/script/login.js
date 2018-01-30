@@ -30,10 +30,10 @@ function loginServletCall() {
             } else {
                 $('.mydiv').empty().append(data.responseText.trim(data.responseText));
                 if (data.responseText.trim(data.responseText) === "This is logged admin") {
-                    self.location = "head.html";
+                    $('#bodyId').load("head.html");
                 }
                 else if (data.responseText.trim(data.responseText) === "This is logged user") {
-                    self.location = "user.html";
+                    $('#bodyId').load("user.html");
                 }
             }
         }],
@@ -43,10 +43,10 @@ function loginServletCall() {
             } else {
                 $('.mydiv').empty().append(data.responseText.trim(data.responseText));
                 if (data.responseText.trim(data.responseText) === "This is logged admin") {
-                    self.location = "head.html";
+                    $('#bodyId').empty().load("head.html");
                 }
                 else if (data.responseText.trim(data.responseText) === "This is logged user") {
-                    self.location = "user.html";
+                    $('#bodyId').empty().load("user.html");
                 }
             }
         }
@@ -54,7 +54,7 @@ function loginServletCall() {
 }
 
 function registration() {
-    self.location = "registration.html";
+    $('#bodyId').load("registration.html");
 }
 
 function setCookie(name, value, options) {

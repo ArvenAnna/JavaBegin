@@ -55,16 +55,17 @@ function buildChapterContent(data) {
 }
 
 function exitLogin() {
-    self.location = "index.html";
+    $('#bodyId').load("index.html");
 }
 
 function addNewFile() {
-    self.location = "create.html";
+    $('#bodyId').load("create.html");
 }
 
 function deleteFile() {
-    self.location = "delete.html";
+    $('#bodyId').load("delete.html");
 }
+
 function updateFile(){
-    self.location = "update.html";
+    $('#bodyId').load("update.html");
 }

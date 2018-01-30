@@ -22,7 +22,7 @@ function loginServletCall() {
     $.get('api/checkDateUser', userLogin, function (data) {
         if (data === "this is free login") {
             $.get('api/createNewUser', allDate, function (data) {
-                self.location = "index.html";
+                $('#bodyId').load("index.html");
             });
         } else {
             $('.div_result').empty().append(data);
@@ -31,5 +31,5 @@ function loginServletCall() {
 };
 
 function exit() {
-    self.location = "index.html";
+    $('#bodyId').load("index.html");
 }

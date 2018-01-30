@@ -44,13 +44,13 @@ function update(e) {
     $.get('/api/updateSubChapter', chapterData, function (data) {
         if (data === "") {
             alert("You don't have access to update new file");
-            self.location = "/";
+            $('#bodyId').load("index.html");
         } else {
-            location.reload();
+            $('#bodyId').load("head.html");
         }
     });
 }
 
 function exit() {
-    self.location = "head.html";
+        $('#bodyId').load("head.html");
 }

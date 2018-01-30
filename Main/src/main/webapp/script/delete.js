@@ -33,11 +33,10 @@ function deleteChapter(event) {
     $.get(url, function (data) {
         if (data === "") {
             alert("You don't have access to delete file");
-            self.location = "/";
-        }
+            $('#bodyId').load("index.html");        }
         else if (data) {
             $('.mydiv').empty().append("Successufull delete file");
-            location.reload();
+            $('#bodyId').load("head.html");
         }
         else {
             $('.mydiv').empty().append("File not delete");
@@ -46,5 +45,4 @@ function deleteChapter(event) {
 }
 
 function exit() {
-    self.location = "head.html";
-}
+    $('#bodyId').load("index.html");}

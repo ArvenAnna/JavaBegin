@@ -8,11 +8,11 @@ function clickOnButton() {
     $.get('/api/createFile', chapterDate, function (data) {
         if (data === "") {
             alert("You don't have access to create new file");
-            self.location = "/";
+            $('#bodyId').load("index.html");
         }
         else if (true) {
             $('.result').empty().append("The file successfully save ");
-            location.reload();
+            $('#bodyId').load("head.html");
         } else {
             $('.result').empty().append("The file have error ");
         }
@@ -20,5 +20,5 @@ function clickOnButton() {
 }
 
 function exit() {
-    self.location = "head.html";
+    $('#bodyId').load("head.html");
 }
