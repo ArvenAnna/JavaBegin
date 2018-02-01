@@ -24,21 +24,21 @@ function loginServletCall() {
         url: 'api/login',
         data: userDataJson,
         contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        success: [function () {
+        dataType: "text",
+        success: [function (data) {//this is work when dataType : "text"
             if (data.responseText === "Your login or password have some error please write again") {
-                $('.mydiv').empty().append(data.responseText.trim(data.responseText));
+                $('.mydiv').empty().append(data);
             } else {
-                $('.mydiv').empty().append(data.responseText.trim(data.responseText));
-                if (data.responseText.trim(data.responseText) === "This is logged admin") {
+                $('.mydiv').empty().append(data);
+                if (data === "This is logged admin") {
                     $('#bodyId').load("head.html");
                 }
-                else if (data.responseText.trim(data.responseText) === "This is logged user") {
+                else if (data === "This is logged user") {
                     $('#bodyId').load("user.html");
                 }
             }
         }],
-        error: function (data) {
+        error: function (error) {//this is work when dataType :" json"
             if (data.responseText === "Your login or password have some error please write again") {
                 $('.mydiv').empty().append(data.responseText.trim(data.responseText));
             } else {
