@@ -11,4 +11,14 @@ public interface ChaptersService {
     List<Chapter> listChapters();
 
     List<Chapter> listChildren(int id);
+
+    boolean createNewChildChapter(String nameFile,String context,String chapterName,String nameSubChapters);
+
+    List<Chapter> listAllSubChapters();
+
+    boolean deleteSubChapter(String nameSubChapter);
+
+    boolean updateSubChapter(String chapterName,String newTextFile);
+
+    List<Chapter> getListSimilarChapter(String chapterSimilar);
 }

@@ -1,9 +1,11 @@
 $(document).ready(function () {
-    $("#button").click(function () {
+    $("#registration").click(function () {
         if (document.getElementById("password").value === null || document.getElementById("password").value === ""
             || document.getElementById("login").value === null || document.getElementById("login").value === ""
-            || document.getElementById("role").value === null || document.getElementById("role").value === "") {
+        ) {
             $('.div_result').empty().append("You did not fill all the fields");
+        } else if (!document.getElementById("password").value.match(/^\d+$/)) {
+            $('.div_result').empty().append("You password can contains only numbers");
         } else {
             loginServletCall();
         }
@@ -16,17 +18,24 @@ function loginServletCall() {
     };
     var allDate = {
         "login": document.getElementById("login").value,
-        "password": document.getElementById("password").value,
-        "role": document.getElementById("role").value
+        "password": document.getElementById("password").value
     };
 
     $.get('api/checkDateUser', userLogin, function (data) {
         if (data === "this is free login") {
             $.get('api/createNewUser', allDate, function (data) {
-                self.location = "index.html";
+                $('#login').val('');
+                $('#password').val('');
+                $('.div_result').empty().append("You have successfully registered");
             });
-        } else {
-            $('.div_result').empty().append(data);
         }
+    }).fail(function () {
+        $('.div_result').empty().append("This login is busy, try the other one");
+        $('#login').val('');
+        $('#password').val('');
     });
+};
+
+function exit() {
+    $('#bodyId').load("index.html");
 }

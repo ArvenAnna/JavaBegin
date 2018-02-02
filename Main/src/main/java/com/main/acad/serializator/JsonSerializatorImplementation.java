@@ -1,5 +1,7 @@
 package com.main.acad.serializator;
 
+import com.main.acad.entity.User;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
@@ -70,15 +72,16 @@ public class JsonSerializatorImplementation implements JsonSerializer {
     private Object readObject(String string, Class clazz) throws Exception {
 
         string = string.replaceAll("\"", "");
+        string = string.replaceAll("}", ",");
         Object objec = clazz.newInstance();
         Field field[] = clazz.getDeclaredFields();
-        string += ",";
+       // string += ",";
         for (Field f : field) {
             if (!string.contains(":")) {
                 f.setAccessible(false);
             } else {
                 f.setAccessible(true);
-                if (f.getType() == Integer.TYPE) {
+                if (f.getType() == Integer.class) {
                     f.set(objec, Integer.parseInt(string.substring(string.indexOf(":") + 1, string.indexOf(","))));
                     string = string.substring(string.indexOf(",") + 1);
                 } else if (f.getType() == Boolean.TYPE) {
@@ -86,7 +89,6 @@ public class JsonSerializatorImplementation implements JsonSerializer {
                     string = string.substring(string.indexOf(",") + 1);
                 } else if (f.getType() != String.class && f.getType() != List.class) {
                     String s = string.substring(string.indexOf("{"));
-
                     f.set(objec, readObject(s, Class.forName(String.valueOf(f.getType().getName()))));
                 } else if (f.getType() == List.class) {
                     if (string.contains("null")) {

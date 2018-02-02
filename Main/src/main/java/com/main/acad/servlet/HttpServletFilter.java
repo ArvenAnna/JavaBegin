@@ -13,6 +13,7 @@ private static final String ENCODING = "UTF-8";
 private static final String ENCODING_TEXT = "text/html;charset=UTF-8";
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) {
+
         try {
             request.setCharacterEncoding(ENCODING);
             chain.doFilter(request, response);
@@ -30,3 +31,4 @@ private static final String ENCODING_TEXT = "text/html;charset=UTF-8";
     public void init(FilterConfig filterConfig) {
     }
 }
+

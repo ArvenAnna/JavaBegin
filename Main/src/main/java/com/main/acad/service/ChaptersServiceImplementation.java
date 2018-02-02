@@ -36,6 +36,7 @@ public class ChaptersServiceImplementation implements ChaptersService {
                 filePage.append((char) count);
             }
             logger.info("File : " + name + " successfully read");
+            fileReader.close();
         } catch (IOException e) {
             logger.info("An error occurred in the ChaptersServiceImplementation class in the getInformstioAboutChildren method");
             throw new ChapterDaoFailedExeption(e.getMessage());
@@ -51,6 +52,31 @@ public class ChaptersServiceImplementation implements ChaptersService {
     @Override
     public List<Chapter> listChildren(int id) throws ChapterDaoFailedExeption {
         return dao.getlistChildren(id);
+    }
+
+    @Override
+    public boolean createNewChildChapter(String nameFile, String chapterName, String chapterText, String nameSubChapters) {
+        return dao.createNewChildChapter(nameFile, chapterName, chapterText, nameSubChapters);
+    }
+
+    @Override
+    public List<Chapter> listAllSubChapters() {
+        return dao.getListAllSubChapters();
+    }
+
+    @Override
+    public boolean deleteSubChapter(String nameSubChapter) {
+        return dao.deleteSubChapter(nameSubChapter);
+    }
+
+    @Override
+    public boolean updateSubChapter(String chapterName,String newTextFile) {
+     return dao.updateSubChapter(chapterName,newTextFile);
+    }
+
+    @Override
+    public List<Chapter> getListSimilarChapter(String chapterSimilar){
+        return dao.getListSimilarChapter(chapterSimilar);
     }
 
 }

@@ -3,6 +3,7 @@ package com.main.acad.servlet;
 import com.main.acad.annotation.MappingMethod;
 import com.main.acad.error.ControllerNotFoundException;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -23,6 +24,15 @@ public class Servlet extends HttpServlet implements javax.servlet.Servlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) {
+      if(response.getContentType()=="error"){
+          try {
+              logger.info("An error occurred in the Servlet class in the doGet method" );
+              response.sendRedirect(response.encodeRedirectURL("/exception_page.html"));
+          } catch (Exception e1) {
+              throw new ControllerNotFoundException("");
+          }
+      }
+
         response.setContentType("text/html");
         String url = request.getRequestURL().toString();
         url = url.substring(url.indexOf("4") + 2);
@@ -32,8 +42,25 @@ public class Servlet extends HttpServlet implements javax.servlet.Servlet {
             try {
                 logger.info("An error occurred in the Servlet class in the doGet method" + e.getMessage());
                 response.sendRedirect(response.encodeRedirectURL("/exception_page.html"));
+            } catch (Exception e1) {
+                throw new ControllerNotFoundException(e.getMessage());
+            }
+        }
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setContentType("text/html");
+        String url = request.getRequestURL().toString();
+        url = url.substring(url.indexOf("4") + 2);
+        try {
+            invokeController(url, request, response);
+        } catch (Exception e) {
+            try {
+                logger.info("An error occurred in the Servlet class in the doPost method" + e.getMessage());
+                response.sendRedirect(response.encodeRedirectURL("/exception_page.html"));
             } catch (IOException e1) {
-                throw new IllegalArgumentException(e.getMessage());
+                throw new ControllerNotFoundException(e.getMessage());
             }
         }
     }
@@ -56,7 +83,7 @@ public class Servlet extends HttpServlet implements javax.servlet.Servlet {
             }
         } catch (Exception e) {
             logger.info("An error occurred in the Servlet class in the invokeController method" + e.getMessage());
-            throw new IllegalArgumentException(e.getMessage());
+            throw new ControllerNotFoundException(e.getMessage());
         }
     }
 
@@ -77,7 +104,7 @@ public class Servlet extends HttpServlet implements javax.servlet.Servlet {
             return listControllers;
         } catch (IOException | ClassNotFoundException e) {
             logger.info("An error occurred in the Servlet class in the getAllControllers method" + e.getMessage());
-            throw new IllegalArgumentException(e.getMessage());
+            throw new ControllerNotFoundException(e.getMessage());
         }
     }
 

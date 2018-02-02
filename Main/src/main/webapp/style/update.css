@@ -1,21 +1,31 @@
-Skip to content
-This repository
-Search
-Pull requests
-Issues
-Marketplace
-Explore
-@sasha96
-Sign out
-Watch 2
-Star 0  Fork 2 ArvenAnna/JavaBegin
-Code  Issues 0  Pull requests 2  Projects 0  Wiki  Insights
-Branch: sashaZhurylo Find file Copy pathJavaBegin/Main/src/main/webapp/style/head.css
-a6b7915  6 days ago
-@dooky96 dooky96 new file
-1 contributor
-RawBlameHistory
-454 lines (375 sloc)  7.22 KB
+.changedTextSubChapter {
+    color: #3046d0;
+    margin-top: 10px;
+    margin-left: 15px;
+}
+
+.updateButton {
+    background-color: #c2b3a1;
+    width: 170px;
+    height: 35px;
+    margin-left: 20px;
+    margin-top: 10px;
+    border-radius: 8px;
+}
+.changedTextSubChapter{
+    background-color: #e4e4e4;
+    border-radius:25px;
+}
+
+#exit{
+    background-color: #c2b3a1;
+    width: 170px;
+    height: 35px;
+    margin-left: 20px;
+    margin-top: 10px;
+    border-radius: 8px;
+}
+
 * {
     border: 0;
     margin: 0;
@@ -114,16 +124,10 @@ body {
 
 #content {
     width: 784px;
-    background: url(../images/content_bg.jpg) 7px repeat-y #FFFFFF;
+    background-color:#e2cba9;
 }
 
-#content_top {
-    background: url(../images/content_top.gif) 7px top no-repeat;
-}
 
-#content_bot {
-    background: url(../images/content_bot.gif) 7px bottom no-repeat;
-}
 
 #left {
     width: 502px;
@@ -469,10 +473,4 @@ body {
 
 .animenu__nav--open .animenu__nav__child {
     display: block;
-}
-#exit{
-    width:100px;
-    margin-left:auto;
-    background-color: #e4e4e4;
-    border-radius:5px;
 }

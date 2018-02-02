@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface ChapterDao {
 
-    void addChapter(Chapter chapter);
+    void addChapter(String name);
 
     void updateChapter(Chapter chapter);
 
@@ -18,5 +18,15 @@ public interface ChapterDao {
     List<Chapter> getlistChapters();
 
     List<Chapter> getlistChildren(int id);
+
+    boolean createNewChildChapter(String chapterName, String nameFile, String context, String nameSubChapters);
+
+    List<Chapter> getListAllSubChapters();
+
+    boolean deleteSubChapter(String nameSubChapter);
+
+    boolean updateSubChapter(String chapterName, String newTextFile);
+
+    List<Chapter> getListSimilarChapter(String chapterSimilar);
 
 }

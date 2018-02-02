@@ -12,14 +12,14 @@ import java.util.List;
 @EqualsAndHashCode(of = {"name", "enemies"})
 @ToString
 public class Dog {
-    private String nameD;
-    private List<Cat> enemies;
-
-    public Dog() {
-    }
-
-    public Dog(String nameD, List<Cat> enemies) {
-        this.nameD = nameD;
-        this.enemies = enemies;
-    }
+//    private String nameD;
+//    private List<Cat> enemies;
+//
+//    public Dog() {
+//    }
+//
+//    public Dog(String nameD, List<Cat> enemies) {
+//        this.nameD = nameD;
+//        this.enemies = enemies;
+//    }
 }

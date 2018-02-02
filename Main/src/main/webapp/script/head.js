@@ -1,4 +1,7 @@
 $(function () {
+    if (document.cookie==""){
+        exitLogin();
+    }
     $.get('/api/chapter', function (data) {
         var headerItems = JSON.parse(data);
         for (var i = 0; i < headerItems.length; i++) {
@@ -28,21 +31,44 @@ function showChildrenChapters(e, data) {
     }
 }
 
+function buildChapterSearch(data) {
+    var nameChapter = JSON.parse(data);
+    $('#l').parent().find('#l').empty();
+    for(var i = 0; i < nameChapter.length; i ++){
+        var variableH = $('<a>' + nameChapter[i].name + '</a>' + '<br/>');
+        $('#l').parent().find('#l').append(variableH);
+        variableH.on('click', {name: nameChapter[i].name},onClickHandlerForLastChapterChild);
+    }
+}
+
+function onClickHandlerForLastChapterChild(event) {
+    var url = 'api/subChapterByName?name=' + event.data.name;
+    $('#mySearch').val('');
+    $.get(url, buildChapterContent);
+}
+
+function buiilChpatersContentFromSearch(value) {
+    var url = 'api/similarChapter?name=' + value;
+    $.get(url, buildChapterSearch);
+}
+
 function buildChapterContent(data) {
     var variableH = $('<h1>' + data + '</h1>');
     $('#l').parent().find('#l').empty().append(variableH);
 }
 
-function onClickHandlerForLastChapterChild(event) {
-    var url = 'api/subChapterByName?name=' + event.data.name;
-    $.get(url, buildChapterContent);
-}
-
-function buiilChpatersContentFromSearch(value) {
-    var url = 'api/subChapterByName?name=' + value;
-    $.get(url, buildChapterContent);
-}
-
 function exitLogin() {
-    self.location = "index.html";
+    $('#bodyId').load("index.html");
+}
+
+function addNewFile() {
+    $('#bodyId').load("create.html");
+}
+
+function deleteFile() {
+    $('#bodyId').load("delete.html");
+}
+
+function updateFile(){
+    $('#bodyId').load("update.html");
 }

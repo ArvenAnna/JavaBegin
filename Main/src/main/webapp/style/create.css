@@ -1,21 +1,3 @@
-Skip to content
-This repository
-Search
-Pull requests
-Issues
-Marketplace
-Explore
-@sasha96
-Sign out
-Watch 2
-Star 0  Fork 2 ArvenAnna/JavaBegin
-Code  Issues 0  Pull requests 2  Projects 0  Wiki  Insights
-Branch: sashaZhurylo Find file Copy pathJavaBegin/Main/src/main/webapp/style/head.css
-a6b7915  6 days ago
-@dooky96 dooky96 new file
-1 contributor
-RawBlameHistory
-454 lines (375 sloc)  7.22 KB
 * {
     border: 0;
     margin: 0;
@@ -23,6 +5,41 @@ RawBlameHistory
 
 img {
     border: 0;
+}
+
+#name_file, #name_subChapters {
+    height: 20px;
+    border-radius: 4px;
+    margin-left: 10px;
+    margin-right: 10px;
+    text-align: center;
+}
+
+#menu {
+    border-radius: 6px;
+    width: 150px;
+    height: 25px;
+    margin-top: 20px;
+    margin-left: 20px;
+}
+
+#text {
+    height: 200px;
+    border-radius: 8px;
+    margin-top: 10px;
+    margin-left: 10px;
+    height: 150px;
+    width: 600px;
+    padding-left: 10px;
+}
+
+button {
+    background-color: #c2b3a1;
+    width: 170px;
+    height: 35px;
+    margin-left: 20px;
+    margin-top: -10px;
+    border-radius: 8px;
 }
 
 a {
@@ -39,6 +56,11 @@ body {
     font: 12px Arial, Helvetica, sans-serif;
     color: #000000;
     background: #694815 url(../images/bg.jpg) repeat-x top;
+}
+
+#create {
+    height: 400px;
+    width: auto;
 }
 
 #main {
@@ -113,8 +135,8 @@ body {
 }
 
 #content {
-    width: 784px;
-    background: url(../images/content_bg.jpg) 7px repeat-y #FFFFFF;
+    width: 715px;
+    background-color: #e2cead;
 }
 
 #content_top {
@@ -126,13 +148,9 @@ body {
 }
 
 #left {
-    width: 502px;
+    width: 602px;
     padding: 0 0 0 0;
     margin: 0 0 0 0;
-}
-
-.text {
-    padding: 15px;
 }
 
 #left h1 {
@@ -256,15 +274,28 @@ body {
 
 }
 
+#logo {
+    width: 700px;
+    text-align: right;
+    padding-top: 30px;
+    padding-right: 10px;
+    height: 80px;
+
+    background: url(../images/picture.jpg) 7px 0 no-repeat;
+}
+
+textarea {
+    margin-top: 10px;
+}
+
 #footer {
     height: 44px;
-    width: 770px;
+    width: 701px;
     font-size: 10px;
     color: #FFFFFF;
     padding-top: 23px;
     text-align: center;
     clear: both;
-    margin: 0 auto;
     background: url(../images/futer.jpg) bottom repeat-x #FFFFFF;
     border-left: 7px solid #FFFFFF;
     border-right: 7px solid #FFFFFF;
@@ -294,185 +325,3 @@ body {
     font-size: 12px
 }
 
-.animenu {
-
-    display: block;
-}
-
-.animenu ul {
-    padding: 0;
-    list-style: none;
-    font: 0 'Open Sans', Arial, Helvetica;
-}
-
-.animenu li, .animenu a {
-    display: inline-block;
-    font-size: 15px;
-}
-
-.animenu a {
-    color: #aaaaaa;
-    text-decoration: none;
-}
-
-.animenu__nav {
-
-}
-
-.animenu__nav > li {
-    position: relative;
-    border-right: 1px solid #917854;
-    border-left: 1px solid #917854;
-}
-
-.animenu__nav > li > a {
-
-}
-
-.animenu__nav > li > a:first-child:nth-last-child(2):before {
-    content: "";
-    position: absolute;
-    border: 1px solid transparent;
-    border-bottom: 0;
-    border-top-color: currentColor;
-    top: 1%;
-    margin-top: auto;
-    right: auto;
-}
-
-.animenu__nav > li:hover > ul {
-    opacity: 1;
-    visibility: visible;
-    margin: 0;
-}
-
-.animenu__nav > li:hover > a {
-    color: #adb;
-}
-
-.animenu__nav__child {
-    min-width: 100%;
-    position: absolute;
-    top: 100%;
-    left: 1%;
-    z-index: 0;
-    opacity: 0;
-    visibility: hidden;
-    margin: 0 0 0 0;
-    background-color: #9b7b4a;
-    -webkit-transition: margin .15s, opacity .15s;
-    transition: margin .15s, opacity .15s;
-}
-
-.animenu__nav__child > li {
-    width: 100%;
-    border-bottom: 1px solid #373737;
-}
-
-.animenu__nav__child > li:first-child > a:after {
-    content: '';
-    position: absolute;
-    height: 0;
-    width: 0;
-    left: 1em;
-    top: -6px;
-    border: 6px solid transparent;
-    border-top: 0;
-    border-bottom-color: inherit;
-}
-
-.animenu__nav__child > li:last-child {
-    border: 0;
-}
-
-.animenu__nav__child a {
-    padding: 1px;
-    width: 100%;
-    border-color: #373737;
-}
-
-.animenu__nav__child a:hover {
-    background-color: #0186ba;
-    border-color: #0186ba;
-    color: #fff;
-}
-
-@media screen and (max-width: 767px) {
-    .animenu__toggle {
-        display: inline-block;
-    }
-
-    .animenu__nav,
-    .animenu__nav__child,
-    .animenu__nav {
-        margin: 1px 0;
-    }
-
-    .animenu__nav > li {
-        width: 100%;
-        border-right: 0;
-        border-bottom: 1px solid #515151;
-    }
-
-    .animenu__nav > li:last-child {
-        border: 0;
-    }
-
-    .animenu__nav > li:first-child > a:after {
-        content: '';
-        position: absolute;
-        height: 0;
-        width: 0;
-        left: 1em;
-        top: 1px;
-        border: 1px solid transparent;
-        border-top: 0;
-        border-bottom-color: inherit;
-    }
-
-    .animenu__nav > li > a {
-        width: 100%;
-        padding: 1px;
-        border-color: #111111;
-        position: relative;
-    }
-
-    .animenu__nav a:hover {
-        background-color: #0186ba;
-        border-color: #0186ba;
-        color: #fff;
-    }
-
-    .animenu__nav__child {
-        position: static;
-        background-color: #373737;
-        margin: 0;
-        -webkit-transition: none;
-        transition: none;
-        visibility: visible;
-        opacity: 1;
-    }
-
-    .animenu__nav__child > li:first-child > a:after {
-        content: none;
-    }
-
-    .animenu__nav__child a {
-        padding-left: 2px;
-        width: 100%;
-    }
-}
-
-.animenu__nav--open {
-    display: block !important;
-}
-
-.animenu__nav--open .animenu__nav__child {
-    display: block;
-}
-#exit{
-    width:100px;
-    margin-left:auto;
-    background-color: #e4e4e4;
-    border-radius:5px;
-}

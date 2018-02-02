@@ -1,49 +1,55 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Registration Java Begin</title>
-    <link href="style/registration.css" rel="stylesheet" type="text/css" media="screen"/>
-</head>
-<body>
+<body id="bodyId">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Java Begin</title>
+<link href="style/registration.css" rel="stylesheet" type="text/css" media="screen"/>
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-<script type="text/javascript" src="script/registration.js" charset="UTF-8"></script>
-<div id="page">
-    <header id="header">
-        <div id="header-inner">
-        </div>
-    </header>
-    <div id="content">
-        <div id="content-inner">
-            <main id="contentbar">
-                <div class="article">
-                    <p> Login :</p>
-                      <input type="login" id="login" value=""/>
-					  <nav class="nav_login">
-                        <div class="div_login">
-						</div>
-					</nav>
-                    <p> Password :</p>
-                        <input type="password" id="password" value=""/>
-						<nav class="nav_password">
-                        <div class="div_password">
-						</div>
-					</nav>
-                    <p> Role :</p>
-                        <input type="role" id="role" value=""/>
-						<nav class="nav_role">
-                        <div class="div_role">
-						</div>
-					</nav>
-                    <p><button id="button">Registration</button></p>
-                    <nav class="nav_result">
-                        <div class="div_result">
-						</div>
-					</nav>
+<script type="text/javascript" src="script/registr.js" charset="UTF-8"></script>
+<table class="kangndo1">
+    <tr>
+        <td>
+            <div id="kangndo2">
+                <div id="kangndo3">
+                    <span class="kangndo4"> Java Begin </span>
                 </div>
-            </main>
-        </div>
-    </div>
-</div>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td id="kangndo5">
+            <div class="kangndo6">
+                <img style="position:relative; top:3px;" src="images/lock.png" alt=""/> Registration
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div id="kangndo7">
+                <div id="kangndo8">
+                    <div id="kangndo9">
+                        <input type="hidden" name="popup" value="true"/>
+                        <input class="kangndo11" name="username" type="login" id="login" placeholder="Username"
+                        />
+                        <br/>
+                        <input class="kangndo11" name="password" type="password" id="password" placeholder="Password"
+                        >
+                        <br/>
+                        <button class="registration" id="registration">Registration</button>
+
+                        <button class="exit"  id="exit" onclick="exit()">exit</button>
+                        <br/>
+                        <nav class="cl">
+                            <div id="div_result" class="div_result">
+                            </div>
+                        </nav>
+                        <div>
+                            <br/>
+                        </div>
+                        <br/>
+                        Contact Us:<br/><b>sasha.zhurylo@gmail.com</b>
+                    </div>
+                </div>
+            </div>
+        </td>
+    </tr>
+</table>
 </body>
-</html>
