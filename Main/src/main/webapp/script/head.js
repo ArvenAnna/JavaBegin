@@ -3,6 +3,7 @@ $(function () {
         exitLogin();
     }
     $.get('/api/chapter', function (data) {
+        document.body.style.cursor = 'pointer';
         var headerItems = JSON.parse(data);
         for (var i = 0; i < headerItems.length; i++) {
             var variableLi = $('<li></li>');
@@ -32,6 +33,7 @@ function showChildrenChapters(e, data) {
 }
 
 function buildChapterSearch(data) {
+    document.body.style.cursor = 'pointer';
     var nameChapter = JSON.parse(data);
     $('#l').parent().find('#l').empty();
     for(var i = 0; i < nameChapter.length; i ++){

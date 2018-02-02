@@ -22,11 +22,18 @@ public class CookieFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
-        HttpServletResponse httpServletResponse = (HttpServletResponse) response;
         String url = httpServletRequest.getRequestURL().toString();
-        Cookie arrayCookies[] = httpServletRequest.getCookies();
-        String cookieNameUser = "";;
-        Integer cookiePassword = 0;
+        if (url.contains("api/checkDateUser")||url.contains("api/createNewUser")) {
+            try {
+                chain.doFilter(request, response);
+            } catch (ServletException | UserDaoFailedException | IOException e) {
+                throw new NoAccessToFileException("error in CookieFilter");
+            }
+        } else {
+            Cookie arrayCookies[] = httpServletRequest.getCookies();
+            String cookieNameUser = "";
+            ;
+            Integer cookiePassword = 0;
             for (Cookie cokies : arrayCookies) {
                 String password = cokies.getName();
                 String nameUser = cokies.getValue();
@@ -58,6 +65,8 @@ public class CookieFilter implements Filter {
                 }
             }
         }
+    }
+
 
     @Override
     public void destroy() {

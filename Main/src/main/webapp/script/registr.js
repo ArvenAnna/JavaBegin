@@ -5,6 +5,7 @@ $(document).ready(function () {
         ) {
             $('.div_result').empty().append("You did not fill all the fields");
         } else if (!document.getElementById("password").value.match(/^\d+$/)) {
+            $('#password').val('');
             $('.div_result').empty().append("You password can contains only numbers");
         } else {
             loginServletCall();
@@ -28,11 +29,13 @@ function loginServletCall() {
                 $('#password').val('');
                 $('.div_result').empty().append("You have successfully registered");
             });
+        }else{
+            $('.div_result').empty().append("This login is busy, try the other one");
+            $('#login').val('');
+            $('#password').val('');
         }
-    }).fail(function () {
-        $('.div_result').empty().append("This login is busy, try the other one");
-        $('#login').val('');
-        $('#password').val('');
+    }).fail(function (error) {
+        alert(error);
     });
 };
 

@@ -24,15 +24,6 @@ public class Servlet extends HttpServlet implements javax.servlet.Servlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) {
-      if(response.getContentType()=="error"){
-          try {
-              logger.info("An error occurred in the Servlet class in the doGet method" );
-              response.sendRedirect(response.encodeRedirectURL("/exception_page.html"));
-          } catch (Exception e1) {
-              throw new ControllerNotFoundException("");
-          }
-      }
-
         response.setContentType("text/html");
         String url = request.getRequestURL().toString();
         url = url.substring(url.indexOf("4") + 2);
