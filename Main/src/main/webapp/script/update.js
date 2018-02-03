@@ -1,3 +1,9 @@
+$(document).ready(function () {
+    if (document.cookie==""){
+        exit();
+    }
+});
+
 $(function () {
     $.get('/api/chapter', function (data) {
         var headerItems = JSON.parse(data);
@@ -29,8 +35,9 @@ function showChildrenChapters(e, data) {
 }
 
 function updateChapter(event) {
+    $('.div_result').empty();
     $.get('api/subChapterByName?name=' + event.data.name, function (data) {
-        $('.changedTextSubChapter').empty().append(data);
+        $('#changedTextSubChapter').empty().append(data.trim());
     });
     var nameChildChapter = event.data;
     $(".updateButton").on("click", nameChildChapter, update);
@@ -46,11 +53,12 @@ function update(e) {
             alert("You don't have access to update new file");
             $('#bodyId').load("index.html");
         } else {
-            $('#bodyId').load("head.html");
+            $('.div_result').empty().append("The file successfully update ");
+            $('#bodyId').load("update.html");
         }
     });
 }
 
 function exit() {
-        $('#bodyId').load("head.html");
+    $('#bodyId').load("head.html");
 }

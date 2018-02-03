@@ -1,8 +1,8 @@
 $(document).ready(function () {
+    deleteCookie();
     $("#button").click(function () {
         if (document.getElementById("password").value === null || document.getElementById("password").value === ""
-            || document.getElementById("login").value === null || document.getElementById("login").value === ""||
-            !isFinite(document.getElementById("password").value)) {
+            || document.getElementById("login").value === null || document.getElementById("login").value === "" || !isFinite(document.getElementById("password").value)) {
             $('.mydiv').empty().append('Please input login or password correct');
         } else {
             loginServletCall();
@@ -38,16 +38,16 @@ function loginServletCall() {
                 }
             }
         }],
-        error: function (error) {//this is work when dataType :" json"
+        error: function (data) {//this is work when dataType :" json"
             if (data.responseText === "Your login or password have some error please write again") {
-                $('.mydiv').empty().append(data.responseText.trim(data.responseText));
+                $('.mydiv').empty().append(data);
             } else {
-                $('.mydiv').empty().append(data.responseText.trim(data.responseText));
-                if (data.responseText.trim(data.responseText) === "This is logged admin") {
-                    $('#bodyId').empty().load("head.html");
+                $('.mydiv').empty().append(data);
+                if (data === "This is logged admin") {
+                    $('#bodyId').load("head.html");
                 }
-                else if (data.responseText.trim(data.responseText) === "This is logged user") {
-                    $('#bodyId').empty().load("user.html");
+                else if (data === "This is logged user") {
+                    $('#bodyId').load("user.html");
                 }
             }
         }
@@ -86,6 +86,6 @@ function deleteCookie() {
     document.cookie.split(";").forEach(function (c) {
         document.cookie = c.replace(/^ +/, "")
             .replace(/=.*/, "=;expires=" + new Date()
-                .toUTCString() + ";path=/");
+                    .toUTCString() + ";path=/");
     });
 }

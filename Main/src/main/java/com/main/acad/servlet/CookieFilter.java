@@ -8,15 +8,8 @@ import com.main.acad.util.EncryptUtils;
 
 import java.io.IOException;
 import java.util.logging.Logger;
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
+import javax.servlet.*;
+import javax.servlet.http.*;
 
 public class CookieFilter implements Filter {
     private static final Logger logger = Logger.getLogger(HttpServlet.class.getName());
@@ -30,40 +23,50 @@ public class CookieFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         String url = httpServletRequest.getRequestURL().toString();
-        Cookie arrayCookies[] = httpServletRequest.getCookies();
-        String cookieNameUser = "";
-        Integer cookiePassword = 0;
-        for (Cookie cokies : arrayCookies) {
-            String password = cokies.getName();
-            String nameUser = cokies.getValue();
-            String subString = nameUser.substring(0, 2);
-            password += subString;
-            nameUser = nameUser.substring(2, nameUser.length());
-            cookiePassword = Integer.valueOf(EncryptUtils.base64decode(password));
-            cookieNameUser = EncryptUtils.base64decode(nameUser);
-        }
-        UserDao dao = SimpleUserDao.getInstance();
-        String userStatus = dao.findUserByLogin(cookieNameUser, cookiePassword);
-        if (userStatus.equals("admin")) {
+        if (url.contains("api/checkDateUser")||url.contains("api/createNewUser")) {
             try {
                 chain.doFilter(request, response);
-            } catch (ServletException | IOException e) {
+            } catch (ServletException | UserDaoFailedException | IOException e) {
                 throw new NoAccessToFileException("error in CookieFilter");
             }
-        }else if  (!userStatus.equals("admin")){
-            if (url.equals("http://localhost:8084/api/createFile") ||
-                    url.equals("http://localhost:8084/api/deleteSubChapter") ||
-                    url.equals("http://localhost:8084/api/updateSubChapter")
-                    ) {
-            } else {
+        } else {
+            Cookie arrayCookies[] = httpServletRequest.getCookies();
+            String cookieNameUser = "";
+            ;
+            Integer cookiePassword = 0;
+            for (Cookie cokies : arrayCookies) {
+                String password = cokies.getName();
+                String nameUser = cokies.getValue();
+                String subString = nameUser.substring(0, 2);
+                password += subString;
+                nameUser = nameUser.substring(2, nameUser.length());
+                cookiePassword = Integer.valueOf(EncryptUtils.base64decode(password));
+                cookieNameUser = EncryptUtils.base64decode(nameUser);
+            }
+            UserDao dao = SimpleUserDao.getInstance();
+            String userStatus = dao.findUserByLogin(cookieNameUser, cookiePassword);
+            if (userStatus.equals("admin")) {
                 try {
                     chain.doFilter(request, response);
-                } catch (ServletException | UserDaoFailedException | IOException e) {
+                } catch (ServletException | IOException e) {
                     throw new NoAccessToFileException("error in CookieFilter");
+                }
+            } else if (!userStatus.equals("admin")) {
+                if (url.equals("http://localhost:8084/api/createFile") ||
+                        url.equals("http://localhost:8084/api/deleteSubChapter") ||
+                        url.equals("http://localhost:8084/api/updateSubChapter")
+                        ) {
+                } else {
+                    try {
+                        chain.doFilter(request, response);
+                    } catch (ServletException | UserDaoFailedException | IOException e) {
+                        throw new NoAccessToFileException("error in CookieFilter");
+                    }
                 }
             }
         }
     }
+
 
     @Override
     public void destroy() {
