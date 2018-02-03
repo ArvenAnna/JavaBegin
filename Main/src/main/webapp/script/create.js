@@ -17,10 +17,14 @@ function clickOnButton() {
             $('#bodyId').load("index.html");
         }
         else if (true) {
-            $('.result').empty().append("The file successfully save ");
-            $('#bodyId').load("head.html");
+            // $('.result').empty().append("The file successfully save ");
+            // $('#bodyId').load("head.html");
+            $('#name_file').val('');
+            $('#text').val('');
+            $('#name_subChapters').val('');
+            $('.div_result').empty().append("The file successfully save ");
         } else {
-            $('.result').empty().append("The file have error ");
+            $('.div_result').empty().append("The file have error ");
         }
     });
 }

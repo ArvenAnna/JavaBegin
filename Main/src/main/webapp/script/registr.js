@@ -10,7 +10,8 @@ $(document).ready(function () {
         } else {
             loginServletCall();
         }
-    });
+    }
+    );
 });
 
 function loginServletCall() {
@@ -29,7 +30,7 @@ function loginServletCall() {
                 $('#password').val('');
                 $('.div_result').empty().append("You have successfully registered");
             });
-        }else{
+        } else {
             $('.div_result').empty().append("This login is busy, try the other one");
             $('#login').val('');
             $('#password').val('');
