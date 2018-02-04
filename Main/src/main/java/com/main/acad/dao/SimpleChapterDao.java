@@ -136,12 +136,13 @@ public class SimpleChapterDao implements ChapterDao {
     public FileReader getInformstioAboutChildren(String name) {
         FileReader fileReader = null;
         try {
+            properties.load(inputStream);
             connection = connectionPool.borrowConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(GET_ALL_CHILDREN_BY_NAME);
             preparedStatement.setString(1, name);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                fileReader = new FileReader(resultSet.getString("name"));
+                fileReader = new FileReader(properties.getProperty("directoryFile") + resultSet.getString("name"));
             }
             logger.info("All information about chapter child successfully get.");
             return fileReader;
@@ -191,13 +192,14 @@ public class SimpleChapterDao implements ChapterDao {
         try {
             nameFile = nameFile.trim() + ".html";
             File directoryFile = new File(properties.getProperty("directoryFile") + chapterName + "\\" + nameFile.trim());
+            File directoryFileForBD = new File(chapterName + "\\" + nameFile.trim());
             fileOutputStream = new FileOutputStream(directoryFile);
             outputStreamWriter = new OutputStreamWriter(fileOutputStream);
             writeFile = new BufferedWriter(outputStreamWriter);
             writeFile.write(chapterText.trim());
-            addChapter(String.valueOf(directoryFile));
+            addChapter(String.valueOf(directoryFileForBD));
             addChapter(nameSubChapters);
-            addRowIntoReferences(selectID(nameSubChapters), selectID(chapterName), selectID(String.valueOf(directoryFile)));
+            addRowIntoReferences(selectID(nameSubChapters), selectID(chapterName), selectID(String.valueOf(directoryFileForBD)));
             logger.info("Create new subChapter successfully ");
             return true;
         } catch (IOException e) {
@@ -239,10 +241,16 @@ public class SimpleChapterDao implements ChapterDao {
 
     @Override
     public boolean deleteSubChapter(String nameSubChapter) {
+        try {
+            properties.load(inputStream);
+        } catch (IOException e) {
+            logger.info("An error occurred in SimpleChapterDao class with createNewChildChapter methods");
+            throw new ChapterDaoFailedExeption(e.getMessage());
+        }
         int id_chapter = selectID(nameSubChapter);
         int id_references = selectIdReferences(id_chapter);
         String path = selectName(id_references);
-        path = path.replaceAll("\\\\", "\\\\\\\\");
+        path =properties.getProperty("directoryFile")+ path.replaceAll("\\\\", "\\\\\\\\");
         deleteFileInFolder(path.trim());
         deleteFromReferences(id_chapter);
         deleteFromChapters(id_chapter);
@@ -253,7 +261,6 @@ public class SimpleChapterDao implements ChapterDao {
     @Override
     public boolean updateSubChapter(String subChapterName, String newTextFile) {
         try {
-            String chapterName = getNameChapter(subChapterName);
             String path = getPathOfFile(subChapterName);
             deleteFileInFolder(path);
             createFile(path, newTextFile);
@@ -302,6 +309,12 @@ public class SimpleChapterDao implements ChapterDao {
     }
 
     private String getPathOfFile(String nameSubChapter) {
+        try {
+            properties.load(inputStream);
+        } catch (IOException e) {
+            logger.info("An error occurred in SimpleChapterDao class with createNewChildChapter methods");
+            throw new ChapterDaoFailedExeption(e.getMessage());
+        }
         String pathOfFile = "";
         try {
             connection = connectionPool.borrowConnection();
@@ -309,7 +322,7 @@ public class SimpleChapterDao implements ChapterDao {
             preparedStatement.setString(1, nameSubChapter);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next())
-                pathOfFile = resultSet.getString(1);
+                pathOfFile = properties.getProperty("directoryFile") + resultSet.getString(1);
             logger.info("path successfully get");
             return pathOfFile;
         } catch (SQLException | InterruptedException e) {
@@ -320,6 +333,7 @@ public class SimpleChapterDao implements ChapterDao {
         }
     }
 
+    @Deprecated
     private String getNameChapter(String nameSubChapter) {
         String nameChapter = "";
         try {

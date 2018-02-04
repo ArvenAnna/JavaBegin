@@ -25,13 +25,9 @@ function showChildrenChapters(e, data) {
     var subchapters = JSON.parse(data);
     $(e.target).parent().find('.animenu__nav__child').empty();
     for (var i = 0; i < subchapters.length; i++) {
-       // var varX = '<li>' + "X" + '</li>';
         var varLi = $('<li>' + '<a href="#">' + subchapters[i].name + '</a>'  + '</li>');
-        var varX = $('<li>' +  "Delete"+  '</li>');
         $(e.target).parent().find('.animenu__nav__child').append(varLi);
-        $(e.target).parent().find('.animenu__nav__child').append(varX);
         varLi.on('click', {name: subchapters[i].name}, onClickHandlerForLastChapterChild);
-        varX.on('click', {name: subchapters[i].name}, deleteChapter);
     }
 }
 
@@ -66,37 +62,5 @@ function exitLogin() {
     $('#bodyId').load("index.html");
 }
 
-function addNewFile() {
-    $('#bodyId').load("create.html");
-}
 
-function deleteFile() {
-    $('#bodyId').load("delete.html");
-}
 
-function updateFile() {
-    $('#bodyId').load("update.html");
-}
-
-function imgLoading() {
-    var gh = "images/close.png";
-    var a = document.createElement('a');
-    a.href = gh;
-    a.append('image.png');
-}
-
-function deleteChapter(event) {
-    var url = 'api/deleteSubChapter?name=' + event.data.name;
-    $.get(url, function (data) {
-        if (data === "") {
-            alert("You don't have access to delete file");
-            $('#bodyId').load("index.html");        }
-        else if (data) {
-            $('.mydiv').empty().append("Successufull delete file");
-            $('#bodyId').load("head.html");
-        }
-        else {
-            $('.mydiv').empty().append("File not delete");
-        }
-    });
-}
